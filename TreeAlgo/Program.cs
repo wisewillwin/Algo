@@ -13,7 +13,7 @@ namespace TreeAlgo
         {
             //IsTreeBalanced.Test();
 
-            TreeTraversal.Test();
+            //TreeTraversal.Test();
 
             //BinarySearchTree.Test();
 
@@ -25,7 +25,7 @@ namespace TreeAlgo
 
             //PostorderTraversalArray.Test();
 
-            //Mirror.Test();
+            Mirror.Test();
         }
     }
     
@@ -477,45 +477,79 @@ namespace TreeAlgo
 
     /// <summary>
     /// Question 4
-    /// Find all the paths starts from root to a leaf, which the sum of the values of each
+    /// Print *all* the paths starts from root to a leaf, which the sum of the values of each
     /// node on the path is N
     /// </summary>
     public class FindPath
     {
-
+        // recursion with an extra stack, O(N) time and space
+        // similar to standard DFS
         public static void FindPathOfSum(TreeNode root, int N)
-        {
-            Stack<TreeNode> path = new Stack<TreeNode>();
-            int tempSum = 0;
-            FindPathOfSum(root, N, path, tempSum);
+        {            
+            FindPathOfSum(root, N, new List<TreeNode>(), 0);
         }
         // 1. push a node onto the stack
-        // 2. if the node is left and sum is satisfied, print the path
-        // 3. do the same on the left child and right child
+        // 2. if the node is leave and sum is N, print the path
+        // 3. do the same on the left child and right child, recursively
         // 4. when finished, pop the node
-        private static void FindPathOfSum(TreeNode root, int N, Stack<TreeNode> path, int tempSum)
+        private static void FindPathOfSum(TreeNode root, int N, List<TreeNode> path, int tempSum)
         {
-            if (root == null) return;
+            if (root == null) return; // base case
             // preorder traverse the tree
-            path.Push(root);
+            path.Add(root);
             tempSum += root.value;
             if (root.left == null && root.right == null && tempSum == N)
                 PrintStack(path);
-            // traverse the left child and right child
-            if (root.left != null)
-                FindPathOfSum(root.left, N, path, tempSum);
-            if (root.right != null)
-                FindPathOfSum(root.right, N, path, tempSum);
+            // traverse the left child and right child            
+            FindPathOfSum(root.left, N, path, tempSum);            
+            FindPathOfSum(root.right, N, path, tempSum);
             // when finished, pop this node
             tempSum -= root.value;
-            path.Pop();
+            path.RemoveAt(path.Count - 1);
         }
-        public static void PrintStack(Stack<TreeNode> stack)
+        private static void PrintStack(List<TreeNode> path)
         {
-            foreach (TreeNode node in stack)
-                Console.Write(node.value + " ");
+            for (int i = 0; i < path.Count; i++)
+            {
+                Console.Write(path[i].value + " ");
+            }
             Console.WriteLine();
         }
+
+        // iterative version
+        public static void FindPathOfSum_iterative(TreeNode root, int N)
+        {
+            //if (root == null) return;
+            //List<TreeNode> stack = new List<TreeNode>();            
+            //stack.Add(root);
+            //int sum = 0;
+            //while (stack.Count > 0)
+            //{
+            //    TreeNode node = stack[stack.Count - 1];
+            //    sum += node.value;
+            //    if (sum == N)
+            //    {   
+            //        if (node.left == null && node.right == null)
+            //            PrintStack(stack); // found it!
+            //        stack.RemoveAt(stack.Count - 1);
+            //        sum -= node.value;
+            //    }
+            //    else if (sum < N)
+            //    {
+            //        if (node.right != null)
+            //            stack.Add(node.right); //sum += node.right.value;
+            //        if (node.left != null)
+            //            stack.Add(node.left); //sum += node.left.value;
+            //    }
+            //    else // sum > N
+            //    {
+            //        stack.RemoveAt(stack.Count - 1);
+            //        sum -= node.value;
+            //    }
+            //}
+            //// not found!
+        }
+
 
         public static void Test()
         {
@@ -534,6 +568,7 @@ namespace TreeAlgo
                 new TreeNode(3, new TreeNode(6, null, null), null));
 
             FindPathOfSum(root, 10);
+            //FindPathOfSum_iterative(root, 10);
         }
 
     }
@@ -544,7 +579,8 @@ namespace TreeAlgo
     /// </summary>
     public class PostorderTraversalArray
     {
-
+        // this is an inefficient implementation, O(N) space, don't use this!!
+        // root is the last element, divide the array into two subtree, recursively validate postorder property
         public static bool isPostorder(int[] a)
         {
             if (a.Length == 1) return true;
@@ -578,6 +614,33 @@ namespace TreeAlgo
             return isLeftPostorder && isRightPostorder;
         }
 
+        // recursion, O(N) time and O(1) space
+        // 1. a[high] is the root
+        // 2. first element that is greater than root is the beginning of right subtree
+        // 3. make sure all elements in right subtree is greater than root
+        // 4. recursively check left subtree and right subtree
+        private static bool isPost(int[] a, int low, int high)
+        {
+            if (low >= high) return true; // base case
+            int p = low;
+            while (p <= high)
+            {
+                if (a[p] < a[high]) p++;
+                else break; // p is at the first of right subtree
+            }
+            int q = p;
+            while (p < high)
+            {
+                if (a[p] > a[high]) p++;
+                else return false; // right subtree is not satisfied
+            }
+            return isPost(a, low, q - 1) && isPost(a, q, high - 1);
+        }      
+        public static bool isPost(int[] a)
+        {
+            return isPost(a, 0, a.Length - 1);
+        }
+
         public static void Test()
         {
             /*
@@ -587,17 +650,30 @@ namespace TreeAlgo
              *     / \ / \
              *    1  3 5  7
              */
-            TreeNode root = new TreeNode(4, new TreeNode(2,
-                new TreeNode(1, null, null), new TreeNode(3, null, null)),
-                new TreeNode(6, new TreeNode(5, null, null), new TreeNode(7, null, null)));
             int[] a = new int[] { 1, 3, 2, 5, 7, 6, 4 };
-            bool result = isPostorder(a);
+            bool result = isPost(a);
             Console.Write("array: ");
             foreach (int i in a) Console.Write(i + " ");
             if (result)
                 Console.WriteLine("is BST by postorder traversal");
             else
                 Console.WriteLine("is not BST by postorder traversal");
+            /*
+             *        4
+             *       / \
+             *      2   6
+             *     / \ / \
+             *    1  3 7  5
+             */
+            int[] a2 = new int[] { 1, 3, 2, 7, 5, 6, 4 };
+            result = isPost(a2);
+            Console.Write("array: ");
+            foreach (int i in a2) Console.Write(i + " ");
+            if (result)
+                Console.WriteLine("is BST by postorder traversal");
+            else
+                Console.WriteLine("is not BST by postorder traversal");
+
         }
     }
 
@@ -607,20 +683,24 @@ namespace TreeAlgo
     /// </summary>
     public class Mirror
     {
-
-        public static void MirrorRecursive(TreeNode root)
+        // 1. swap the left subtree and right subtree of the root
+        // 2. recursively mirror the left subtree and right subtree
+        public static TreeNode MirrorRecursive(TreeNode root)
         {
-            if (root == null) return;
+            if (root == null) return null;
             TreeNode temp = root.left;
             root.left = root.right;
             root.right = temp;
-            MirrorRecursive(root.left);
-            MirrorRecursive(root.right);
+            root.left = MirrorRecursive(root.left);
+            root.right = MirrorRecursive(root.right);
+            return root;
         }
 
-        public static void MirrorIterative(TreeNode root)
+        // DFS
+        // for every node, swap the left subtree and the right subtree
+        public static TreeNode MirrorIterative(TreeNode root)
         {
-            if (root == null) return;
+            if (root == null) return null;
             Stack<TreeNode> stack = new Stack<TreeNode>();
             stack.Push(root);
             while (stack.Count > 0)
@@ -629,33 +709,33 @@ namespace TreeAlgo
                 TreeNode temp = node.left;
                 node.left = node.right;
                 node.right = temp;
-                if (node.right != null)
-                    stack.Push(node.right);
                 if (node.left != null)
                     stack.Push(node.left);
+                if (node.right != null)
+                    stack.Push(node.right);
             }
-
+            return root;
         }
 
         public static void Test()
         {
             /*
-             *        4
-             *       / \
-             *      2   6
-             *     / \ / \
-             *    1  3 5  7
+             *        4                 4
+             *       / \               /  \
+             *      2   6     ->      6    2   
+             *     / \ / \           /\    /\
+             *    1  3 5  7         7  5  3  1
              */
             TreeNode root = new TreeNode(4, new TreeNode(2,
                 new TreeNode(1, null, null), new TreeNode(3, null, null)),
                 new TreeNode(6, new TreeNode(5, null, null), new TreeNode(7, null, null)));
             Console.Write("original: ");
+            TreeTraversal.LevelTraverse(root); // 4 2 6 1 3 5 7
+            root = MirrorIterative(root);
+            Console.Write("\nMirroring: "); // 4 6 2 7 5 3 1
             TreeTraversal.LevelTraverse(root);
-            MirrorIterative(root);
-            Console.Write("\nMirroring: ");
-            TreeTraversal.LevelTraverse(root);
-            MirrorRecursive(root);
-            Console.Write("\nMirroring: ");
+            root = MirrorRecursive(root);
+            Console.Write("\nMirroring twice: "); // 4 2 6 1 3 5 7
             TreeTraversal.LevelTraverse(root);
         }
 
