@@ -6,7 +6,6 @@ using System.Diagnostics;
 
 namespace TreeAlgo
 {
-    // run all the tests
     class Program
     {
         static void Main(string[] args)
@@ -17,7 +16,7 @@ namespace TreeAlgo
 
             //BinarySearchTree.Test();
 
-            //SpecailBST.Test();
+            SpecailBST.Test();
 
             //BinaryTreeToBST.Test();
 
@@ -25,7 +24,11 @@ namespace TreeAlgo
 
             //PostorderTraversalArray.Test();
 
-            Mirror.Test();
+            //Mirror.Test();
+
+            //CommonAncestor.Test();
+
+            //MergeBST.Test();
         }
     }
     
@@ -48,6 +51,23 @@ namespace TreeAlgo
             this.value = value;
             this.left = left;
             this.right = right;
+        }
+    }
+
+    /// <summary>
+    /// binary tree, each node has a parent pointer
+    /// </summary>
+    public class ThreePointerTreeNode
+    {
+        public int value;
+        public ThreePointerTreeNode left, right, parent;
+        public ThreePointerTreeNode(int value)
+        {
+            this.value = value;
+        }
+        public ThreePointerTreeNode(int value, ThreePointerTreeNode left, ThreePointerTreeNode right, ThreePointerTreeNode parent)
+        {
+            this.value = value; this.left = left; this.right = right; this.parent = parent;
         }
     }
 
@@ -254,7 +274,7 @@ namespace TreeAlgo
             }
         }
 
-        // use a HashSet to keep all the visited nodes, not space efficient
+        // use a HashSet to keep all the visited nodes, not space efficient, O(N) space
         public static void InorderTraverse_iterative(TreeNode root)
         {
             if (root != null)
@@ -288,7 +308,6 @@ namespace TreeAlgo
             {
                 Stack<TreeNode> stack = new Stack<TreeNode>();
                 TreeNode current = root;
-                //bool isFinished = false;
                 while (true)
                 {
                     if (current != null) // not a leaf node, so search the left subtree
@@ -372,19 +391,7 @@ namespace TreeAlgo
             }
         }
 
-        public class ThreePointerTreeNode
-        {
-            int value;
-            ThreePointerTreeNode left, right, parent;
-            ThreePointerTreeNode(int value, ThreePointerTreeNode left, ThreePointerTreeNode right, ThreePointerTreeNode parent)
-            {
-                this.value = value; this.left = left; this.right = right; this.parent = parent;
-            }
-            bool IsLeft(ThreePointerTreeNode left, ThreePointerTreeNode parent)
-            {
-                return left == parent.left;
-            }
-        }
+
         /* To determine when to print a node’s value, we would have to determine when it’s returned from. If it’s returned from
          * its left child, then you would print its value then traverse to its right child, on the other hand if it’s returned from
          * its right child, you would traverse up one level to its parent.
@@ -765,7 +772,7 @@ namespace TreeAlgo
             }
             return result;
         }
-        // check if node1 is the ancestor of node2
+        // check if node1 is the ancestor of node2, O(N) time
         private static bool IsAncester(TreeNode node1, TreeNode node2)
         {
             if (node1 == null || node2 == null) return false;
@@ -781,6 +788,32 @@ namespace TreeAlgo
             return false;
         }
 
+        public static void Test()
+        {
+            /*
+             *        4
+             *       / \
+             *      2   6
+             *     / \ / \
+             *    1  3 7  5
+             */
+            TreeNode node1 = new TreeNode(1);
+            TreeNode node3 = new TreeNode(3);
+            TreeNode node7 = new TreeNode(7);
+            TreeNode node5 = new TreeNode(5);
+            TreeNode node2 = new TreeNode(2, node1, node3);
+            TreeNode node6 = new TreeNode(6, node7, node5);
+            TreeNode node4 = new TreeNode(4, node2, node6);
+
+            TreeNode common1 = LastCommonAncestor(node4, node1, node5);
+            Console.WriteLine("LastCommonAncestor is " + common1); // 4
+            TreeNode common2 = LastCommonAncestor(node4, node1, node3);
+            Console.WriteLine("LastCommonAncestor is " + common2); // 2
+            TreeNode common3 = LastCommonAncestor(node4, node1, node6);
+            Console.WriteLine("LastCommonAncestor is " + common3); // 4
+            TreeNode common4 = LastCommonAncestor(node4, node1, node2);
+            Console.WriteLine("LastCommonAncestor is " + common4); // 2
+        }
     }
 
     /// <summary>
@@ -804,30 +837,39 @@ namespace TreeAlgo
 
     public class BinarySearchTree
     {
-        // inorder traverse the tree, the array of traversal should be sorted if is BST
+        // iterative inorder traverse the tree, the array of traversal should be sorted if is BST
         // optimized for space
         // O(N) time, O(1) space 
         public static bool IsBST_Iterative(TreeNode root)
         {
-            if (root == null) return true;
-            int temp = int.MinValue; // temp keeps the current node value
+            if (root == null) return false;
             Stack<TreeNode> stack = new Stack<TreeNode>();
-            stack.Push(root);
-            while (stack.Count > 0)
+            TreeNode current = root;
+            int tempValue = int.MinValue;
+            while (true)
             {
-                TreeNode node = stack.Pop();
-                if (node.left != null)
-                    stack.Push(node.left);
-                if (node.value < temp) // node value is smaller than left child, failed! 
-                    return false;
+                if (current != null) // not a leaf, search the left subtree
+                {
+                    stack.Push(current);
+                    current = current.left;
+                }
                 else
-                    stack.Push(node);
-                if (node.right != null)
-                    stack.Push(node.right);
+                {
+                    if (stack.Count == 0) // finished traversal
+                        break;
+                    else
+                    {
+                        current = stack.Pop();
+                        if (current.value < tempValue) return false;
+                        else tempValue = current.value;
+                        current = current.right;
+                    }
+                }
             }
-            return true; // whole array is sorted, so satisfied
+            return true;
         }
 
+        // O(N) time and O(N) space
         // recursive check BST property, narrowing the range of (min, max)
         public static bool IsBST_Recursive(TreeNode root)
         {
@@ -840,7 +882,7 @@ namespace TreeAlgo
             if (root.value < min || root.value > max) return false;
             // check the left and right child
             return IsBST_Recursive(root.left, min, root.value - 1)
-                && IsBST_Recursive(root.left, root.value, max);
+                && IsBST_Recursive(root.right, root.value, max);
         }
 
         public static void Test()
@@ -866,8 +908,8 @@ namespace TreeAlgo
              new TreeNode(6, null, null)), new TreeNode(12, new TreeNode(11, null, null), new TreeNode(13, null, null)));
 
             Debug.Assert(IsBST_Iterative(tree1));
-            Debug.Assert(IsBST_Iterative(tree2));
-            Debug.Assert(!IsBST_Recursive(tree1));
+            Debug.Assert(!IsBST_Iterative(tree2));
+            Debug.Assert(IsBST_Recursive(tree1));
             Debug.Assert(!IsBST_Recursive(tree2));
         }
 
@@ -879,31 +921,47 @@ namespace TreeAlgo
     /// </summary>
     public class BinaryTreeToBST
     {
-        public static TreeNode ToBST(TreeNode root)
+        // O(N) time and space
+        // 1. in-order traverse, 
+        // 2. sort the result, 
+        // 3. reconstruct the BST by in-order traversal
+        public static TreeNode BSTConversion(TreeNode root)
         {
             if (root == null) return null;
-            // pre-order traversal
-            List<TreeNode> preOrder = new List<TreeNode>();
-            Stack<TreeNode> stack = new Stack<TreeNode>();
-            stack.Push(root);
-            while (stack.Count > 0)
+            List<int> inorder = new List<int>();
+            inorder = InorderTraversal(root, inorder);
+            inorder.Sort();
+            index = 0;
+            return buildBST(root, inorder);
+        }
+        // recursive inorder traversal
+        private static List<int> InorderTraversal(TreeNode root, List<int> list)
+        {
+            if (root == null) return list;
+            if (root.left != null)
             {
-                TreeNode node = stack.Pop();
-                preOrder.Add(node);
-                if (node.left != null) preOrder.Add(node);
-                if (node.right != null) preOrder.Add(node);
+                list = InorderTraversal(root.left, list);
             }
-            // sort
-            preOrder.Sort();
-            stack = new Stack<TreeNode>();
-            stack.Push(root);
-            int index = 0;
-            while (stack.Count > 0)
+            list.Add(root.value);
+            if (root.right != null)
             {
-                TreeNode node = stack.Pop();
-                node.value = preOrder[index++].value;
-                if (node.left != null) stack.Push(node.left);
-                if (node.right != null) stack.Push(node.right);
+                list = InorderTraversal(root.right, list);
+            }
+            return list;
+        }
+        // recursive inorderly modify each node of the tree
+        private static int index;
+        private static TreeNode buildBST(TreeNode root, List<int> inorder)
+        {
+            if (root == null) return root;
+            if (root.left != null)
+            {
+                buildBST(root.left, inorder);                
+            }
+            root.value = inorder[index++];
+            if (root.right != null)
+            {
+                buildBST(root.right, inorder);
             }
             return root;
         }
@@ -911,26 +969,41 @@ namespace TreeAlgo
         public static void Test()
         {
             /*
-             *   10           8
-             *   / \        /  \
-             *  2   7  =>  4    10
+             *   10          8
+             *   / \        / \
+             *  2   7  =>  4   10
              *  /\        / \     
              * 8  4      2   7    
+             * 
              */
             TreeNode tree = new TreeNode(10, new TreeNode(2, new TreeNode(8, null, null),
                 new TreeNode(4, null, null)), new TreeNode(7, null, null));
-            TreeNode tree2 = ToBST(tree);
+            TreeNode tree2 = BSTConversion(tree);
             TreeTraversal.InorderTraverse(tree2);
+            Console.WriteLine();
+
+            /*
+                      10               15  
+                     /  \             / \
+                    30   15    ->   10   20
+                   /      \         /     \
+                  20       5       5      30
+             */
+            tree = new TreeNode(10, new TreeNode(30, new TreeNode(20), null), 
+                                    new TreeNode(15, null, new TreeNode(5)));
+            tree2 = BSTConversion(tree);
+            TreeTraversal.InorderTraverse(tree2);
+            Console.WriteLine();
         }
 
     }
 
     /// <summary>
     /// http://www.geeksforgeeks.org/archives/22502
-    /// Given an array, Check if all the non-leaf node in the BST has only one child (look like a list)
+    /// Given an array, Check if all the non-leaf node in the BST has only one child (looks like a list shape)
     /// </summary>
     public class SpecailBST
-    {
+    {  
         // O(N) time
         // root of BST should be either greater than both first sucessor and last sucessor
         // or smaller than those two
