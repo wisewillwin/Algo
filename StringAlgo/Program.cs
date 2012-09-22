@@ -197,11 +197,13 @@ namespace StringAlgo
         }
     }
 
+    /// <summary>
+    /// reverse the order of the words in a given paragraph
+    // eg: "I enjoy coding in C#" -> "C# in coding enjoy I"
+    /// </summary>
     public class ReverseWords
     {
 
-        // reverse the order of the words in a given paragraph
-        // eg: "I enjoy coding in C#" -> "C# in coding enjoy I"
         // solution: first reverse the whole paragraph, then reverse each word
         public static string ReverseWordsInParagraph(string s)
         {

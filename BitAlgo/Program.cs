@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace BitAlgo
 {
@@ -10,14 +11,22 @@ namespace BitAlgo
         static void Main(string[] args)
         {
 			//BitAlgo.ToggleBitsTest();
-			//BitAlgo.SwapBitsTest();
-			//BitAlgo.TurnOffRightestOneTest();
-			//BitAlgo.CountBitOneTest();
-			//BitAlgo.SwapPairsTest();
-			//BitAlgo.AddTest();
-			BitAlgo.ReverseTest();
-			//BitAlgo.CompareTest();
-			//BitAlgo.SwapNumTest();
+			
+            //BitAlgo.SwapBitsTest();
+			
+            //BitAlgo.TurnOffRightestOneTest();
+			
+            //BitAlgo.CountBitOneTest();
+			
+            //BitAlgo.SwapPairsTest();
+			
+            BitAlgo.AddTest();
+			
+            //BitAlgo.ReverseTest();
+			
+            //BitAlgo.CompareTest();
+			
+            //BitAlgo.SwapNumTest();
 
 			//TwoUniqueNumber.Test();
 
@@ -159,6 +168,9 @@ namespace BitAlgo
 		public static void AddTest()
         {
             int x = 100, y = 23;
+            Console.WriteLine("{0} + {1} = {2}", x, y, Add(x, y));
+            Console.WriteLine();
+            x = 95; y = 23;
             Console.WriteLine("{0} + {1} = {2}", x, y, Add(x, y));
             Console.WriteLine();
         }
@@ -343,8 +355,67 @@ namespace BitAlgo
         }
     }
 
-    
+    /// <summary>
+    /// Leetcode
+    /// Given two binary strings, return their sum (also a binary string). 
+    /// For example, a = "11", b = "1", Return "100". 
+    /// </summary>
+    public class BinaryAddition
+    {
+        /*
+        public static string Add(string s1, string s2)
+        {
+            if (string.IsNullOrEmpty(s1)) return s2;
+            if (string.IsNullOrEmpty(s2)) return s1;
+            string longer = s1.Length >= s2.Length ? s1 : s2;
+            string shorter = s1.Length < s2.Length ? s1 : s2;
+            for (int i = 0; i < longer.Length - shorter.Length; i++)
+            {
+                shorter = "0" + shorter;
+            }
+            string xor = "";
+            for (int i = 0; i < longer.Length; i++)
+            {
+                if (longer[i] != shorter[i]) xor += "1";
+                else xor += "0";
+            }
+            bool carry = false;
+            string result = "";
+            for (int i = longer.Length - 1; i >= 0; i--)
+            {
+                if (i == longer.Length - 1) result += xor[i];
+                else {
+                    if (longer[i] == '1' && shorter[i] == '1') // carry '1'
+                    {
+                        if (xor[i] == '1')
+                        { result = '1' + result; carry = true; }
+                        else
+                        { result = '1' + result; carry = false; }
+                    }
+                    else // no carry
+                    { 
+                        
+                    }
+                }
+            }
 
+        }
+
+
+        public static void Test()
+        {         
+            Random r = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                int x = r.Next();
+                int y = r.Next();
+                //int z = x + y;
+                Console.WriteLine(x + " + " + y + " = " + Add(x.ToString(), y.ToString()));
+                Debug.Assert((x + y).ToString() == Add(x.ToString(), y.ToString())); 
+            }
+        }
+        */
+    }
 
 
 

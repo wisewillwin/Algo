@@ -18,12 +18,6 @@ namespace Design
         }
 
 
-        static void test()
-        {
-           
-        }
-
-
 
     }
 

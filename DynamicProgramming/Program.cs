@@ -12,7 +12,7 @@ namespace DynamicProgramming
         {
             //MaxRectangleOf1s.Test();
 
-            //PartitionProblem.Test();
+            PartitionProblem.Test();
 
             //SubsequenceMaxSum.Test();
 
@@ -24,7 +24,7 @@ namespace DynamicProgramming
 
             //LongestCommonSubsequence.Test();
 
-            BinomialCoefficient.Test();
+            //BinomialCoefficient.Test();
 
 
             //MaxStockProfitProblem.Test();
@@ -81,7 +81,10 @@ namespace DynamicProgramming
     /// </summary>
     public class PartitionProblem
     {
-        // builds a table of size (sum/2, array.Length)
+        // builds a table of size (sum/2, array.Length), O(N*Sum) pseduo-polynomial time, O(N*Sum) space
+        // table[sum, index] = table[sum, index - 1] 
+        //                     OR table[sum - (a[index] - 1), index - 1]
+
         /*    index =====>       
          *sum 0   1   2   3   4   5   6
          * || 1   F   T   T   T   T   T
@@ -109,9 +112,8 @@ namespace DynamicProgramming
                     }
                     else
                     {
-                        table[i, j] = table[i, j - 1];
-                        if (i + 1 >= a[j])
-                            table[i, j] |= table[i + 1 - a[j], j - 1];
+                        table[i, j] = table[i, j - 1] 
+                            || (i + 1 >= a[j] && table[i + 1 - a[j], j - 1]);                            
                     }
                 }
             }
@@ -135,9 +137,8 @@ namespace DynamicProgramming
             {
                 for (int j = 1; j < col; j++)
                 {
-                    table[i, j] = table[i, j - 1];
-                    if (i >= a[j - 1]) 
-                        table[i, j] |= table[i - a[j - 1], j - 1];
+                    table[i, j] = table[i, j - 1]
+                        || (i + 1 >= a[j] && table[i + 1 - a[j], j - 1]);    
                 }
             }
             return table[row - 1, col - 1];        
@@ -145,16 +146,13 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            int[] a1 = {1, 2, 2, 3, 1, 1};
-            int[] a2 = {1, 2, 2, 3, 1, 2};
-            int[] a3 = {1, 2, 2, 3, 3, 13};
+            int[] a1 = {1, 2, 2, 3, 1, 1}; // true
+            int[] a2 = {1, 2, 2, 3, 1, 2}; // false
+            int[] a3 = {1, 2, 2, 3, 3, 13}; // false
             Debug.Assert(CanPartition(a1) && (CanPartition(a1) == CanPartition_version2(a1)));
             Debug.Assert(!CanPartition(a2) && (CanPartition(a2) == CanPartition_version2(a2)));
             Debug.Assert(!CanPartition(a3) && (CanPartition(a3) == CanPartition_version2(a3))); 
         }
-    
-    
-    
     
     }
 
@@ -595,56 +593,53 @@ namespace DynamicProgramming
 
     /// <summary>
     /// Given an array representing stock prices, find the point to buy and sell 
-    /// so as maximum your profit
+    /// so as maximum your profit, return the max profit
     /// i.e. array =  { 10, 11, 20, 13, 5, 8, 17, 11 }, buy at 5 and sell at 17
     /// </summary>
     public class MaxStockProfitProblem
     {
-        private static int max, min, profit;
-
-        public static void MaxStockProfit(int[] a)
+        // (p, q) as min-max globally, (pp, qq) as min-max locally
+        // iterate through a for-loop, (1) if local min-max exceeds global min-max, update global min-max
+        // (2) else if a bigger local max is seen, update local max
+        // (3) else if a smaller local min is seen, reset local min and local max
+        public static int MaxStockProfit(int[] a)
         {
-            if (a.Length <= 1) return;
-            max = Math.Max(a[0], a[1]);
-            min = Math.Min(a[0], a[1]);
-            profit = max - min;
-            if (a.Length == 2) return;
-            int p = a[0] < a[1] ? 0 : 1; // min index
-            int q = 1 - p; // max index
-            int pp = p;
-            int qq = q;
+            if (a.Length <= 1) return 0;          
+            if (a.Length == 2) 
+                return Math.Abs(a[0] - a[1]);
+            int p = a[0] < a[1] ? 0 : 1; // min index so far
+            int q = 1 - p; // max index so far
+            int pp = p; //  min pointer temperally
+            int qq = q; // max pointer termperally
             for (int i = 2; i < a.Length; i++)
             {
-                if (a[i] - a[pp] > a[q] - a[p]) // find new (min, max) pair, update
+                if (a[i] - a[pp] > a[q] - a[p])
                 {
                     p = pp;
                     q = i;
                 }
-                else if (a[i] > a[qq]) // bigger max, update temperal max
+                else if (a[i] > a[qq]) 
                 {
                     qq = i;
                 }
-                else if (a[i] < a[pp]) // smaller min, reset both temperal min and max
+                else if (a[i] < a[pp]) 
                 {
                     pp = qq = i;
                 }
             }
-            max = a[q];
-            min = a[p];
-            profit = max - min;
+            return a[q] - a[p];
         }
 
 
         public static void Test()
         {
-            min = max = profit = 0;
             int[] a = { 10, 11, 20, 13, 5, 8, 17, 11 }; 
-            MaxStockProfit(a);
-            Debug.Assert(min == 5 && max == 17 && profit == 12);
-            min = max = profit = 0;
+            int profit = MaxStockProfit(a);
+            Debug.Assert(profit == 12);
+            profit = 0;
             int[] a2 = { 10, 20, 30, 10, 20 };
             MaxStockProfit(a2);
-            Debug.Assert(min == 10 && max == 30 && profit == 20);
+            Debug.Assert(profit == 20);
         }
 
 
@@ -653,7 +648,8 @@ namespace DynamicProgramming
 
 
     /// <summary>
-    /// Given an array, use the array to generate a histgram, find the max rectangle
+    /// Given an array, use the array to generate a histgram, find the max rectangle of the histgram
+    /// eg: { 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 6, 6, 13 } max: 13
     /// </summary>
     public class ArrayMaxHistgram
     {

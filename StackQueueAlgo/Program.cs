@@ -11,8 +11,10 @@ namespace StackQueueAlgo
 		static void Main(string[] args)
 		{
 			//StackWithMin.Test();
-			//QueueImplByStack.Test();
-			//StackImplByQueue.Test();
+			
+            //QueueImplByStack.Test();
+			
+            //StackImplByQueue.Test();
 
             //MinHeap.Test();
 
@@ -292,7 +294,8 @@ namespace StackQueueAlgo
     }
 
     /// <summary>
-    /// Min Priority Queue implemented by resizing array
+    /// Min Priority Queue 
+    /// implemented by resizing array
     /// http://algs4.cs.princeton.edu/24pq/MinPQ.java.html
     /// </summary>
     public class MinPQ
@@ -564,7 +567,7 @@ namespace StackQueueAlgo
     }
 
     /// <summary>
-    /// 
+    /// Find kth smallest element in an array
     /// </summary>
     public class KthSmallestElement
     {
@@ -578,7 +581,7 @@ namespace StackQueueAlgo
                 if (i < k)
                     pq.Insert(a[i]);
                 else
-                    if (pq.GetMax() < a[i])
+                    if (pq.GetMax() > a[i])
                     {
                         pq.DeleteMax();
                         pq.Insert(a[i]);
@@ -587,18 +590,12 @@ namespace StackQueueAlgo
             return pq.GetMax();
         }
 
-        public static int KthSmallest_2(int[] a, int k)
-        {
-
-            return -1;
-        }
-
         public static void Test()
         {
             int[] a = { 3, 2, 1, 5, 8, 9, 10, 4, 7, 6};
             Console.WriteLine(KthSmallest(a, 7) == 7);
             Console.WriteLine(KthSmallest(a, 2) == 2);
-        
+            Console.WriteLine(KthSmallest(a, 1) == 1);        
         }
     
     
