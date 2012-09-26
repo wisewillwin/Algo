@@ -20,7 +20,7 @@ namespace BitAlgo
 			
             //BitAlgo.SwapPairsTest();
 			
-            BitAlgo.AddTest();
+            //BitAlgo.AddTest();
 			
             //BitAlgo.ReverseTest();
 			
@@ -35,13 +35,15 @@ namespace BitAlgo
 	}
 
 	public class BitAlgo {
+
         // Q1: toggle from bit i to bit j
+        // XOR trick: X ^ 111...1 can toggle all the bits in X
         public static int ToggleBits(int x, int i, int j)
         {
             int mask = 0;
             while (i < j)
             {
-                mask |= (1 << i); // generate binary of bit i to j of 1
+                mask = mask | (1 << i); // generate binary of bit i to j of 1
                 i++;
             }
             return x ^ mask;
@@ -58,6 +60,7 @@ namespace BitAlgo
 
 
         // Q2: swap bit i and j of integer x
+        // XOR trick: X ^ 0 = X
 		public static int SwapBits(int x, int i, int j)
         {
             // if bit i and bit j is he same, no need to do anything
@@ -126,6 +129,8 @@ namespace BitAlgo
             Console.WriteLine();
         }
 
+        // http://www.leetcode.com/2011/08/reverse-bits.html 
+        // Swap each pair by XOR tricks
         // Q6: reverse 32-bit integer, eg: 10101111 -> 11110101
 		public static int Reverse(int x)
         {
@@ -156,7 +161,7 @@ namespace BitAlgo
 
         }
 
-        // Q8: add operation without +-*/, only bitwise operation
+        // Q8: add operation without operator +-*/, only bitwise operation
 		public static int Add(int x, int y)
         {
             if (x == 0) return y;
@@ -176,6 +181,7 @@ namespace BitAlgo
         }
 
         // Q9: compare two integer without comparator ">" or "<", return the larger number
+        // trick: use the sign of signed interger
 		public static int Compare(int x, int y)
         {
             int diff = x - y;
@@ -195,19 +201,19 @@ namespace BitAlgo
 
         // Q10: swap two integer without temperary variable
         static int x = 100, y = 23;
-		public static void SwapNum()
+		public static void SwapNum_XOR()
         { // XOR trick
             x = x ^ y;
             y = x ^ y;
             x = x ^ y;
         }
-		public static void SwapNum2()
+		public static void SwapNum_PlusMinus()
         {
             x = x - y;
             y = x + y;
             x = y - x;
         }
-		public static void SwapNum3()
+		public static void SwapNum_PlusMinus_2()
         {
             x = x + y;
             y = x - y;
@@ -216,15 +222,15 @@ namespace BitAlgo
 		public static void SwapNumTest()
         {
             Console.WriteLine("Before Swap: x = {0}, y = {1}", x, y);
-            SwapNum();
+            SwapNum_XOR();
             Console.WriteLine("SwapNum: x = {0}, y = {1}", x, y);
             x = 100;
             y = 23;
-            SwapNum2();
+            SwapNum_PlusMinus();
             Console.WriteLine("SwapNum2: x = {0}, y = {1}", x, y);
             x = 100;
             y = 23;
-            SwapNum3();
+            SwapNum_PlusMinus_2();
             Console.WriteLine("SwapNum3: x = {0}, y = {1}", x, y);
             Console.WriteLine();
         }
@@ -249,8 +255,6 @@ namespace BitAlgo
 			int xorAll = 0;
 			for (int i = 0; i < a.Length; i++) 
 				xorAll ^= a[i];
-			List<int> list1 = new List<int>();
-			List<int> list2 = new List<int>();
 			int rightBitOne = 0; // find the right-most bit one
 			while (true)
 			{
@@ -261,28 +265,16 @@ namespace BitAlgo
 					return false;
 				}
 			}
-			for (int i = 0; i < a.Length; i++)
+            num1 = 0; num2 = 0;
+            for (int i = 0; i < a.Length; i++)
 			{
-				if (((a[i] >> (rightBitOne - 1) & 1) == 1))
-					list1.Add(a[i]);
-				else
-					list2.Add(a[i]);
+                if (((a[i] >> (rightBitOne - 1) & 1) == 1))
+                    num1 ^= a[i]; 
+                else
+                    num2 ^= a[i]; 
 			}
-			if (list1.Count > 0 && list2.Count > 0)
-			{
-				num1 = 0;
-				foreach (int x in list1)
-					num1 ^= x;
-				num2 = 0;
-				foreach (int x in list2)
-					num2 ^= x;
-				return true;
-			}
-			else
-			{
-				num1 = num2 = 0;
-				return false;
-			}
+            if (num1 == num2) return false;
+            else return true;
 		}
 
 		public static void Test()
