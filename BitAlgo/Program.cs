@@ -31,6 +31,8 @@ namespace BitAlgo
 			//TwoUniqueNumber.Test();
 
             //BitDiff.Test();
+
+            SetBitsSorting.Test();
         }
 	}
 
@@ -409,8 +411,49 @@ namespace BitAlgo
         */
     }
 
+    /// <summary>
+    /// You have given n numbers from 1 to n. You have to sort numbers with increasing number of set bits.
+    /// If you have two number with equal number of set bits, then number with lowest value come first in the output.
+    /// for ex: n=5. output: 1,2,4,3,5
+    /// </summary>
+    public class SetBitsSorting
+    {
 
+        // (1) traverse through the number, for each number, reset the lowest bit using n & (n - 1), 
+        // if the number becomes zero, append it to the result list. 
+        // (2) repeat (1) until the result list length equals to n
+        public static void SortBySetBits(int n)
+        {
+            int[] nums = new int[n];
+            for (int i = 1; i <= nums.Length; i++)
+            {
+                nums[i - 1] = i;
+            }
+            int zeros = 0;
+            while (zeros < n)
+            {
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    if (nums[i] != 0)
+                    {
+                        nums[i] = nums[i] & (nums[i] - 1);
+                        if (nums[i] == 0)
+                        {
+                            zeros++;
+                            Console.Write((i + 1) + " ");
+                        }
+                    }
+                }
+            }
+        }
+        
 
+        public static void Test()
+        {
+            SortBySetBits(64);
+        }
+    
+    }
 
 
 

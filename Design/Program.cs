@@ -10,7 +10,7 @@ namespace Design
     {
         static void Main(string[] args)
         {
-            //SpecialDataStructure.Test();
+            //QuickSetAllObject.Test();
 
             //QuicksortKiller.Test();
 
@@ -25,7 +25,7 @@ namespace Design
     /// Design a data structure, which get(int index), set(int index, object value) and 
     /// setAll(object value) are O(1) operation
     /// </summary>
-    public class SpecialDataStructure
+    public class QuickSetAllObject
     {
         public class SpecialObject
         {
@@ -33,7 +33,7 @@ namespace Design
             public object value { get; set; }
         }
 
-        // globally version number, value
+        // member variables: version number, value
         private int version;
         private object value;
         private SpecialObject[] array;
@@ -65,7 +65,7 @@ namespace Design
         }
 
         // helper function for testing
-        public SpecialDataStructure(int size)
+        public QuickSetAllObject(int size)
         {
             this.version = 0;
             this.value = null;
@@ -75,7 +75,7 @@ namespace Design
         }
         public static void Test()
         {
-            SpecialDataStructure sd = new SpecialDataStructure(10);
+            QuickSetAllObject sd = new QuickSetAllObject(10);
             for (int i = 0; i < 10; i++) 
                 sd.set(i, i);
             for (int i = 0; i < 10; i++)
@@ -161,28 +161,28 @@ namespace Design
     public class LRUCache
     {
 
-        private class CacheNode
-        {
-            int key;
-            int value;
-            CacheNode next;
-            CacheNode prev;
-        }
-
         int limit;
-        Dictionary<int, int> map; // hashmap stores <key, value>
-        List<int> keyList; // first node of the list is the least-recent-used, ready to be removed
-
+      
+        // sequence number of each value
+        List<int> keyList;  /* a doubly-linked list is needed*/
+        // hashmap of <sequence_number, value>
+        Dictionary<int, string> map; 
+        
         public LRUCache(int limit)
         {
             this.limit = limit;
+            this.keyList = new List<int>();
+            this.map = new Dictionary<int, string>();
         }
 
-        void insert(int key, int value)
+
+        // kick-out the first element from the keyList if the cache is full
+        // then add the key to the end of the keyList
+        public void insert(int key, string value)
         {
             if (map.ContainsKey(key))
             {
-                map.Remove(key);            
+                map.Remove(key);
             }
             if (keyList.Count == limit)
             {
@@ -194,7 +194,7 @@ namespace Design
             map.Add(key, value);
         }
 
-        void delete(int key)
+        public void delete(int key)
         {
             if (map.ContainsKey(key))
             {
@@ -203,19 +203,49 @@ namespace Design
             }
         }
 
-        int search(int key)
+        // every search will remove the first element in the keyList to the end of the list
+        public string search(int key)
         {
             if (keyList.Contains(key))
             {
                 keyList.Remove(key);
                 keyList.Add(key);
             }
-            return map[key];
+            if (map.ContainsKey(key))
+                return map[key];
+            else return null;
+        }
+
+        private void PrintAll()
+        {
+            foreach (var pair in map)
+            {
+                Console.Write(pair.Key + ": " + pair.Value + "  ");
+            }
+            Console.WriteLine();
         }
 
         public static void Test()
-        { 
-        
+        {
+            LRUCache lru = new LRUCache(3);
+            lru.insert(1, "a");
+            lru.insert(2, "b");
+            lru.insert(3, "c");
+            lru.PrintAll();
+            lru.insert(4, "d");
+            lru.PrintAll();
+            lru.insert(5, "e");
+            lru.PrintAll();
+            lru.insert(1, "c");
+            lru.PrintAll();
+            lru.insert(1, "c");
+            lru.PrintAll();
+            lru.delete(1);
+            lru.PrintAll();
+            Console.WriteLine("search for 1: " + lru.search(1));
+            lru.delete(1);
+            lru.PrintAll();
+            Console.WriteLine("search for 1: " + lru.search(1));
         }
     }
 
