@@ -16,11 +16,11 @@ namespace TreeAlgo
 
             //BinarySearchTree.Test();
 
-            SpecailBST.Test();
+            //SpecailBST.Test();
 
             //BinaryTreeToBST.Test();
 
-            //FindPath.Test();
+            FindPath.Test();
 
             //PostorderTraversalArray.Test();
 
@@ -207,9 +207,14 @@ namespace TreeAlgo
 
     }
 
+    /// <summary>
+    /// [easy]: recursive perorder | recursive inorder | recursive postorder | iterative preorder | iterative level-order
+    /// [medium]: iterative inorder |
+    /// [hard]: iterative postorder | iterative inorder(without stack)
+    /// </summary>
     public class TreeTraversal
     {
-        // tree traversals: iterative vs. recursive
+        // Recursive
         public static void PreorderTraverse(TreeNode root) // DFS
         {
             if (root != null)
@@ -237,7 +242,9 @@ namespace TreeAlgo
                 Console.Write(root.value + " ");
             }
         }
-        public static void LevelTraverse(TreeNode root) // BFS
+
+        // BFS
+        public static void LevelTraverse(TreeNode root) 
         {
             if (root != null)
             {
@@ -254,10 +261,8 @@ namespace TreeAlgo
         }
 
 
-
-
-
-        // tricky part: push right substree before left subtree into the stack
+        // push right substree before left subtree into the stack
+        // space O(N)
         public static void PreorderTraverse_iterative(TreeNode root)
         {
             if (root != null)
@@ -274,7 +279,8 @@ namespace TreeAlgo
             }
         }
 
-        // use a HashSet to keep all the visited nodes, not space efficient, O(N) space
+        // use a HashSet to keep all the visited nodes
+        // not space efficient, O(N) space
         public static void InorderTraverse_iterative(TreeNode root)
         {
             if (root != null)
@@ -285,20 +291,53 @@ namespace TreeAlgo
                 while (stack.Count > 0)
                 {
                     TreeNode node = stack.Peek();
-                    if (visited.Contains(node))
+                    if (visited.Contains(node)) // node is already visited
                     {
                         stack.Pop();
                         Console.Write(node.value + " ");
-                        if (node.right != null) stack.Push(node.right);
+                        if (node.right != null) 
+                            stack.Push(node.right); // search on right subtree
                     }
-                    else
+                    else // node is not visited
                     {
                         visited.Add(node);
-                        if (node.left != null) stack.Push(node.left);
+                        if (node.left != null) 
+                            stack.Push(node.left); // search on left subtree
                     }
                 }
             }
         }
+
+        // use a HashSet to keep all the visited nodes
+        // space O(N)
+        public static void PostorderTraverse_iterative(TreeNode root)
+        {
+            if (root != null)
+            {
+                Stack<TreeNode> stack = new Stack<TreeNode>();
+                stack.Push(root);
+                HashSet<TreeNode> visited = new HashSet<TreeNode>();
+                while (stack.Count > 0)
+                {
+                    TreeNode node = stack.Peek();
+                    if (node.left != null && !visited.Contains(node.left))
+                    {
+                        stack.Push(node.left);
+                    }
+                    else if (node.right != null && !visited.Contains(node.right))
+                    {
+                        stack.Push(node.right);
+                    }
+                    else
+                    {
+                        stack.Pop();
+                        Console.Write(node.value + " ");
+                        visited.Add(node);
+                    }
+                }
+            }
+        }
+
 
         // http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
         // The last traversed node must not have a right child.
@@ -332,14 +371,6 @@ namespace TreeAlgo
             }
 
         }
-
-
-        
-        public static void PostorderTraverse_iterative(TreeNode root)
-        {
-
-        }
-
 
 
 
@@ -466,9 +497,9 @@ namespace TreeAlgo
             Console.Write("Postorder recursive: ");
             PostorderTraverse(tree1);
             Console.WriteLine();
-            //Console.Write("Postorder iterative: ");
-            //PostorderTraverse_iterative(tree1);
-            //Console.WriteLine();
+            Console.Write("Postorder iterative: ");
+            PostorderTraverse_iterative(tree1);
+            Console.WriteLine();
 
             Console.Write("Traverse by level: ");
             LevelTraverse(tree1);
@@ -526,35 +557,33 @@ namespace TreeAlgo
         // iterative version
         public static void FindPathOfSum_iterative(TreeNode root, int N)
         {
-            //if (root == null) return;
-            //List<TreeNode> stack = new List<TreeNode>();            
-            //stack.Add(root);
-            //int sum = 0;
-            //while (stack.Count > 0)
-            //{
-            //    TreeNode node = stack[stack.Count - 1];
-            //    sum += node.value;
-            //    if (sum == N)
-            //    {   
-            //        if (node.left == null && node.right == null)
-            //            PrintStack(stack); // found it!
-            //        stack.RemoveAt(stack.Count - 1);
-            //        sum -= node.value;
-            //    }
-            //    else if (sum < N)
-            //    {
-            //        if (node.right != null)
-            //            stack.Add(node.right); //sum += node.right.value;
-            //        if (node.left != null)
-            //            stack.Add(node.left); //sum += node.left.value;
-            //    }
-            //    else // sum > N
-            //    {
-            //        stack.RemoveAt(stack.Count - 1);
-            //        sum -= node.value;
-            //    }
-            //}
-            //// not found!
+            if (root == null) return;
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            List<TreeNode> path = new List<TreeNode>();
+            stack.Push(root);
+            while (stack.Count > 0) 
+            {
+                TreeNode node = stack.Pop();
+                N -= node.value;
+                path.Add(node);
+                if (node.left == null && node.right == null)
+                {
+                    if (N == 0) // print stack
+                    {
+                        PrintStack(path);
+                    }
+                    do // tricky: remove nodes from path when there are pop off
+                    {
+                        N += path[path.Count - 1].value;
+                        path.RemoveAt(path.Count - 1);
+                    } while (stack.Count > 0 && path[path.Count - 1].right != stack.Peek());                                     
+                }
+                if (node.right != null)
+                    stack.Push(node.right);
+                if (node.left != null)
+                    stack.Push(node.left);
+            
+            }
         }
 
 
@@ -574,8 +603,8 @@ namespace TreeAlgo
                 new TreeNode(2, null, null), null)),
                 new TreeNode(3, new TreeNode(6, null, null), null));
 
-            FindPathOfSum(root, 10);
-            //FindPathOfSum_iterative(root, 10);
+            //FindPathOfSum(root, 10);
+            FindPathOfSum_iterative(root, 10);
         }
 
     }
