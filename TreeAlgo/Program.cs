@@ -593,18 +593,19 @@ namespace TreeAlgo
              *        1
              *       / \
              *      2   3
-             *     / \ / 
-             *    4  5 6 
-             *      /
-             *     2
+             *     / \ / \
+             *    4  5 6  6
+             *      / / 
+             *     2 7
              */
             TreeNode root = new TreeNode(1, new TreeNode(2,
-                new TreeNode(4, null, null), new TreeNode(5,
-                new TreeNode(2, null, null), null)),
-                new TreeNode(3, new TreeNode(6, null, null), null));
+                new TreeNode(4), new TreeNode(5,
+                new TreeNode(2), null)),
+                new TreeNode(3, new TreeNode(6, new TreeNode(7), null), new TreeNode(6)));
 
-            //FindPathOfSum(root, 10);
+            FindPathOfSum(root, 10);
             FindPathOfSum_iterative(root, 10);
+            
         }
 
     }

@@ -11,8 +11,10 @@ namespace LinkedListAlgo
         static void Main(string[] args)
         {
             //LinkedListOrdering.KthToTailTest();
+
             //ReverseLinkedList.ReverseTest();
-			//SharedNode.FirstSharedNodeTest();
+			
+            //SharedNode.FirstSharedNodeTest();
 
             RemoveDuplicates.Test();
 
@@ -82,6 +84,9 @@ namespace LinkedListAlgo
 
         // revsrse linkedlist
         // keep track of pervious/current/next node
+        //         
+        // [tricky]: two special cases: head of list and tail of list
+        //
         public static LinkedListNode ReverseByIterative(LinkedListNode list)
         {
             if (list == null) return null;
@@ -109,10 +114,10 @@ namespace LinkedListAlgo
         {
             if (list == null) return null;
             if (list.next == null) return list;
-            LinkedListNode node2 = list.next;
-            list.next = null;
+            LinkedListNode node2 = list.next;            
             LinkedListNode reversedRest = ReverseByRecursion(node2);
             node2.next = list;
+            list.next = null;
             return reversedRest;
         }
 
