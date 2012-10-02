@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Recursion
 {
-    class Program
+    class Recursion
     {
         static void Main(string[] args)
         {

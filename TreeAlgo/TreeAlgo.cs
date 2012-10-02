@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace TreeAlgo
 {
-    class Program
+    class TreeAlgo
     {
         static void Main(string[] args)
         {

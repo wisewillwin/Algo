@@ -6,27 +6,27 @@ using System.Diagnostics;
 
 namespace BitAlgo
 {
-    class Program
+    class BitAlgo
     {
         static void Main(string[] args)
         {
-			//BitAlgo.ToggleBitsTest();
-			
-            //BitAlgo.SwapBitsTest();
-			
-            //BitAlgo.TurnOffRightestOneTest();
-			
-            //BitAlgo.CountBitOneTest();
-			
-            //BitAlgo.SwapPairsTest();
-			
-            //BitAlgo.AddTest();
-			
-            //BitAlgo.ReverseTest();
-			
-            //BitAlgo.CompareTest();
-			
-            //BitAlgo.SwapNumTest();
+            BitAlgos.ToggleBitsTest();
+
+            BitAlgos.SwapBitsTest();
+
+            BitAlgos.TurnOffRightestOneTest();
+
+            BitAlgos.CountBitOneTest();
+
+            BitAlgos.SwapPairsTest();
+
+            BitAlgos.AddTest();
+
+            BitAlgos.ReverseTest();
+
+            BitAlgos.CompareTest();
+
+            BitAlgos.SwapNumTest();
 
 			//TwoUniqueNumber.Test();
 
@@ -36,7 +36,7 @@ namespace BitAlgo
         }
 	}
 
-	public class BitAlgo {
+	public class BitAlgos {
 
         // Q1: toggle from bit i to bit j
         // XOR trick: X ^ 111...1 can toggle all the bits in X

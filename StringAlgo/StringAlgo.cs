@@ -5,7 +5,7 @@ using System.Text;
 
 namespace StringAlgo
 {
-    class Program
+    class StringAlgo
     {
         static void Main()
         {

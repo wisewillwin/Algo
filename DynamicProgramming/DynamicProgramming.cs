@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace DynamicProgramming
 {
-    class Program
+    class DynamicProgramming
     {
         static void Main(string[] args)
         {

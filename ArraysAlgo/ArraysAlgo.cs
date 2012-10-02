@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace ArraysAlgo
 {
-    class Program
+    class ArraysAlgo
     {
         static void Main(string[] args)
         {

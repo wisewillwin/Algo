@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Design
 {
-    class Program
+    class Design
     {
         static void Main(string[] args)
         {

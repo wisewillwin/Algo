@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace LinkedListAlgo
 {
-    class Program
+    class LinkedListAlgo
     {
         static void Main(string[] args)
         {

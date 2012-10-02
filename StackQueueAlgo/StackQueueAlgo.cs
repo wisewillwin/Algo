@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace StackQueueAlgo
 {
-	class Program
+	class StackQueueAlgo
 	{
 		static void Main(string[] args)
 		{
