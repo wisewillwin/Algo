@@ -55,7 +55,27 @@ namespace ArraysAlgo
 
             //TrapRainWater.Test();
 
+            PartitionArrayByZero.Test();
 
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+        
 
 
 
@@ -1426,8 +1446,79 @@ namespace ArraysAlgo
     
     }
 
+    /// <summary>
+    /// An array only contains non-zero integers.
+    /// Partition the array by zero, negative number put on the left and positive number put on the right,
+    /// in the original order. 
+    /// </summary>
+    public class PartitionArrayByZero
+    {
+        public static int[] partition(int[] a)
+        {
+            return partition(a, 0, a.Length - 1);
+        }
+
+        private static int[] partition(int[] a, int low, int high)
+        {
+            if (low >= high)
+                return a;
+            int mid = (low + high) / 2;
+            a = partition(a, low, mid);
+            a = partition(a, mid + 1, high);
+            int leftNegative = low;
+            while (leftNegative <= high && a[leftNegative] < 0)
+            {
+                leftNegative++;
+            }
+            int rightNegative = high - 1;
+            while (rightNegative >= 0 && a[rightNegative] >= 0)
+            {
+                rightNegative--;
+            }
+            if (leftNegative >= rightNegative) return a;
+            a = ReverseRange(a, leftNegative, rightNegative);
+            int midNegative = leftNegative;
+            while (a[midNegative] < 0)
+            {
+                midNegative++;
+            }
+            a = ReverseRange(a, leftNegative, midNegative - 1);
+            a = ReverseRange(a, midNegative, rightNegative);
+            return a;
+        }
 
 
+        private static int[] ReverseRange(int[] a, int low, int high)
+        {
+            while (low < high)
+            {
+                int temp = a[low];
+                a[low] = a[high];
+                a[high] = temp;
+                low++;
+                high--;
+            }
+            return a;
+        }
+        public static void Test()
+        {
+            int[] a1 = { 1, 7, -5, 9, -12, 15};
+            foreach (int i in a1) Console.Write(i + " ");
+            Console.WriteLine();
+            a1 = partition(a1);
+            foreach (int i in a1) Console.Write(i + " ");
+            Console.WriteLine();
+            int[] a2 = { 3, 2, 1, -3, -2, -1 };
+            foreach (int i in a2) Console.Write(i + " ");
+            Console.WriteLine();
+            a2 = partition(a2);
+            foreach (int i in a2) Console.Write(i + " ");
+            Console.WriteLine();
+
+        }
+
+
+    }
 
 
 

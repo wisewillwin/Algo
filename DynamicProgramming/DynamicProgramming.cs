@@ -12,7 +12,7 @@ namespace DynamicProgramming
         {
             //MaxRectangleOf1s.Test();
 
-            PartitionProblem.Test();
+            //PartitionProblem.Test();
 
             //SubsequenceMaxSum.Test();
 
@@ -31,9 +31,9 @@ namespace DynamicProgramming
 
 
             //ArrayMaxHistgram.Test();
-        
-        
-        
+
+
+            SubstringMinWindow.Test();        
         
         
         }
@@ -704,7 +704,91 @@ namespace DynamicProgramming
         }
     }
 
+    /// <summary>
+    /// Given a set T of characters and a string S, find the minimum window in S which will contain 
+    /// all the characters in T in complexity O(n).    
+    /// eg, S = “ADOBECODEBANC”, T = “ABC”, Minimum window is “BANC”.
+    /// </summary>
+    public class SubstringMinWindow 
+    {
 
+        public static String minWindow(String s1, String s2)
+        {
+            if (s1 == null || s2 == null || s1.Length < s2.Length)
+                return "";
+            int[] neededToFind = new int[256];
+            for (int i = 0; i < s2.Length; i++) neededToFind[s2[i]]++;
+            int[] hasFound = new int[256];
+            int p1, q1, p2, q2;
+            p1 = q1 = -1; // global min window pair (p1, q1)
+            p2 = q2 = 0; // current points pair (p2, q2)               
+            int count = 0;
+            for (q2 = 0; q2 < s1.Length; q2++)
+            {
+                if (neededToFind[s1[q2]] == 0) continue; // skip unnecessary char
+                hasFound[s1[q2]]++; // add to hasFound
+                if (hasFound[s1[q2]] <= neededToFind[s1[q2]])
+                    count++; // tricky: count those found char which doesn't appears more than their expected times        
+                if (count == s2.Length)
+                { // if window is satisfied
+                    // move the p2 as far rightLength as possible
+                    while (p2 <= s1.Length - s2.Length)
+                    {
+                        if (neededToFind[s1[p2]] == 0) { p2++; }
+                        else if (hasFound[s1[p2]] > neededToFind[s1[p2]])
+                        {
+                            hasFound[s1[p2]]--;
+                            p2++;
+                        }
+                        else if (hasFound[s1[p2]] == neededToFind[s1[p2]])
+                        {
+                            break;
+                        }
+                    }
+                    // update the p1 and q1 if necessary
+                    if (q1 == -1 || q2 - p2 < q1 - p1)
+                    { // found a shorter window
+                        p1 = p2;
+                        q1 = q2;
+                    }
+                }
+            }
+            if (p1 == -1) return "";
+            else return s1.Substring(p1, q1 - p1 + 1);
+        }
+
+        public static void Test()
+        { 
+            String[] s1_array = {"cabeca", "cfabeca", "cabefgecdaecf", "cabwefgewcwaefcf", 
+            "abcabdebac", "abcabdebac", "acbdbaab", "caaec", "caae", "acbbaab", "acbba",
+            "adobecodebanc", "adobecodebanc", "adobecodebanc", "adobecodebancbbcaa", 
+            "aaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaa", "acccabeb", "aaabdacefaecbef", 
+            "coobdafceeaxab", "of_characters_and_as", "a", "a", "aa", "aaa", "aab"};
+        
+            String[] s2_array = {"cae", "cae", "cae", "cae", "cda", "cea",
+            "aabd", "cae", "cae", "aab", "aab", "abc",
+            "abcda", "abdbac", "abc", "a", "aaaaaaaaaaaaaa", "ab",
+            "abc", "abc", "aas", "a", "b", "a", "aaa", "aab"};
+        
+            String[] min_window_array = {"eca", "eca", "aec", "cwae", "cabd", "ebac",
+            "dbaa", "aec", "caae", "baa", "acbba", "banc",
+            "adobecodeba", "adobecodeba", "bca", "a", "aaaaaaaaaaaaaa", "ab",
+            "bdac", "bdafc", "and_as", "a", "", "a",
+            "aaa", "aab"};
+        
+            for (int i = 0; i < s1_array.Length; i++) {
+                if (min_window_array[i] != minWindow(s1_array[i], s2_array[i])) {
+                    Console.WriteLine(s1_array[i] + "  " + s2_array[i] + " => "
+                     + minWindow(s1_array[i], s2_array[i]) + " should be " + min_window_array[i]);
+                } else {
+                    Console.WriteLine(s1_array[i] + "  " + s2_array[i] + " => "
+                     + minWindow(s1_array[i], s2_array[i]));
+                }
+            }
+        }
+
+
+    }
 
 
 
