@@ -7,56 +7,18 @@ namespace StringAlgo
 {
     class StringAlgo
     {
-        static void Main()
+        public static void Main()
         {
-            //ReverseWordsInParagraphTest();
-            BruteForceSearchTest();
-            ImprovedBruteForceSearchTest();
-            BoyerMooreSearchTest();
-            RabinKarpTest();
-            KMPTest();
-        }
+            ReverseWords.Test();
 
-        static void ReverseWordsInParagraphTest()
-        {
-            string s = "I enjoy coding in C#";
-            Console.WriteLine(s);
-            Console.WriteLine(ReverseWords.ReverseWordsInParagraph(s));
-        }
+            //SubstringSearching.BruteForceSearchTest();
+            //SubstringSearching.ImprovedBruteForceSearchTest();
+            //SubstringSearching.BoyerMooreSearchTest();
+            //SubstringSearching.RabinKarpTest();
+            //SubstringSearching.KMPTest();
 
-        static void BruteForceSearchTest()
-        {
-            string pat = "ABRA";
-            string txt = "ABACADABRAC";
-            Console.WriteLine(SubstringSearching.BruteForceSearch(pat, txt));
-        }
 
-        static void ImprovedBruteForceSearchTest()
-        {
-            string pat = "ABRA";
-            string txt = "ABACADABRAC";
-            Console.WriteLine(SubstringSearching.ImprovedBruteForceSearch(pat, txt));
-        }
 
-        static void BoyerMooreSearchTest()
-        {
-            string pat = "ABRA";
-            string txt = "ABACADABRAC";
-            Console.WriteLine(SubstringSearching.BoyerMooreSearch(pat, txt));
-        }
-
-        static void RabinKarpTest()
-        {
-            string pat = "ABRA";
-            string txt = "ABACADABRAC";
-            Console.WriteLine(SubstringSearching.RabinKarpSearch(pat, txt));
-        }
-
-        static void KMPTest()
-        {
-            string pat = "ABRA";
-            string txt = "ABACADABRAC";
-            Console.WriteLine(SubstringSearching.KMPSearch(pat, txt));
         }
 
 
@@ -195,6 +157,41 @@ namespace StringAlgo
             }
             return -1; // not found
         }
+
+        public static void BruteForceSearchTest()
+        {
+            string pat = "ABRA";
+            string txt = "ABACADABRAC";
+            Console.WriteLine(SubstringSearching.BruteForceSearch(pat, txt));
+        }
+
+        public static void ImprovedBruteForceSearchTest()
+        {
+            string pat = "ABRA";
+            string txt = "ABACADABRAC";
+            Console.WriteLine(SubstringSearching.ImprovedBruteForceSearch(pat, txt));
+        }
+
+        public static void BoyerMooreSearchTest()
+        {
+            string pat = "ABRA";
+            string txt = "ABACADABRAC";
+            Console.WriteLine(SubstringSearching.BoyerMooreSearch(pat, txt));
+        }
+
+        public static void RabinKarpTest()
+        {
+            string pat = "ABRA";
+            string txt = "ABACADABRAC";
+            Console.WriteLine(SubstringSearching.RabinKarpSearch(pat, txt));
+        }
+
+        public static void KMPTest()
+        {
+            string pat = "ABRA";
+            string txt = "ABACADABRAC";
+            Console.WriteLine(SubstringSearching.KMPSearch(pat, txt));
+        }
     }
 
     /// <summary>
@@ -223,6 +220,16 @@ namespace StringAlgo
             return sb.ToString();
         }
 
+        public static void Test()
+        {
+            string s = "I enjoy coding in C#";
+            Console.WriteLine(s);
+            Console.WriteLine(ReverseWords.ReverseWordsInParagraph(s));
+        }
+
     }
+
+    
+
 
 }

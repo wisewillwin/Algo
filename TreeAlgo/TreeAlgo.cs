@@ -20,7 +20,7 @@ namespace TreeAlgo
 
             //BinaryTreeToBST.Test();
 
-            FindPath.Test();
+            //FindPath.Test();
 
             //PostorderTraversalArray.Test();
 
@@ -29,6 +29,8 @@ namespace TreeAlgo
             //CommonAncestor.Test();
 
             //MergeBST.Test();
+
+            GraphTraversal.Test();
         }
     }
     
@@ -74,10 +76,74 @@ namespace TreeAlgo
     /// <summary>
     /// Graph data structure
     /// </summary>
-    public class GraphNode
+    public class Graph
     {
+        // public fields
+        public int V { get; set; }
+        public List<int>[] adj { get; set; } // adjacency list
 
+        // public constructors
+        public Graph(int V)
+        {
+            this.V = V;
+            adj = new List<int>[V];
+            for (int i = 0; i < V; i++)
+            {
+                adj[i] = new List<int>();
+            }
+        }
 
+        // public methods
+        public void addEdge(int v, int w)
+        {
+            adj[v].Add(w);
+        }
+    }
+
+    /// <summary>
+    /// Graph traversal
+    /// </summary>
+    public class GraphTraversal
+    {
+        // single source DFS search
+        public static void DFS(Graph g, int v) 
+        {
+            DFS(g, v, new bool[g.V]);          
+        }
+
+        private static void DFS(Graph g, int v, bool[] visited)
+        {
+            visited[v] = true;
+            Console.Write(v + " ");
+            foreach (int node in g.adj[v])
+            {
+                if (!visited[node]) 
+                    DFS(g, node, visited);
+            }
+        }
+
+        public static void BFS(Graph g, int v)
+        { 
+            
+        }
+
+        private static void BFS(Graph g, int v, bool[] visited)
+        { 
+            
+        }
+
+        public static void Test()
+        {
+
+            Graph g1 = new Graph(4); 
+            g1.addEdge(0, 1);
+            g1.addEdge(0, 2);
+            g1.addEdge(1, 2);
+            g1.addEdge(2, 0);
+            g1.addEdge(2, 3);
+            g1.addEdge(3, 3);
+            DFS(g1, 2); // 2 -> 0 -> 1 -> 3
+        }
     }
 
     /// <summary>

@@ -33,9 +33,9 @@ namespace DynamicProgramming
             //ArrayMaxHistgram.Test();
 
 
-            SubstringMinWindow.Test();        
-        
-        
+            //SubstringMinWindow.Test();        
+
+            LongestNonrepeatedSubstring.Test();
         }
     }
 
@@ -790,8 +790,59 @@ namespace DynamicProgramming
 
     }
 
+    /// <summary>
+    /// Find the length of longest substring with no repeating characters
+    /// http://www.leetcode.com/2011/05/longest-substring-without-repeating-characters.html
+    /// </summary>
+    public class LongestNonrepeatedSubstring
+    {
+
+        public static string NonrepeatedSubstring(string s)
+        {
+            if (s == null) return s;
+            bool[] counts = new bool[256];
+            int p = 0;
+            int q = 0;
+            string result = "";
+            for (q = 0; q < s.Length; q++)
+            {
+                if (!counts[s[q]])
+                {
+                    counts[s[q]] = true;
+                    if (q - p + 1 > result.Length)
+                        result = s.Substring(p, q - p + 1);
+                }
+                else 
+                {
+                    while (p <= q)
+                    {
+                        if (s[p] == s[q])
+                        {
+                            p++;
+                            break;
+                        }
+                        else
+                        {                            
+                            counts[s[p]] = false;
+                            p++;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
 
 
+        public static void Test()
+        {
+            string s1 = "abcabcbb";    
+            string s2 = "hello world";
+            string s3 = "One World One Dream";
+            Console.WriteLine(NonrepeatedSubstring(s1)); 
+            Console.WriteLine(NonrepeatedSubstring(s2));
+            Console.WriteLine(NonrepeatedSubstring(s3));
+        }
+    }
 
 
 

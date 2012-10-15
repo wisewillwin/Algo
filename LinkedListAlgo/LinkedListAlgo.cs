@@ -16,13 +16,17 @@ namespace LinkedListAlgo
 			
             //SharedNode.FirstSharedNodeTest();
 
-            RemoveDuplicates.Test();
+            //RemoveDuplicates.Test();
 
-            SmartDelete.Test();
+            //SmartDelete.Test();
 
-            ReverselyMergeList.Test();
+            //ReverselyMergeList.Test();
 
-            CircularLinkedList.Test();
+            //CircularLinkedList.Test();
+
+            //InsertionInSortedCircularList.Test();
+
+            PalindromeLinkedList.Test();
         }
     }
 
@@ -335,6 +339,7 @@ namespace LinkedListAlgo
     /// <summary>
     /// Careercup 2.3
     /// Delete a node in the middle (not the tail) of a linkedlist, given only that node
+    /// (assume that node is not the tail node)
     /// </summary>
     public class SmartDelete
     {
@@ -426,9 +431,10 @@ namespace LinkedListAlgo
     /// </summary>
     public class CircularLinkedList
     {
+        // tortoise and hare algorithm, O(N) time
         // one slow node, one fast (2x) node, count how many steps the slow node
         // moves when they first meet, and move the slow node as many steps forward
-        public static LinkedListNode FindLoopNode(LinkedListNode list)
+        public static LinkedListNode TortoiseAndHareCycleDetection(LinkedListNode list)
         {
             LinkedListNode fastNode = list;
             LinkedListNode slowNode = list;
@@ -443,6 +449,32 @@ namespace LinkedListAlgo
             for (int i = 0; i < count; i++)
                 slowNode = slowNode.next;
             return slowNode;
+        }
+
+        // http://www.siafoo.net/algorithm/11
+        // Brent's cycle detection, O(N) time
+        public static LinkedListNode BrentCycleDetection(LinkedListNode list)
+        {
+            if (list == null) return null;
+            LinkedListNode fastNode = list;
+            LinkedListNode slowNode = list;
+            int stepCount = 0;
+            int limit = 2;
+            while (true)
+            {
+                if (fastNode.next == null)
+                    return null; // no loop found
+                fastNode = fastNode.next;
+                stepCount += 1;
+                if (fastNode.value == slowNode.value)
+                    return fastNode;
+                if (stepCount == limit)
+                {
+                    stepCount = 0;
+                    limit *= 2;
+                    slowNode = fastNode; // teleport slowNode to fastNode
+                }
+            }           
         }
 
         // ONLY works for list of distinct value nodes
@@ -482,12 +514,154 @@ namespace LinkedListAlgo
             node3.next = node4;
             node4.next = node5;
             node5.next = node3;
-            LinkedListNode node = FindLoopNode(list);
+            LinkedListNode node = TortoiseAndHareCycleDetection(list);
             PrintCircularList(list, node); 
+            Console.WriteLine("Loop starts from: " + node.value);
+            node = BrentCycleDetection(list);
+            PrintCircularList(list, node);
             Console.WriteLine("Loop starts from: " + node.value);
         }
 
     }
+
+
+    /// <summary>
+    /// http://www.leetcode.com/2011/08/insert-into-a-cyclic-sorted-list.html
+    /// Given a node from a cyclic linked list which has been sorted, write a function to 
+    /// insert a value into the list such that it remains a cyclic sorted list. The given node 
+    /// can be any single node in the list.
+    /// </summary>
+    public class InsertionInSortedCircularList
+    {
+        public static LinkedListNode Insert(LinkedListNode node, int val)
+        {
+            if (node == null) return new LinkedListNode(val); // null
+            LinkedListNode p = node;
+            LinkedListNode q = node.next;
+            if (q.value == p.value)
+            { // single node handled here
+                LinkedListNode newNode = new LinkedListNode(val, p);
+                p.next = newNode;
+                return newNode;
+            }
+            int max;
+            while (true)
+            {   // three possible sinario to insert newNode
+                // (1) p < val < q
+                // (2) q < p < val, insert after the tail
+                // (3) val < q < p, insert before the head
+                max = Math.Max(p.value, q.value);
+                if ((p.value < val && val < q.value)
+                    || (max == p.value && p.value > val && q.value > val)
+                    || (max == p.value && p.value < val && q.value < val))
+                {
+                    LinkedListNode newNode = new LinkedListNode(val, q);
+                    p.next = newNode;
+                    return newNode;
+                }
+                p = p.next;
+                q = q.next;
+            }
+        }
+
+
+        // print a sorted cyclic linkedlist from head to tail
+        private static void print(LinkedListNode node) {
+            if (node == null) return;
+            if (node.next == null) Console.WriteLine(node.value);        
+            while (node.next.value > node.value) {            
+                node = node.next;
+            }    
+            node = node.next;
+            while (true) {
+                Console.Write(node.value + " -> ");
+                if (node.next.value < node.value) break;
+                node = node.next;
+            }
+            Console.WriteLine();
+        }
+
+        public static void Test()
+        {
+            LinkedListNode node1 = new LinkedListNode(10);
+            LinkedListNode node2 = new LinkedListNode(20);
+            LinkedListNode node3 = new LinkedListNode(30);
+            LinkedListNode node4 = new LinkedListNode(40);
+            node1.next = node2;
+            node2.next = node3;
+            node3.next = node4;
+            node4.next = node1;
+            print(node1); // 10->20->30->40->
+            LinkedListNode n = Insert(node2, 0);
+            print(n); // 0->10->20->30->40->
+            LinkedListNode n2 = Insert(node2, 15);
+            print(n2);// 0->10->15->20->30->40->
+            LinkedListNode n3 = Insert(node2, 50);
+            print(n3);// 0->10->15->20->30->40->50->
+        }
+    
+    }
+
+    /// <summary>
+    /// Decide if the given linkedlist is a palindrome sequence
+    /// </summary>
+    public class PalindromeLinkedList
+    {
+        // O(N) time and O(1) space
+        public static bool IsPalindrome(LinkedListNode list)
+        {
+            if (list == null) return false;
+            if (list.next == null) return true;
+            // (1) get the length of the linkedlist
+            int length = 0;
+            LinkedListNode temp = list;
+            for (; temp != null; temp = temp.next)
+            {
+                length++;
+            }
+            int mid = (length + 1) / 2;
+            LinkedListNode rightHalf = list;
+            for (; mid > 0; mid--)
+            {
+                rightHalf = rightHalf.next; 
+            }
+            // (2) reverse the right half of the linkedlist in O(N/2) time
+            LinkedListNode reversedRightHalf = ReverseLinkedList.ReverseByIterative(rightHalf);
+            // (3) check if the left half and right half are equal
+            for (int i = 0; i < length / 2; i++)
+            {
+                if (list.value != reversedRightHalf.value) return false;
+                list = list.next;
+                reversedRightHalf = reversedRightHalf.next;
+            }
+            return true;
+        }
+
+        public static void Test()
+        {
+            LinkedListNode list1 = new LinkedListNode(1, new LinkedListNode(2, new LinkedListNode(3, new LinkedListNode(3,
+                new LinkedListNode(2, new LinkedListNode(1))))));
+            LinkedListNode list2 = new LinkedListNode(1, new LinkedListNode(2, new LinkedListNode(3, new LinkedListNode(4,
+                new LinkedListNode(3, new LinkedListNode(2, new LinkedListNode(1)))))));
+            LinkedListNode list3 = new LinkedListNode(1, new LinkedListNode(2, new LinkedListNode(3, new LinkedListNode(4,
+                new LinkedListNode(2, new LinkedListNode(1))))));
+            LinkedListNode list4 = new LinkedListNode(1);
+            LinkedListNode list5 = new LinkedListNode(1, new LinkedListNode(2));
+            LinkedListNode.Print(list1);
+            Console.WriteLine(IsPalindrome(list1)); // true
+            LinkedListNode.Print(list2);
+            Console.WriteLine(IsPalindrome(list2)); // true
+            LinkedListNode.Print(list3);
+            Console.WriteLine(IsPalindrome(list3)); // false
+            LinkedListNode.Print(list4);
+            Console.WriteLine(IsPalindrome(list4)); // true
+            LinkedListNode.Print(list5);
+            Console.WriteLine(IsPalindrome(list5)); // false
+        }
+
+    }
+
+
 
 
 
