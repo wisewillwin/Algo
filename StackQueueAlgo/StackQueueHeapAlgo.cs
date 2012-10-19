@@ -6,12 +6,14 @@ using System.Diagnostics;
 
 namespace StackQueueAlgo
 {
-	class StackQueueAlgo
+	class StackQueueHeapAlgo
 	{
 		static void Main(string[] args)
 		{
 			//StackWithMin.Test();
-			
+
+            QueueWithMin.Test();
+
             //QueueImplByStack.Test();
 			
             //StackImplByQueue.Test();
@@ -53,7 +55,6 @@ namespace StackQueueAlgo
 			stack1.Push(x);
 			if (stack2.Count == 0) stack2.Push(x);
 			else if (x < stack2.Peek()) stack2.Push(x);
-
 		}
 
 		public int Pop()
@@ -90,6 +91,64 @@ namespace StackQueueAlgo
 		}
 
 	}
+
+    /// <summary>
+    /// Implement a queue with enqueue() dequeue() min() all in O(1) time
+    /// </summary>
+    public class QueueWithMin
+    { 
+        // C# doesn't provide Deque API (Java does), so instead use a List
+        private List<int> q = new List<int>();
+        private List<int> minQ = new List<int>();
+
+        public void Enqueue(int element)
+        {
+            q.Add(element);
+            while (minQ.Count > 0 && minQ[minQ.Count - 1] > element)
+            {
+                minQ.RemoveAt(minQ.Count - 1);
+            }
+            minQ.Add(element);
+        }
+
+        public int Dequeue()
+        {
+            if (minQ[0] == q[0])
+            {
+                minQ.RemoveAt(0);
+            }
+            int first = q[0];
+            q.RemoveAt(0);
+            return first;
+        }
+
+        public int Min()
+        {
+            return minQ[0];
+        }
+
+
+        public static void Test()
+        {
+            QueueWithMin qwm = new QueueWithMin();
+            qwm.Enqueue(3);
+            Console.WriteLine("min = " + qwm.Min());
+            qwm.Enqueue(2);
+            Console.WriteLine("min = " + qwm.Min());
+            qwm.Enqueue(1);
+            Console.WriteLine("min = " + qwm.Min());
+            qwm.Enqueue(4);
+            Console.WriteLine("min = " + qwm.Min());
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
+        }
+    
+    }
+
+
+
 
 	/// <summary>
 	/// implement queue by stack
@@ -650,7 +709,6 @@ namespace StackQueueAlgo
 
         public bool Remove(int value)
         {
-            SkipNode current;
 
             return false;
         

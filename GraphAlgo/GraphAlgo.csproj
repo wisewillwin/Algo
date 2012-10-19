@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B8389735-F180-48D9-A637-D08311CCB3B2}</ProjectGuid>
+    <ProjectGuid>{1076246F-B0F0-423E-91C3-83E34DEA5001}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StackQueueAlgo</RootNamespace>
-    <AssemblyName>StackQueueAlgo</AssemblyName>
+    <RootNamespace>GraphAlgo</RootNamespace>
+    <AssemblyName>GraphAlgo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StackQueueAlgo.cs" />
+    <Compile Include="GraphAlgo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
