@@ -55,8 +55,9 @@ namespace ArraysAlgo
 
             //TrapRainWater.Test();
 
-            PartitionArrayByZero.Test();
+            // PartitionArrayByZero.Test();
 
+            PalindromeNumber.Test();
           
 
 
@@ -1521,8 +1522,60 @@ namespace ArraysAlgo
     }
 
 
+    /// <summary>
+    /// check if a integer is palindrome number, can't use extra memory
+    /// </summary>
+    public class PalindromeNumber
+    {
+        // O(N) time and O(1) space
+        public static bool IsPalindrome(int x)
+        { 
+            if (x < 0) return false;
+            if (x == 0) return true;
+            int n = (int)Math.Log10(x) + 1; // number of digits
+            for (int i = 1; i <= n/2; i++) {
+                if ((x % (int)Math.Pow(10,i)) / (int)Math.Pow(10,i-1)
+                    != (x / (int)Math.Pow(10,(n-i))) % 10) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // recursive solution
+        public static bool IsPalindrome_recursive(int x)
+        {
+            return IsPalindrome_recursive(x, ref x);
+        }
+        private static bool IsPalindrome_recursive(int x, ref int y)
+        {
+            if (x < 0) return false;
+            if (x == 0) return true;
+            if (IsPalindrome_recursive(x / 10, ref y) && (x % 10 == y % 10))
+            {
+                y /= 10;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
+        public static void Test()
+        {
+            Console.WriteLine(IsPalindrome(1));
+            Console.WriteLine(IsPalindrome(123321));
+            Console.WriteLine(IsPalindrome(1234321));
+            Console.WriteLine(IsPalindrome(1234521));
+            Console.WriteLine(IsPalindrome_recursive(1));
+            Console.WriteLine(IsPalindrome_recursive(123321));
+            Console.WriteLine(IsPalindrome_recursive(1234321));
+            Console.WriteLine(IsPalindrome_recursive(1234521));
+        }
+    
+    }
 
 
 

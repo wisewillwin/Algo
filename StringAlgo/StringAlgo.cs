@@ -9,7 +9,7 @@ namespace StringAlgo
     {
         public static void Main()
         {
-            ReverseWords.Test();
+            //ReverseWords.Test();
 
             //SubstringSearching.BruteForceSearchTest();
             //SubstringSearching.ImprovedBruteForceSearchTest();
@@ -17,7 +17,7 @@ namespace StringAlgo
             //SubstringSearching.RabinKarpTest();
             //SubstringSearching.KMPTest();
 
-
+            Trie.Test();
 
         }
 
@@ -229,6 +229,86 @@ namespace StringAlgo
 
     }
 
+
+    /// <summary>
+    /// Implementation of Trie
+    /// </summary>
+    public class Trie
+    {
+
+        public class TrieNode
+        {
+            public int value;
+            public Dictionary<int, TrieNode> children; // character as the key, TrieNode as the value
+            public bool isTerminal;
+            public TrieNode(int value)
+            {
+                this.value = value;
+                this.children = new Dictionary<int, TrieNode>();
+                this.isTerminal = false;
+            }
+        }
+
+        // O(Length of string) time
+        public static TrieNode Add(string s, TrieNode root)
+        {
+            if (string.IsNullOrEmpty(s)) return root;
+            TrieNode currentNode = root;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if(currentNode.children.ContainsKey(s[i])) // word already exists             
+                {
+                    currentNode = currentNode.children[s[i]];
+                    if (i == s.Length - 1)
+                    {
+                        currentNode.isTerminal = true;
+                    }
+                }
+                else
+                { // word not exists
+                    TrieNode newNode = new TrieNode(s[i]);
+                    if (i == s.Length - 1)
+                    {
+                        newNode.isTerminal = true;
+                    }
+                    currentNode.children.Add(s[i], newNode);
+                    currentNode = newNode;
+                }
+            }
+            return root;
+        }
+        
+        // O(depth of trie) time
+        public static bool Search(string s, TrieNode root)
+        {
+            if (string.IsNullOrEmpty(s)) return false;
+            TrieNode currentNode = root;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!currentNode.children.ContainsKey(s[i]))
+                    return false;
+                currentNode = currentNode.children[s[i]];
+                if (i == s.Length - 1 && !currentNode.isTerminal)
+                    return false;                
+            }
+            return true;
+        }
+
+
+        public static void Test()
+        {
+            TrieNode root = new TrieNode(0);
+            string[] ss = { "the", "there", "their", "bye", "by"};
+            string[] sss = { "b", "them", "theirs", "thei" };
+            for (int i = 0; i < ss.Length; i++) 
+                root = Add(ss[i], root);
+            for (int i = 0; i < ss.Length; i++)
+                Console.WriteLine("Search(\"{0}\") = {1}", ss[i], Search(ss[i], root));
+            for (int i = 0; i < sss.Length; i++)
+                Console.WriteLine("Search(\"{0}\") = {1}", sss[i], Search(sss[i], root));
+        }
+
+    }
     
 
 

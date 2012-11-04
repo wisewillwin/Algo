@@ -10,31 +10,34 @@ namespace BitAlgo
     {
         static void Main(string[] args)
         {
-            BitAlgos.ToggleBitsTest();
+            //BitAlgos.ToggleBitsTest();
 
-            BitAlgos.SwapBitsTest();
+            //BitAlgos.SwapBitsTest();
 
-            BitAlgos.TurnOffRightestOneTest();
+            //BitAlgos.TurnOffRightestOneTest();
 
-            BitAlgos.CountBitOneTest();
+            //BitAlgos.CountBitOneTest();
 
-            BitAlgos.SwapPairsTest();
+            //BitAlgos.SwapPairsTest();
 
-            BitAlgos.AddTest();
+            //BitAlgos.AddTest();
 
-            BitAlgos.ReverseTest();
+            //BitAlgos.ReverseTest();
 
-            BitAlgos.CompareTest();
+            //BitAlgos.CompareTest();
 
-            BitAlgos.SwapNumTest();
+            //BitAlgos.SwapNumTest();
 
 			//TwoUniqueNumber.Test();
 
             //BitDiff.Test();
 
-            SetBitsSorting.Test();
+            //SetBitsSorting.Test();
+
         }
 	}
+
+
 
 	public class BitAlgos {
 

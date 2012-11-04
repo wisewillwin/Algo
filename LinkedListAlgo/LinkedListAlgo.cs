@@ -26,7 +26,9 @@ namespace LinkedListAlgo
 
             //InsertionInSortedCircularList.Test();
 
-            PalindromeLinkedList.Test();
+            //PalindromeLinkedList.Test();
+
+            ComplexLinkedListNodeClone.Test();
         }
     }
 
@@ -661,8 +663,110 @@ namespace LinkedListAlgo
 
     }
 
+    /// <summary>
+    /// Given a complex linkedlist, every node has a next pointer and a sibling pointer (points to a random node in the list)
+    /// Clone the complex linkedlist
+    /// </summary>
+    public class ComplexLinkedListNodeClone
+    {
+        public class ComplexNode
+        {
+            public int value;
+            public ComplexNode next;
+            public ComplexNode sibling;
+            public ComplexNode(int value)
+            {
+                this.value = value;
+            }
+            public ComplexNode(int value, ComplexNode next)
+            {
+                this.value = value;
+                this.next = next;
+            }
+        }
+
+        // pitfalls: (i) remember to set the null pointer of the last node
+        //           (ii) not every node has a sibling
+        public static ComplexNode clone(ComplexNode start)
+        {
+            if (start == null || start.next == null) return start;
+            // 1. copy every nodes with next pointer and value
+            ComplexNode head = start;
+            while (start != null)
+            {
+                ComplexNode copy = new ComplexNode(start.value, start.next);
+                start.next = copy;
+                start = copy.next;
+            }
+            // 2. set all the sibling pointers
+            start = head;
+            while (start != null)
+            {
+                ComplexNode copy = start.next;
+                if (start.sibling != null)
+                    copy.sibling = start.sibling.next;
+                start = copy.next;
+            }
+            // 3. seperate the whole list into two lists
+            start = head;
+            ComplexNode clone = null;
+            while (start.next.next != null)
+            {
+                ComplexNode copy = start.next;
+                if (clone == null)
+                    clone = copy;
+                start.next = copy.next;
+                copy.next = copy.next.next;
+                start = start.next;
+            }
+            start.next = null; // set the pointer of last node
+            return clone;
+        }
 
 
+        public static void printList(ComplexNode start)
+        {
+            ComplexNode head = start;
+            while (start != null)
+            {
+                Console.Write(start.value + " ");
+                start = start.next;
+            }
+            Console.WriteLine();
+            while (head != null)
+            {
+                if (head.sibling != null)
+                {
+                    Console.WriteLine(head.value + " -> " + head.sibling.value);
+                }
+                head = head.next;
+            }
+        }
+
+        public static void Test()
+        {
+            /*   --------- 
+                 |       |
+             A - B - C - D - E
+             |   |   |       |
+             ----|----       |
+                 |           | 
+                 -------------
+             */
+            ComplexNode E = new ComplexNode(5);
+            ComplexNode D = new ComplexNode(4, E);
+            ComplexNode C = new ComplexNode(3, D);
+            ComplexNode B = new ComplexNode(2, C);
+            ComplexNode A = new ComplexNode(1, B);
+            A.sibling = C;
+            D.sibling = B;
+            B.sibling = E;
+            printList(A);
+            ComplexNode clonedList = clone(A);
+            printList(clonedList);
+        }
+    
+    }
 
 
 }
