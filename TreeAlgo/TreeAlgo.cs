@@ -20,7 +20,7 @@ namespace TreeAlgo
 
             //BinaryTreeToBST.Test();
 
-            //FindPath.Test();
+            FindPath.Test();
 
             //PostorderTraversalArray.Test();
 
@@ -531,7 +531,12 @@ namespace TreeAlgo
             path.Add(root);
             tempSum += root.value;
             if (root.left == null && root.right == null && tempSum == N)
-                PrintStack(path);
+            { // print stack
+                TreeNode[] array = path.ToArray();
+                for (int i = 0; i < array.Length; i++)
+                    Console.Write(array[i].value + " ");
+                Console.WriteLine();
+            }
             // traverse the left child and right child            
             FindPathOfSum(root.left, N, path, tempSum);            
             FindPathOfSum(root.right, N, path, tempSum);
@@ -539,44 +544,41 @@ namespace TreeAlgo
             tempSum -= root.value;
             path.RemoveAt(path.Count - 1);
         }
-        private static void PrintStack(List<TreeNode> path)
-        {
-            for (int i = 0; i < path.Count; i++)
-            {
-                Console.Write(path[i].value + " ");
-            }
-            Console.WriteLine();
-        }
+
 
         // iterative version
+        // two stacks: one stack for DFS traversal,
+        //             another stack for current path
         public static void FindPathOfSum_iterative(TreeNode root, int N)
         {
             if (root == null) return;
             Stack<TreeNode> stack = new Stack<TreeNode>();
-            List<TreeNode> path = new List<TreeNode>();
+            Stack<TreeNode> path = new Stack<TreeNode>();
             stack.Push(root);
             while (stack.Count > 0) 
             {
                 TreeNode node = stack.Pop();
                 N -= node.value;
-                path.Add(node);
+                path.Push(node);
                 if (node.left == null && node.right == null)
                 {
-                    if (N == 0) // print stack
+                    if (N == 0) // we found a valid path, print it
                     {
-                        PrintStack(path);
+                        TreeNode[] array = path.ToArray();
+                        for (int i = array.Length - 1; i >= 0; i--) 
+                            Console.Write(array[i].value + " ");
+                        Console.WriteLine();
                     }
-                    do // tricky: remove nodes from path when there are pop off
+                    do // very tricky: remove nodes from path when there are pop off
                     {
-                        N += path[path.Count - 1].value;
-                        path.RemoveAt(path.Count - 1);
-                    } while (stack.Count > 0 && path[path.Count - 1].right != stack.Peek());                                     
+                        N += path.Pop().value;
+                    } while (stack.Count > 0 
+                        && path.Peek().right != stack.Peek()); 
                 }
                 if (node.right != null)
                     stack.Push(node.right);
                 if (node.left != null)
-                    stack.Push(node.left);
-            
+                    stack.Push(node.left);           
             }
         }
 
