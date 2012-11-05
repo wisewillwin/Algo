@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicProgramming", "Dynam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphAlgo", "GraphAlgo\GraphAlgo.csproj", "{1076246F-B0F0-423E-91C3-83E34DEA5001}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Math", "Math\Math.csproj", "{DB08560D-9228-4D23-8F9C-574D8A3095F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -67,6 +69,10 @@ Global
 		{1076246F-B0F0-423E-91C3-83E34DEA5001}.Debug|x86.Build.0 = Debug|x86
 		{1076246F-B0F0-423E-91C3-83E34DEA5001}.Release|x86.ActiveCfg = Release|x86
 		{1076246F-B0F0-423E-91C3-83E34DEA5001}.Release|x86.Build.0 = Release|x86
+		{DB08560D-9228-4D23-8F9C-574D8A3095F0}.Debug|x86.ActiveCfg = Debug|x86
+		{DB08560D-9228-4D23-8F9C-574D8A3095F0}.Debug|x86.Build.0 = Debug|x86
+		{DB08560D-9228-4D23-8F9C-574D8A3095F0}.Release|x86.ActiveCfg = Release|x86
+		{DB08560D-9228-4D23-8F9C-574D8A3095F0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
