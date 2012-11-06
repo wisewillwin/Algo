@@ -34,6 +34,8 @@ namespace BitAlgo
 
             //SetBitsSorting.Test();
 
+            BinaryAddition.Test();
+
         }
 	}
 
@@ -354,48 +356,62 @@ namespace BitAlgo
 
     /// <summary>
     /// Leetcode
-    /// Given two binary strings, return their sum (also a binary string). 
+    /// Given two binary strings(represent unsigned integer), return their sum as a binary string 
     /// For example, a = "11", b = "1", Return "100". 
     /// </summary>
     public class BinaryAddition
     {
-        /*
-        public static string Add(string s1, string s2)
+        
+        public static string Addition(string s1, string s2)
         {
-            if (string.IsNullOrEmpty(s1)) return s2;
-            if (string.IsNullOrEmpty(s2)) return s1;
-            string longer = s1.Length >= s2.Length ? s1 : s2;
-            string shorter = s1.Length < s2.Length ? s1 : s2;
-            for (int i = 0; i < longer.Length - shorter.Length; i++)
+            if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2)) 
+                return ""; // invalid input
+            string longer = s1.Length > s2.Length ? s1 : s2;
+            string shorter = s1.Length <= s2.Length ? s1 : s2;
+            int diff = longer.Length - shorter.Length;
+            while (diff-- > 0)
             {
                 shorter = "0" + shorter;
             }
-            string xor = "";
-            for (int i = 0; i < longer.Length; i++)
-            {
-                if (longer[i] != shorter[i]) xor += "1";
-                else xor += "0";
-            }
-            bool carry = false;
             string result = "";
+            bool carry = false;
             for (int i = longer.Length - 1; i >= 0; i--)
-            {
-                if (i == longer.Length - 1) result += xor[i];
-                else {
-                    if (longer[i] == '1' && shorter[i] == '1') // carry '1'
-                    {
-                        if (xor[i] == '1')
-                        { result = '1' + result; carry = true; }
-                        else
-                        { result = '1' + result; carry = false; }
-                    }
-                    else // no carry
-                    { 
-                        
-                    }
+            {                
+                if (longer[i] == '0' && shorter[i] == '0' && carry)
+                {
+                    result = "1" + result; carry = false;
                 }
+                else if (longer[i] == '0' && shorter[i] == '1' && carry)
+                { 
+                    result = "0" + result; 
+                }
+                else if (longer[i] == '1' && shorter[i] == '0' && carry)
+                { 
+                    result = "0" + result; 
+                }
+                else if (longer[i] == '1' && shorter[i] == '1' && carry)
+                { 
+                    result = "1" + result;
+                }
+                else if (longer[i] == '0' && shorter[i] == '0' && !carry)
+                { 
+                    result = "0" + result; 
+                }
+                else if (longer[i] == '0' && shorter[i] == '1' && !carry)
+                {    
+                    result = "1" + result;
+                }
+                else if (longer[i] == '1' && shorter[i] == '0' && !carry)
+                {   
+                    result = "1" + result;
+                }
+                else if (longer[i] == '1' && shorter[i] == '1' && !carry)
+                { 
+                    result = "0" + result; carry = true; 
+                }                   
             }
-
+            if (carry) result = "1" + result;
+            return result;
         }
 
 
@@ -404,14 +420,16 @@ namespace BitAlgo
             Random r = new Random();
             for (int i = 0; i < 10; i++)
             {
-                int x = r.Next();
-                int y = r.Next();
-                //int z = x + y;
-                Console.WriteLine(x + " + " + y + " = " + Add(x.ToString(), y.ToString()));
-                Debug.Assert((x + y).ToString() == Add(x.ToString(), y.ToString())); 
+                int x = r.Next(100);
+                int y = r.Next(100);
+                string z = Addition(Convert.ToString(x, 2), Convert.ToString(y, 2));
+                Console.WriteLine("{0}({1}) + {2}({3}) = {4}({5})", 
+                    x, Convert.ToString(x, 2),
+                    y, Convert.ToString(y, 2),
+                    Convert.ToInt32(z, 2), z);              
             }
         }
-        */
+        
     }
 
     /// <summary>
