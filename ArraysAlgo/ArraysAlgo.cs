@@ -31,7 +31,7 @@ namespace ArraysAlgo
 
             //RotateMatrix.Test();
 
-            //PlayWithMatrix.Test();
+            SetMatrixZeros.Test();
 
             //IntegerStringConversion.Test();
 
@@ -57,7 +57,7 @@ namespace ArraysAlgo
 
             // PartitionArrayByZero.Test();
 
-            PalindromeNumber.Test();
+            //PalindromeNumber.Test();
           
 
 
@@ -589,11 +589,11 @@ namespace ArraysAlgo
 
     /// <summary>
     /// Careercup 1.7
-    /// Given a matrix, if an element is 0 set the entire row and column to 0
+    /// Given a matrix of 0s and 1s, if an element is 0 set the entire row and column to 0
     /// </summary>
-    public class PlayWithMatrix
+    public class SetMatrixZeros
     {
-
+        // O(N+M) space
         public static int[,] SetZero(int[,] matrix)
         {
             bool[] rows = new bool[matrix.GetLength(0)];
@@ -630,10 +630,10 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            int[,] mr = { {1, 0, 3, 4},
-                         {5, 6, 0, 8},
-                         {9, 10, 11, 0},
-                         {13, 14, 15, 16}};
+            int[,] mr = { {1, 0, 1, 1},
+                         {1, 1, 0, 1},
+                         {1, 1, 1, 0},
+                         {1, 1, 1, 1}};
             RotateMatrix.PrintMatrix(mr);            
             Console.WriteLine(@"       ||");
             Console.WriteLine(@"       \/");
@@ -1196,35 +1196,36 @@ namespace ArraysAlgo
     public class DutchNationalFlagProblem
     {
         // use 3 pointers to partition: 1st part is all 0s, 2nd part is all 1s, 3rd part is mix of 0s 1s 2s, 4th part is all 2s
-        // 
+        // eg: {0 0 0 | 1 1 1 1 | 0 2 1 2 0 | 2 2 2 2}
+        //
         // invariants: (1)low pointer is the first of the 2nd part, init value 0
-        // (2)mid pointer is the start of the 3rd part, init value 0
+        // (2)i pointer is the start of the 3rd part, init value 0
         // (3)high is the end of the 3rd part, init value a.length - 1
-        // iterate mid pointer through the array, (1) if element is 0, swap low element with mid element, increment low and mid
-        // (2) if element is 1, increment mid pointer 
-        // (3) if element is 2, swap mid element with high element, decrement high
+        // iterate i pointer through the array, (1) if element is 0, swap low element with i element, increment low and i
+        // (2) if element is 1, increment i pointer 
+        // (3) if element is 2, swap i element with high element, decrement high
         // 
         // O(N) time
         public static int[] SortThreeColors(int[] a)
         {
             int low = 0;
-            int mid = 0;
+            int i = 0;
             int high = a.Length - 1;
-            while (mid <= high)
+            while (i <= high)
             {
-                if (a[mid] == 0)
+                if (a[i] == 0)
                 {
-                    swap(a, low, mid);
+                    swap(a, low, i);
                     low++;
-                    mid++;
+                    i++;
                 }
-                else if (a[mid] == 1)
+                else if (a[i] == 1)
                 {
-                    mid++;
+                    i++;
                 }
-                else // a[mid] == 2
-                {
-                    swap(a, mid, high);
+                else // a[i] == 2
+                { 
+                    swap(a, i, high);
                     high--;
                 }             
             }
@@ -1295,7 +1296,7 @@ namespace ArraysAlgo
     /// </summary>
     public class MedianOfTwoSortedArray
     {
-
+        // TODO
         public static int FindMedian(int[] a1, int[] a2)
         {
 

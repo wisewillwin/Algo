@@ -17,7 +17,7 @@ namespace Math
 
             //RandomGenerator.Test();
 
-            NextPalindromeNumber.Test();
+            //NextPalindromeNumber.Test();
 
         }
     }
@@ -151,7 +151,7 @@ namespace Math
     /// </summary>
     public class ReseviorSampling
     {
-        public static readonly Random rand = new Random();
+        private static readonly Random rand = new Random();
 
         public static int[] RandomRecords(IEnumerator<int> e, int m)
         {

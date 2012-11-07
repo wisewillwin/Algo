@@ -18,7 +18,7 @@ namespace DynamicProgramming
 
             //MatrixMaxPath.Test();
 
-            //LongestIncresingSubsequence.Test();
+            LongestIncresingSubsequence.Test();
 
             //StringEditDistance.Test();
 
@@ -35,7 +35,7 @@ namespace DynamicProgramming
 
             //SubstringMinWindow.Test();        
 
-            LongestNonrepeatedSubstring.Test();
+            //LongestNonrepeatedSubstring.Test();
         }
     }
 
@@ -44,7 +44,11 @@ namespace DynamicProgramming
     /// </summary>
     public class MaxRectangleOf1s
     {
-
+        // O(NM) time and space
+        //                min(opt[i-1,j-1], opt[i-1,j], opt[i,j-1]) when matrix[i,j] == 1   
+        // opt[i, j] =  /  
+        //              \
+        //                0                                         when matrix[i,j] == 0 
         public static int FindMaxSize(int[,] matrix)
         {
             int[,] continous1sMatrix = matrix;
@@ -163,7 +167,7 @@ namespace DynamicProgramming
     /// </summary>
     public class SubsequenceMaxSum
     {
-
+        // O(N) time and O(1) space
         public static int MaxSum(int[] a)
         {
             if (a.Length == 1)
@@ -227,11 +231,16 @@ namespace DynamicProgramming
 
     /// <summary>
     /// Beauty 2.17
-    /// Find the longest ascending subsequence of a given array
+    /// Find the longest incresing subsequence (not necessarily continuous) of a given array
     /// </summary>
     public class LongestIncresingSubsequence
     {
         // DP implementation, (N^2) time and O(N) space
+        // (1)initialize opt[] to all 1s
+        // (2)for 0 <= i < a.length:
+        //       for 0<=j<i && a[j]<a[i]:
+        //           opt(i) = Max(opt(i), opt(j)+1)
+        // (3)return largest value in opt[]
         public static int LIS_DP(int[] a)
         {
             int[] lis = new int[a.Length];
@@ -240,8 +249,8 @@ namespace DynamicProgramming
             {
                 for (int j = 0; j < i; j++)
                 {
-                    if (a[j] < a[i] && lis[j] >= lis[i])
-                        lis[i] = lis[j] + 1;
+                    if (a[j] < a[i])
+                        lis[i] = Math.Max(lis[i], lis[j] + 1);
                 }
             }
             int max = 1;
@@ -253,6 +262,12 @@ namespace DynamicProgramming
         }
 
         // binary search/arrayList implementation, O(N lg N) time and O(N) space
+        // use a arraylist to hold current incresing subsequence
+        // for 0 <= i < a.length:
+        //     if (a[i] > tail of the arraylist) 
+        //         arraylist.add(a[i])
+        //     else
+        //         do a binary search, replace the smallest bigger element in arraylist with a[i]
         public static int LIS_BinarySearch(int[] a)
         {
             List<int> lis = new List<int>();
@@ -281,13 +296,12 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            int[] a1 = {1, 5, 8, 3, 7};
-            int[] a2 = {1, 5, 8, 9, 3, 4, 6};
-            int[] a3 = {5, 4, 3, 2, 1};
-
-            Debug.Assert(3 == LIS_DP(a1) && LIS_DP(a1) == LIS_BinarySearch(a1));
-            Debug.Assert(4 == LIS_DP(a2) && LIS_DP(a2) == LIS_BinarySearch(a2));
-            Debug.Assert(1 == LIS_DP(a3) && LIS_DP(a3) == LIS_BinarySearch(a3));
+            int[] a1 = {1, 0, 3, 2, 5, 4, 7}; // length of {1 3 5 7} is 4
+            int[] a2 = {1, 0, 3, 2, 5, 4, 7, 5, 6}; // length of {0 2 4 5 6} is 5 
+            int[] a3 = {10, 20, 30, 1, 2, 3, 4}; // length of {1 2 3 4} is 4 
+            Console.WriteLine(LIS_DP(a1) + "  " + LIS_BinarySearch(a1));
+            Console.WriteLine(LIS_DP(a2) + "  " + LIS_BinarySearch(a2));
+            Console.WriteLine(LIS_DP(a3) + "  " + LIS_BinarySearch(a3));
         }
 
     }
