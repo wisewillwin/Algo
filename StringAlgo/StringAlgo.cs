@@ -5,26 +5,7 @@ using System.Text;
 
 namespace StringAlgo
 {
-    class StringAlgo
-    {
-        public static void Main()
-        {
-            //ReverseWords.Test();
-
-            //SubstringSearching.BruteForceSearchTest();
-            //SubstringSearching.ImprovedBruteForceSearchTest();
-            //SubstringSearching.BoyerMooreSearchTest();
-            //SubstringSearching.RabinKarpTest();
-            //SubstringSearching.KMPTest();
-
-            Trie.Test();
-
-        }
-
-
-    }
-
-
+   
     /// <summary>
     /// given string pattern (of length M) to match string txt (of length N), return the matched index, 
     /// or return -1 if not matched

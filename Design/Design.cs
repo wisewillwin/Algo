@@ -6,20 +6,6 @@ using System.Diagnostics;
 
 namespace Design
 {
-    class Design
-    {
-        static void Main(string[] args)
-        {
-            //QuickSetAllObject.Test();
-
-            //QuicksortKiller.Test();
-
-            LRUCache.Test();
-        }
-
-
-
-    }
 
     /// <summary>
     /// Design a data structure, which get(int index), set(int index, object value) and 

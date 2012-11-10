@@ -5,15 +5,6 @@ using System.Text;
 
 namespace GraphAlgo
 {
-    class GraphAlgo
-    {
-        static void Main(string[] args)
-        {
-            //GraphTraversal.Test();
-
-            CloneGraph.Test();
-        }
-    }
 
     /// <summary>
     /// Graph data structure

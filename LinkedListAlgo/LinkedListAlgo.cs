@@ -6,31 +6,6 @@ using System.Diagnostics;
 
 namespace LinkedListAlgo
 {
-    class LinkedListAlgo
-    {
-        static void Main(string[] args)
-        {
-            //LinkedListOrdering.KthToTailTest();
-
-            //ReverseLinkedList.ReverseTest();
-			
-            //SharedNode.FirstSharedNodeTest();
-
-            //RemoveDuplicates.Test();
-
-            //SmartDelete.Test();
-
-            //ReverselyMergeList.Test();
-
-            //CircularLinkedList.Test();
-
-            //InsertionInSortedCircularList.Test();
-
-            //PalindromeLinkedList.Test();
-
-            ComplexLinkedListNodeClone.Test();
-        }
-    }
 
     // LinkedList implementation
     public class LinkedListNode 

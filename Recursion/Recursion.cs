@@ -5,25 +5,6 @@ using System.Text;
 
 namespace Recursion
 {
-    class Recursion
-    {
-        static void Main(string[] args)
-        {
-            //NQueens.NQueensTest();
-            //NQueens.NQueensCountTest();
-            //Power.ComputePowerTest();
-
-            Fibonacci.Test();
-
-            //AllSubsets.Test();
-
-            //StringPermutation.Test();
-
-            //KnightTourProblem.Test();
-
-            //ParenthesesPermutation.Test();
-        }
-    }
 
     /// <summary>
     /// Question 58 

@@ -5,22 +5,6 @@ using System.Text;
 
 namespace Math
 {
-    class Math
-    {
-        static void Main(string[] args)
-        {
-            //SQRT.Test();
-
-            //ShufflingAlgo.Test();
-
-            //ReseviorSampling.Test();
-
-            //RandomGenerator.Test();
-
-            //NextPalindromeNumber.Test();
-
-        }
-    }
 
     /// <summary>
     /// square root function

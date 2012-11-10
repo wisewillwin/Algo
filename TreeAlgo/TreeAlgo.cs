@@ -6,33 +6,6 @@ using System.Diagnostics;
 
 namespace TreeAlgo
 {
-    class TreeAlgo
-    {
-        static void Main(string[] args)
-        {
-            //IsTreeBalanced.Test();
-
-            //TreeTraversal.Test();
-
-            //BinarySearchTree.Test();
-
-            //SpecailBST.Test();
-
-            //BinaryTreeToBST.Test();
-
-            FindPath.Test();
-
-            //PostorderTraversalArray.Test();
-
-            //Mirror.Test();
-
-            //CommonAncestor.Test();
-
-            //MergeBST.Test();
-
-            
-        }
-    }
     
     /// <summary>
     /// binary tree data structure
@@ -67,9 +40,13 @@ namespace TreeAlgo
         {
             this.value = value;
         }
-        public ThreePointerTreeNode(int value, ThreePointerTreeNode left, ThreePointerTreeNode right, ThreePointerTreeNode parent)
+        public ThreePointerTreeNode(int value, ThreePointerTreeNode left, 
+            ThreePointerTreeNode right, ThreePointerTreeNode parent)
         {
-            this.value = value; this.left = left; this.right = right; this.parent = parent;
+            this.value = value; 
+            this.left = left; 
+            this.right = right; 
+            this.parent = parent;
         }
     }
    
@@ -144,7 +121,8 @@ namespace TreeAlgo
             }
             int hLeft = 0;
             int hRight = 0;
-            bool bal = IsBalanced_loose_definition(root.left, out hLeft) && IsBalanced_loose_definition(root.right, out hRight);
+            bool bal = IsBalanced_loose_definition(root.left, out hLeft) 
+                && IsBalanced_loose_definition(root.right, out hRight);
             height = Math.Max(hLeft, hRight) + 1;
             return bal && Math.Abs(hLeft - hRight) <= 1;
         }
@@ -417,8 +395,10 @@ namespace TreeAlgo
         }
 
 
-        /* To determine when to print a node’s value, we would have to determine when it’s returned from. If it’s returned from
-         * its left child, then you would print its value then traverse to its right child, on the other hand if it’s returned from
+        /* To determine when to print a node’s value, we would have to determine when it’s returned from. 
+         * If it’s returned from
+         * its left child, then you would print its value then traverse to its right child, on the other 
+         * hand if it’s returned from
          * its right child, you would traverse up one level to its parent.
          */
         public static void Inorder_iterative_NO_STACK(ThreePointerTreeNode root)
@@ -512,7 +492,7 @@ namespace TreeAlgo
     /// Print *all* the paths starts from root to a leaf, which the sum of the values of each
     /// node on the path is N
     /// </summary>
-    public class FindPath
+    public class RootToLeafPathWithSum
     {
         // recursion with an extra stack, O(N) time and space
         // similar to standard DFS
@@ -605,6 +585,87 @@ namespace TreeAlgo
         }
 
     }
+
+    /// <summary>
+    /// Leetcode
+    /// Find the max sum of a path from root to a leaf
+    /// </summary>
+    public class RootToLeafPathMaxSum
+    {
+        private static int maxSum;
+        public static int MaxPathSum_recursive(TreeNode root)
+        {
+            maxSum = int.MinValue;
+            MaxPathSum_recursive(root, 0);
+            return maxSum;
+        }
+
+        // recursive approach
+        private static void MaxPathSum_recursive(TreeNode root, int sum)
+        {
+            if (root == null) return;
+            sum += root.value;
+            if (root.left == null && root.right == null)
+            {
+                if (sum > maxSum) maxSum = sum;
+            }
+            if (root.left != null) MaxPathSum_recursive(root.left, sum);
+            if (root.right != null) MaxPathSum_recursive(root.right, sum);
+        }
+
+        // one stack for DFS, one stack for path
+        public static int MaxPathSum(TreeNode root)
+        {
+            if (root == null) return 0;
+            Stack<TreeNode> stack = new Stack<TreeNode>();
+            Stack<TreeNode> path = new Stack<TreeNode>();
+            int sum = 0;
+            int max = int.MinValue;
+            stack.Push(root);
+            while (stack.Count > 0)
+            {
+                TreeNode node = stack.Pop();
+                path.Push(node);
+                sum += node.value;
+                if (node.left == null && node.right == null)
+                {
+                    if (sum > max)
+                        max = sum;
+                    do
+                    {
+                        TreeNode p = path.Pop();
+                        sum -= p.value;
+                    } while (stack.Count > 0 && path.Peek().right != stack.Peek());
+                }
+                if (node.right != null) stack.Push(node.right);
+                if (node.left != null) stack.Push(node.left);
+            }
+            return max;
+        }
+
+
+        public static void Test()
+        {
+               /*
+                *        1
+                *       / \
+                *      2   2
+                *     / \ / \
+                *    6  5 5  9
+                *      / / 
+                *     2 3
+                */
+            TreeNode root = new TreeNode(1, new TreeNode(2,
+                new TreeNode(6), new TreeNode(5,
+                new TreeNode(2), null)),
+                new TreeNode(2, new TreeNode(5, new TreeNode(3), null), new TreeNode(9)));
+
+            Console.WriteLine(MaxPathSum(root)); // 12
+            Console.WriteLine(MaxPathSum_recursive(root)); // 12   
+        }
+    }
+
+
 
     /// <summary>
     /// Question 6
@@ -1102,7 +1163,7 @@ namespace TreeAlgo
     /// </summary>
     public class MergeBST
     {
-
+        // TODO
         public static void MergeAndPrint(TreeNode bst1, TreeNode bst2)
         {
 
@@ -1123,17 +1184,322 @@ namespace TreeAlgo
 
     }
 
+    /// <summary>
+    /// Leetcode
+    /// Print binary tree by level order with number of levels
+    /// </summary>
+    public class LevelOrderTraversal
+    {
+
+        // use a queue for current level nodes, another queue for next level nodes
+        public static void PrintLevelOrder_by_two_queue(TreeNode root)
+        {
+            if (root == null) return;
+            Queue<TreeNode> currentLevel = new Queue<TreeNode>();
+            Queue<TreeNode> nextLevel = new Queue<TreeNode>();
+            currentLevel.Enqueue(root);
+            int level = 1;
+            Console.Write("Level-" + level + ": ");
+            while (currentLevel.Count > 0)
+            {
+                TreeNode node = currentLevel.Dequeue();
+                Console.Write(node.value + " ");
+                if (node.left != null) 
+                    nextLevel.Enqueue(node.left);
+                if (node.right != null) 
+                    nextLevel.Enqueue(node.right);
+                if (currentLevel.Count == 0)
+                {
+                    level++;
+                    if (nextLevel.Count > 0)
+                        Console.Write("\nLevel-" + level + ": ");
+                    else
+                        Console.WriteLine();
+                    currentLevel = nextLevel;
+                    nextLevel = new Queue<TreeNode>();
+                }
+            }
+        }
+
+        // a slightly variant version: use only one queue and a counter 
+        // to keep track of number of nodes of current level
+        public static void PrintLevelOrder_by_one_queue(TreeNode root)
+        {
+            if (root == null) return;
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+            int count = 1;
+            int level = 1;
+            Console.Write("Level-" + level + ": ");
+            while (queue.Count > 0)
+            {
+                TreeNode node = queue.Dequeue();
+                count--;
+                Console.Write(node.value + " ");
+                if (node.left != null)
+                    queue.Enqueue(node.left); 
+                if (node.right != null)
+                    queue.Enqueue(node.right);
+                if (count == 0)
+                {
+                    level++;
+                    if (queue.Count > 0)
+                        Console.Write("\nLevel-" + level + ": ");
+                    else
+                        Console.WriteLine();
+                    count = queue.Count; // update counter
+                }
+            }
+        }
+
+        // a variant: bottom-up level order traversal 
+        public static void PrintLevelOrder_BottomUp(TreeNode root)
+        {
+            if (root == null) return;
+            List<List<TreeNode>> result = new List<List<TreeNode>>();
+            Queue<TreeNode> currentLevel = new Queue<TreeNode>();
+            Queue<TreeNode> nextLevel = new Queue<TreeNode>();
+            List<TreeNode> list = new List<TreeNode>();
+            currentLevel.Enqueue(root);
+            while (currentLevel.Count > 0)
+            {
+                TreeNode node = currentLevel.Dequeue();
+                list.Add(node);
+                if (node.left != null)
+                    nextLevel.Enqueue(node.left);
+                if (node.right != null)
+                    nextLevel.Enqueue(node.right);
+                if (currentLevel.Count == 0)
+                {
+                    result.Add(list);
+                    list = new List<TreeNode>();
+                    currentLevel = nextLevel;
+                    nextLevel = new Queue<TreeNode>();
+                }
+            }
+            for (int i = result.Count - 1; i >= 0; i--) // reversely print the List<List<TreeNode>>
+            { 
+                List<TreeNode> li = result[i];
+                Console.Write("Level-" + (i+1) + ": ");
+                for (int j = 0; j < li.Count; j++)
+                {
+                    Console.Write(li[j].value + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static void Test()
+        {
+            /* 
+            *        1
+            *       / \
+            *      2   3
+            *     / \ / 
+            *    4  5 6 
+            *      /
+            *     7
+            */
+            TreeNode tree1 = new TreeNode(1, new TreeNode(2,
+                new TreeNode(4, null, null), new TreeNode(5,
+                new TreeNode(7, null, null), null)),
+                new TreeNode(3, new TreeNode(6, null, null), null));
+            /*
+             * Level-1: 1
+             * Level-2: 2 3
+             * Level-3: 4 5 6
+             * Level-4: 7
+             */
+            PrintLevelOrder_by_two_queue(tree1);
+            Console.WriteLine();
+            PrintLevelOrder_by_one_queue(tree1);
+            Console.WriteLine();
+
+            /*
+             * Level-4: 7
+             * Level-3: 4 5 6
+             * Level-2: 2 3
+             * Level-1: 7
+             */
+            PrintLevelOrder_BottomUp(tree1);
+            Console.WriteLine();
+        }
+    
+    }
 
 
 
+    /// <summary>
+    /// Leetcode
+    /// Given a binary tree, print out the tree in zig zag level order (ie, from left to right, 
+    /// then right to left for the next level and alternate between). 
+    /// Output a newline after the end of each level.
+    /// </summary>
+    public class ZigZagLevelOrderTraversal
+    { 
+        // one stack store nodes of current level, another stack store nodes of next level, 
+        // and a bool indicates order of printing
+        // (1)(i) when traverse from left to right on the current level, push left child prior than right child
+        //     onto next level will makes traverse from right to left on the next level
+        //    (ii) vice visa for traverse from right to left on the current level
+        // (2) when the current level stack is empty, swap the current level and next level
+        public static void ZigZagTraversal(TreeNode root)
+        {
+            if (root == null) return;
+            Stack<TreeNode> currentLevel = new Stack<TreeNode>();
+            Stack<TreeNode> nextLevel = new Stack<TreeNode>();
+            bool leftToRight = true;
+            currentLevel.Push(root);
+            while (currentLevel.Count > 0)
+            {
+                TreeNode node = currentLevel.Pop();
+                Console.Write(node.value + " ");
+                if (leftToRight)
+                {
+                    if (node.left != null) nextLevel.Push(node.left);
+                    if (node.right != null) nextLevel.Push(node.right);
+                }
+                else
+                {
+                    if (node.right != null) nextLevel.Push(node.right);
+                    if (node.left != null) nextLevel.Push(node.left);
+                }
+                if (currentLevel.Count == 0)
+                { // current level is finished, update a few variables
+                    Console.WriteLine();
+                    leftToRight = !leftToRight;
+                    currentLevel = nextLevel;
+                    nextLevel = new Stack<TreeNode>();
+                }
+            }
+        }
+
+        public static void Test()
+        {
+           /* 
+            *        1
+            *       / \
+            *      2   3
+            *     / \ / 
+            *    4  5 6 
+            *      /
+            *     7
+            */
+            TreeNode tree1 = new TreeNode(1, new TreeNode(2,
+                new TreeNode(4, null, null), new TreeNode(5,
+                new TreeNode(7, null, null), null)),
+                new TreeNode(3, new TreeNode(6, null, null), null));
+            /*
+             * 1
+             * 3 2
+             * 4 5 6
+             * 7
+             */
+            ZigZagTraversal(tree1); 
+
+        }
+    }
+
+    /// <summary>
+    /// Construct a binary tree from its preorder and inorder traversal
+    /// </summary>
+    public class ConstructTreeFromPreorderInorder
+    {
+        /*
+        public static TreeNode BuildFromPreorderInorder(int[] preorder, int[] inorder)
+        {         
+            return BuildFromPreorderInorder(preorder, inorder, 0, preorder.Length - 1, 0);
+        }      
+
+        private static TreeNode BuildFromPreorderInorder(int[] preorder, int[] inorder, 
+            int inLeft, int inRight, int preIndex)
+        {
+            if (inLeft > inRight) return null;
+            TreeNode node = new TreeNode(preorder[preIndex]);
+            if (inLeft == inRight) return node;
+            int inIndex = GetInorderIndex_by_hashmap(inorder, node.value);
+            node.left = BuildFromPreorderInorder(preorder, inorder, inLeft, inIndex - 1, 
+                preIndex + 1);
+            node.right = BuildFromPreorderInorder(preorder, inorder, inIndex + 1, inRight, 
+                preIndex + (inIndex - inLeft));
+            return node;
+        }
+        private static Dictionary<int, int> inorderMap = null;
+        private static int GetInorderIndex_by_hashmap(int[] inorder, int value)
+        {
+            if (inorderMap == null)
+            {
+                inorderMap = new Dictionary<int, int>();
+                for (int i = 0; i < inorder.Length; i++)
+                {
+                    inorderMap[inorder[i]] = i;
+                }
+            }
+            return inorderMap[value];
+        }
+
+
+        public static TreeNode BuildFromPreorderInorder_2(int[] preorder, int[] inorder)
+        {
+            return BuildFromPreorderInorder_2(preorder, inorder, 0, preorder.Length - 1, 0);
+        }
+        private static TreeNode BuildFromPreorderInorder_2(int[] preorder, int[] inorder,
+            int inLeft, int inRight, int preIndex)
+        {
+            if (inLeft > inRight) return null;
+            TreeNode node = new TreeNode(preorder[preIndex]);
+            if (inLeft == inRight) return node;
+            int inIndex = GetInorderIndex_by_search(inorder, node.value);
+            node.left = BuildFromPreorderInorder(preorder, inorder, inLeft, inIndex - 1,
+                preIndex + 1);
+            node.right = BuildFromPreorderInorder(preorder, inorder, inIndex + 1, inRight,
+                preIndex + (inIndex - inLeft));
+            return node;
+        }
+        private static int GetInorderIndex_by_search(int[] inorder, int value)
+        {
+            for (int i = 0; i < inorder.Length; i++)
+            {
+                if (inorder[i] == value) return i;
+            }
+            return -1; // error
+        }
+        */
+        public static void Test()
+        {
+               /* 
+               *        1
+               *       / \
+               *      2   3
+               *     / \   \ 
+               *    4  5    6 
+               *      /      \
+               *     7        8
+               */
+            //int[] inorder = {4, 2, 7, 5, 1, 3, 6, 8};
+            //int[] preorder = { 1, 2, 4, 5, 7, 3, 6, 8};
+            //TreeNode tree1 = BuildFromPreorderInorder(preorder, inorder);
+            //LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree1);
+            //TreeNode tree2 = BuildFromPreorderInorder_2(preorder, inorder);
+            //LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree2);
+        }
+        
+    }
+
+    /// <summary>
+    /// Construct a binary tree from its postorder and inorder traversal
+    /// </summary>
+    public class ConstructTreeFromInorderPostorder
+    {
 
 
 
-
-
-
-
-
+        public static void Test()
+        { 
+        
+        }
+    
+    }
 
 
 

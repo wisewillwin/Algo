@@ -6,38 +6,6 @@ using System.Diagnostics;
 
 namespace StackQueueAlgo
 {
-	class StackQueueHeapAlgo
-	{
-		static void Main(string[] args)
-		{
-			//StackWithMin.Test();
-
-            QueueWithMin.Test();
-
-            //QueueImplByStack.Test();
-			
-            //StackImplByQueue.Test();
-
-            //MinHeap.Test();
-
-            //MinPQ.Test();
-
-            //MaxPQ.Test();
-
-            //KthSmallestElement.Test();
-
-            
-
-        }
-
-
-
-
-
-
-
-	}
-
 
 	/// <summary>
 	/// Question 2

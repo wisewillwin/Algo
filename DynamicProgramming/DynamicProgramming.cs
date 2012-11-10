@@ -6,38 +6,6 @@ using System.Diagnostics;
 
 namespace DynamicProgramming
 {
-    class DynamicProgramming
-    {
-        static void Main(string[] args)
-        {
-            //MaxRectangleOf1s.Test();
-
-            //PartitionProblem.Test();
-
-            //SubsequenceMaxSum.Test();
-
-            //MatrixMaxPath.Test();
-
-            LongestIncresingSubsequence.Test();
-
-            //StringEditDistance.Test();
-
-            //LongestCommonSubsequence.Test();
-
-            //BinomialCoefficient.Test();
-
-
-            //MaxStockProfitProblem.Test();
-
-
-            //ArrayMaxHistgram.Test();
-
-
-            //SubstringMinWindow.Test();        
-
-            //LongestNonrepeatedSubstring.Test();
-        }
-    }
 
     /// <summary>
     /// Given a matrix of 0s and 1s, find size of the max rectangle of 1s
@@ -325,7 +293,10 @@ namespace DynamicProgramming
     public class StringEditDistance
     {
         // O(NM) time and O(NM) space
-        // table[i, j] = min(table[i-1,j]+1, table[i,j-1]+1, table[i-1,j-1] if s1[i] == s2[j])
+        //                  if s1[i] == s2[j] min(table[i-1,j]+1, table[i,j-1]+1, table[i-1,j-1])
+        // table[i, j] = /
+        //               \ 
+        //                  if s1[i] != s2[j] min(table[i-1,j-1], min(table[i-1,j], table[i,j-1]) + 1))  
         public static int EditDistance(string s1, string s2)
         {
             if (s1 == null || s2 == null)
@@ -346,11 +317,17 @@ namespace DynamicProgramming
                     }
                     else if (i == 0)
                     {
-                        table[i, j] = j;
+                        if (s1[i] == s2[j])
+                            table[i, j] = table[i, j - 1];
+                        else
+                            table[i, j] = table[i, j - 1] + 1;
                     }
                     else if (j == 0)
                     {
-                        table[i, j] = i;
+                        if (s1[i] == s2[j])
+                            table[i, j] = table[i - 1, j];
+                        else
+                            table[i, j] = table[i - 1, j] + 1;
                     }
                     else
                     {
@@ -366,12 +343,18 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            string s1 = "sunny";
-            string s2 = "snowy";
-            Debug.Assert(3 == EditDistance(s1, s2));
-            Debug.Assert(5 == EditDistance(s1, ""));
-            Debug.Assert(0 == EditDistance(s1, s1));
-            Debug.Assert(-1 == EditDistance(s1, null));     
+
+            string[] input = {"", "", "", "a", "b", "", "a", "a", "a", "b", "a", "ab", "ab", "a", "ab", "bc", "sea", "ate",
+                          "sea", "eat", "mart", "karma", "park", "spake", "food", "money", "horse", "ros",
+                          "spartan", "part", "plasma", "altruism", "kitten", "sitting", "islander", "islander", "islander", "slander",
+                          "industry", "interest", "intention", "execution", "prosperity", "properties", "algorithm", "altruistic"};
+            int[] exptected = {0, 1, 1, 0, 1, 1, 1, 2, 3, 2, 3, 3, 4, 3, 3, 6, 3, 0, 1, 6, 5, 4, 6 };
+            for (int i = 0; i < input.Length; i += 2)
+            {
+                Console.WriteLine("\"{0}\" \"{1}\" result: {2} expected: {3}", input[i], input[i + 1],
+                    EditDistance(input[i], input[i + 1]), exptected[i / 2]);
+            }
+
         }
     
     }
