@@ -8,7 +8,7 @@
     <ProjectGuid>{B8389735-F180-48D9-A637-D08311CCB3B2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StackQueueAlgo</RootNamespace>
+    <RootNamespace>StackQueueHeapAlgo</RootNamespace>
     <AssemblyName>StackQueueAlgo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>

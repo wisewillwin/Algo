@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace TreeAlgo
 {
-    
+
     /// <summary>
     /// binary tree data structure
     /// </summary>
@@ -40,16 +40,16 @@ namespace TreeAlgo
         {
             this.value = value;
         }
-        public ThreePointerTreeNode(int value, ThreePointerTreeNode left, 
+        public ThreePointerTreeNode(int value, ThreePointerTreeNode left,
             ThreePointerTreeNode right, ThreePointerTreeNode parent)
         {
-            this.value = value; 
-            this.left = left; 
-            this.right = right; 
+            this.value = value;
+            this.left = left;
+            this.right = right;
             this.parent = parent;
         }
     }
-   
+
 
     /// <summary>
     /// 
@@ -83,7 +83,7 @@ namespace TreeAlgo
         {
             if (root == null) return true;
             if (!IsBalanced(root.left) || !IsBalanced(root.right)) return false;
-            return Math.Max(MaxDepth(root.left), MaxDepth(root.right)) 
+            return Math.Max(MaxDepth(root.left), MaxDepth(root.right))
                 - Math.Min(MinDepth(root.left), MinDepth(root.right)) <= 1;
         }
         private static int MaxDepth(TreeNode root)
@@ -97,7 +97,7 @@ namespace TreeAlgo
             //if (root != null && root.left == null && root.right == null) return 1;
             return Math.Min(MinDepth(root.left), MinDepth(root.right)) + 1;
         }
-        
+
 
         // recursive version 1, time O(2^N), space O(N)
         // height balanced if (1) tree is empty, or 
@@ -121,7 +121,7 @@ namespace TreeAlgo
             }
             int hLeft = 0;
             int hRight = 0;
-            bool bal = IsBalanced_loose_definition(root.left, out hLeft) 
+            bool bal = IsBalanced_loose_definition(root.left, out hLeft)
                 && IsBalanced_loose_definition(root.right, out hRight);
             height = Math.Max(hLeft, hRight) + 1;
             return bal && Math.Abs(hLeft - hRight) <= 1;
@@ -162,7 +162,7 @@ namespace TreeAlgo
                     new TreeNode(6, null, new TreeNode(9, null, null))));
 
 
-            
+
             Console.WriteLine("Depth() = " + MinDepth(tree1)); // 4
             Console.WriteLine("IsBalanced_loose_definition() = " + IsBalanced_loose_definition(tree1)); // true
             Console.WriteLine("IsBalanced()= " + IsBalanced(tree1)); // false
@@ -216,7 +216,7 @@ namespace TreeAlgo
         }
 
         // BFS
-        public static void LevelTraverse(TreeNode root) 
+        public static void LevelTraverse(TreeNode root)
         {
             if (root != null)
             {
@@ -251,6 +251,7 @@ namespace TreeAlgo
             }
         }
 
+        // Stack + HashSet
         // use a HashSet to keep all the visited nodes
         // not space efficient, O(N) space
         public static void InorderTraverse_iterative(TreeNode root)
@@ -267,19 +268,20 @@ namespace TreeAlgo
                     {
                         stack.Pop();
                         Console.Write(node.value + " ");
-                        if (node.right != null) 
+                        if (node.right != null)
                             stack.Push(node.right); // search on right subtree
                     }
                     else // node is not visited
                     {
                         visited.Add(node);
-                        if (node.left != null) 
+                        if (node.left != null)
                             stack.Push(node.left); // search on left subtree
                     }
                 }
             }
         }
 
+        // Stack + HashSet
         // use a HashSet to keep all the visited nodes
         // space O(N)
         public static void PostorderTraverse_iterative(TreeNode root)
@@ -310,10 +312,41 @@ namespace TreeAlgo
             }
         }
 
+        // Using only stack to iteratively preorder traverse tree
+        public static void PreorderTraverse_iterative_only_stack(TreeNode root)
+        {
+            if (root != null)
+            {
+                Stack<TreeNode> stack = new Stack<TreeNode>();
+                TreeNode current = root;
+                while (true)
+                {
+                    if (current != null) // not a leaf node, so search the left subtree
+                    {
+                        Console.Write(current.value + " ");
+                        stack.Push(current);
+                        current = current.left;
+                    }
+                    else // just visited a leaf node
+                    {
+                        if (stack.Count == 0)
+                        {
+                            break; // finished
+                        }
+                        else // pop node from stack
+                        {
+                            current = stack.Pop();
+                            current = current.right;
+                        }
+                    }
+                }
+            }
+        }
 
         // http://www.leetcode.com/2010/04/binary-search-tree-in-order-traversal.html
+        // Use only stack to iterative inorder traverse tree
         // The last traversed node must not have a right child.
-        public static void InorderTraverse_iterative_efficient(TreeNode root)
+        public static void InorderTraverse_iterative_only_stack(TreeNode root)
         {
             if (root != null)
             {
@@ -345,6 +378,92 @@ namespace TreeAlgo
         }
 
 
+        public static void PostorderTraverse_iterative_only_stack(TreeNode root)
+        {
+            if (root != null)
+            {
+                // TODO
+            }
+
+        }
+
+
+        public static void Test()
+        {
+
+            /* This tree is NOT balanced!
+             *        1
+             *       / \
+             *      2   3
+             *     / \ / 
+             *    4  5 6 
+             *      /
+             *     7
+             */
+            TreeNode tree1 = new TreeNode(1, new TreeNode(2,
+                new TreeNode(4, null, null), new TreeNode(5,
+                new TreeNode(7, null, null), null)),
+                new TreeNode(3, new TreeNode(6, null, null), null));
+
+
+            /* This tree is NOT balanced!
+             *        1
+             *       / \
+             *      2   3
+             *     /   / \
+             *    4   5   6
+             *   /    /    \
+             *  7    8      9
+             */
+            TreeNode tree2 = new TreeNode(1, new TreeNode(2,
+                new TreeNode(4, new TreeNode(7, null, null), null), null),
+                new TreeNode(3, new TreeNode(5, new TreeNode(8, null, null), null),
+                    new TreeNode(6, null, new TreeNode(9, null, null))));
+
+            // tree traversal: DFS vs. BFS, recursive vs. iterative
+            Console.Write("Preorder recursive: ");
+            PreorderTraverse(tree1);
+            Console.WriteLine();
+            Console.Write("Preorder iterative: ");
+            PreorderTraverse_iterative(tree1);
+            Console.WriteLine();
+            Console.Write("Preorder iterative: ");
+            PreorderTraverse_iterative_only_stack(tree1);
+            Console.WriteLine();
+
+            Console.Write("Inorder recursive: ");
+            InorderTraverse(tree1);
+            Console.WriteLine();
+            Console.Write("Inorder iterative: ");
+            InorderTraverse_iterative(tree1);
+            Console.WriteLine();
+            Console.Write("Inorder iterative: ");
+            InorderTraverse_iterative_only_stack(tree1);
+            Console.WriteLine();
+
+            Console.Write("Postorder recursive: ");
+            PostorderTraverse(tree1);
+            Console.WriteLine();
+            Console.Write("Postorder iterative: ");
+            PostorderTraverse_iterative(tree1);
+            Console.WriteLine();
+
+            Console.Write("Traverse by level: ");
+            LevelTraverse(tree1);
+            Console.WriteLine();
+
+
+        }
+
+
+    }
+
+    /// <summary>
+    /// Threaded binary tree
+    /// Inorder iterative traversal without using stacks
+    /// </summary>
+    public class MorrisTraversal
+    {
 
         // inorder iterative traversal without using stacks, Morris Traverse (threaded binary tree)
         // O(N log N) time, O(1) space
@@ -395,29 +514,8 @@ namespace TreeAlgo
         }
 
 
-        /* To determine when to print a node’s value, we would have to determine when it’s returned from. 
-         * If it’s returned from
-         * its left child, then you would print its value then traverse to its right child, on the other 
-         * hand if it’s returned from
-         * its right child, you would traverse up one level to its parent.
-         */
-        public static void Inorder_iterative_NO_STACK(ThreePointerTreeNode root)
-        {
-            if (root == null) return;
-            ThreePointerTreeNode current = root;
-            while (true)
-            { 
-                
-            }
-        
-        }
-
-
-
-
         public static void Test()
         {
-
             /* This tree is NOT balanced!
              *        1
              *       / \
@@ -432,60 +530,11 @@ namespace TreeAlgo
                 new TreeNode(7, null, null), null)),
                 new TreeNode(3, new TreeNode(6, null, null), null));
 
-
-            /* This tree is NOT balanced!
-             *        1
-             *       / \
-             *      2   3
-             *     /   / \
-             *    4   5   6
-             *   /    /    \
-             *  7    8      9
-             */
-            TreeNode tree2 = new TreeNode(1, new TreeNode(2,
-                new TreeNode(4, new TreeNode(7, null, null), null), null),
-                new TreeNode(3, new TreeNode(5, new TreeNode(8, null, null), null),
-                    new TreeNode(6, null, new TreeNode(9, null, null))));
-
-            // tree traversal: DFS vs. BFS, recursive vs. iterative
-            Console.Write("Preorder recursive: ");
-            PreorderTraverse(tree1);
-            Console.WriteLine();
-            Console.Write("Preorder iterative: ");
-            PreorderTraverse_iterative(tree1);
-            Console.WriteLine();
-
-            Console.Write("Inorder recursive: ");
-            InorderTraverse(tree1);
-            Console.WriteLine();
-            Console.Write("Inorder iterative: ");
-            InorderTraverse_iterative(tree1);
-            Console.WriteLine();
-            Console.Write("Inorder efficient: ");
-            InorderTraverse_iterative_efficient(tree1);
-            Console.WriteLine();
-            Console.Write("Inorder iterative without stack: ");
             MorrisTraverse(tree1);
             Console.WriteLine();
-
-            Console.Write("Postorder recursive: ");
-            PostorderTraverse(tree1);
-            Console.WriteLine();
-            Console.Write("Postorder iterative: ");
-            PostorderTraverse_iterative(tree1);
-            Console.WriteLine();
-
-            Console.Write("Traverse by level: ");
-            LevelTraverse(tree1);
-            Console.WriteLine();
-        
-        
         }
-        
-    
-    }
 
-    
+    }
 
     /// <summary>
     /// Question 4
@@ -497,7 +546,7 @@ namespace TreeAlgo
         // recursion with an extra stack, O(N) time and space
         // similar to standard DFS
         public static void FindPathOfSum(TreeNode root, int N)
-        {            
+        {
             FindPathOfSum(root, N, new List<TreeNode>(), 0);
         }
         // 1. push a node onto the stack
@@ -518,7 +567,7 @@ namespace TreeAlgo
                 Console.WriteLine();
             }
             // traverse the left child and right child            
-            FindPathOfSum(root.left, N, path, tempSum);            
+            FindPathOfSum(root.left, N, path, tempSum);
             FindPathOfSum(root.right, N, path, tempSum);
             // when finished, pop this node
             tempSum -= root.value;
@@ -535,7 +584,7 @@ namespace TreeAlgo
             Stack<TreeNode> stack = new Stack<TreeNode>();
             Stack<TreeNode> path = new Stack<TreeNode>();
             stack.Push(root);
-            while (stack.Count > 0) 
+            while (stack.Count > 0)
             {
                 TreeNode node = stack.Pop();
                 N -= node.value;
@@ -545,20 +594,20 @@ namespace TreeAlgo
                     if (N == 0) // we found a valid path, print it
                     {
                         TreeNode[] array = path.ToArray();
-                        for (int i = array.Length - 1; i >= 0; i--) 
+                        for (int i = array.Length - 1; i >= 0; i--)
                             Console.Write(array[i].value + " ");
                         Console.WriteLine();
                     }
                     do // very tricky: remove nodes from path when there are pop off
                     {
                         N += path.Pop().value;
-                    } while (stack.Count > 0 
-                        && path.Peek().right != stack.Peek()); 
+                    } while (stack.Count > 0
+                        && path.Peek().right != stack.Peek());
                 }
                 if (node.right != null)
                     stack.Push(node.right);
                 if (node.left != null)
-                    stack.Push(node.left);           
+                    stack.Push(node.left);
             }
         }
 
@@ -581,7 +630,7 @@ namespace TreeAlgo
 
             FindPathOfSum(root, 10);
             FindPathOfSum_iterative(root, 10);
-            
+
         }
 
     }
@@ -646,15 +695,15 @@ namespace TreeAlgo
 
         public static void Test()
         {
-               /*
-                *        1
-                *       / \
-                *      2   2
-                *     / \ / \
-                *    6  5 5  9
-                *      / / 
-                *     2 3
-                */
+            /*
+             *        1
+             *       / \
+             *      2   2
+             *     / \ / \
+             *    6  5 5  9
+             *      / / 
+             *     2 3
+             */
             TreeNode root = new TreeNode(1, new TreeNode(2,
                 new TreeNode(6), new TreeNode(5,
                 new TreeNode(2), null)),
@@ -729,7 +778,7 @@ namespace TreeAlgo
                 else return false; // right subtree is not satisfied
             }
             return isPost(a, low, q - 1) && isPost(a, q, high - 1);
-        }      
+        }
         public static bool isPost(int[] a)
         {
             return isPost(a, 0, a.Length - 1);
@@ -1043,7 +1092,7 @@ namespace TreeAlgo
             if (root == null) return root;
             if (root.left != null)
             {
-                buildBST(root.left, inorder);                
+                buildBST(root.left, inorder);
             }
             root.value = inorder[index++];
             if (root.right != null)
@@ -1076,7 +1125,7 @@ namespace TreeAlgo
                    /      \         /     \
                   20       5       5      30
              */
-            tree = new TreeNode(10, new TreeNode(30, new TreeNode(20), null), 
+            tree = new TreeNode(10, new TreeNode(30, new TreeNode(20), null),
                                     new TreeNode(15, null, new TreeNode(5)));
             tree2 = BSTConversion(tree);
             TreeTraversal.InorderTraverse(tree2);
@@ -1090,7 +1139,7 @@ namespace TreeAlgo
     /// Given an array, Check if all the non-leaf node in the BST has only one child (looks like a list shape)
     /// </summary>
     public class SpecailBST
-    {  
+    {
         // O(N) time
         // root of BST should be either greater than both first sucessor and last sucessor
         // or smaller than those two
@@ -1204,9 +1253,9 @@ namespace TreeAlgo
             {
                 TreeNode node = currentLevel.Dequeue();
                 Console.Write(node.value + " ");
-                if (node.left != null) 
+                if (node.left != null)
                     nextLevel.Enqueue(node.left);
-                if (node.right != null) 
+                if (node.right != null)
                     nextLevel.Enqueue(node.right);
                 if (currentLevel.Count == 0)
                 {
@@ -1237,7 +1286,7 @@ namespace TreeAlgo
                 count--;
                 Console.Write(node.value + " ");
                 if (node.left != null)
-                    queue.Enqueue(node.left); 
+                    queue.Enqueue(node.left);
                 if (node.right != null)
                     queue.Enqueue(node.right);
                 if (count == 0)
@@ -1278,9 +1327,9 @@ namespace TreeAlgo
                 }
             }
             for (int i = result.Count - 1; i >= 0; i--) // reversely print the List<List<TreeNode>>
-            { 
+            {
                 List<TreeNode> li = result[i];
-                Console.Write("Level-" + (i+1) + ": ");
+                Console.Write("Level-" + (i + 1) + ": ");
                 for (int j = 0; j < li.Count; j++)
                 {
                     Console.Write(li[j].value + " ");
@@ -1324,7 +1373,7 @@ namespace TreeAlgo
             PrintLevelOrder_BottomUp(tree1);
             Console.WriteLine();
         }
-    
+
     }
 
 
@@ -1336,7 +1385,7 @@ namespace TreeAlgo
     /// Output a newline after the end of each level.
     /// </summary>
     public class ZigZagLevelOrderTraversal
-    { 
+    {
         // one stack store nodes of current level, another stack store nodes of next level, 
         // and a bool indicates order of printing
         // (1)(i) when traverse from left to right on the current level, push left child prior than right child
@@ -1376,15 +1425,15 @@ namespace TreeAlgo
 
         public static void Test()
         {
-           /* 
-            *        1
-            *       / \
-            *      2   3
-            *     / \ / 
-            *    4  5 6 
-            *      /
-            *     7
-            */
+            /* 
+             *        1
+             *       / \
+             *      2   3
+             *     / \ / 
+             *    4  5 6 
+             *      /
+             *     7
+             */
             TreeNode tree1 = new TreeNode(1, new TreeNode(2,
                 new TreeNode(4, null, null), new TreeNode(5,
                 new TreeNode(7, null, null), null)),
@@ -1395,7 +1444,7 @@ namespace TreeAlgo
              * 4 5 6
              * 7
              */
-            ZigZagTraversal(tree1); 
+            ZigZagTraversal(tree1);
 
         }
     }
@@ -1405,22 +1454,22 @@ namespace TreeAlgo
     /// </summary>
     public class ConstructTreeFromPreorderInorder
     {
-        /*
-        public static TreeNode BuildFromPreorderInorder(int[] preorder, int[] inorder)
-        {         
-            return BuildFromPreorderInorder(preorder, inorder, 0, preorder.Length - 1, 0);
-        }      
 
-        private static TreeNode BuildFromPreorderInorder(int[] preorder, int[] inorder, 
+        public static TreeNode BuildFromPreorderInorder(int[] preorder, int[] inorder)
+        {
+            return BuildFromPreorderInorder(preorder, inorder, 0, preorder.Length - 1, 0);
+        }
+
+        private static TreeNode BuildFromPreorderInorder(int[] preorder, int[] inorder,
             int inLeft, int inRight, int preIndex)
         {
             if (inLeft > inRight) return null;
             TreeNode node = new TreeNode(preorder[preIndex]);
             if (inLeft == inRight) return node;
             int inIndex = GetInorderIndex_by_hashmap(inorder, node.value);
-            node.left = BuildFromPreorderInorder(preorder, inorder, inLeft, inIndex - 1, 
+            node.left = BuildFromPreorderInorder(preorder, inorder, inLeft, inIndex - 1,
                 preIndex + 1);
-            node.right = BuildFromPreorderInorder(preorder, inorder, inIndex + 1, inRight, 
+            node.right = BuildFromPreorderInorder(preorder, inorder, inIndex + 1, inRight,
                 preIndex + (inIndex - inLeft));
             return node;
         }
@@ -1464,26 +1513,56 @@ namespace TreeAlgo
             }
             return -1; // error
         }
-        */
+
         public static void Test()
         {
-               /* 
-               *        1
-               *       / \
-               *      2   3
-               *     / \   \ 
-               *    4  5    6 
-               *      /      \
-               *     7        8
-               */
-            //int[] inorder = {4, 2, 7, 5, 1, 3, 6, 8};
-            //int[] preorder = { 1, 2, 4, 5, 7, 3, 6, 8};
-            //TreeNode tree1 = BuildFromPreorderInorder(preorder, inorder);
-            //LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree1);
-            //TreeNode tree2 = BuildFromPreorderInorder_2(preorder, inorder);
-            //LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree2);
+            /* 
+            *        1
+            *       / \
+            *      2   3
+            *     / \   \ 
+            *    4  5    6 
+            *      /      \
+            *     7        8
+            */
+            //int[] inorder = { 4, 2, 7, 5, 1, 3, 6, 8 };
+            //int[] preorder = { 1, 2, 4, 5, 7, 3, 6, 8 };
+            int[] inorder = { 3, 1, 6, 5, 0, 2, 5, 7};
+            int[] preorder = { 0, 1, 3, 4, 6, 2, 5, 7};
+            TreeNode tree1 = DeserializePreInorder(preorder, inorder);
+            LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree1);
+            TreeNode tree2 = DeserializePreInorder(preorder, inorder);
+            LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree2);
         }
-        
+
+
+        public static TreeNode DeserializePreInorder(int[] preorder, int[] inorder)
+        {
+            int[] mapping = new int[inorder.Length];
+            for (int i = 0; i < inorder.Length; i++)
+            {
+                mapping[inorder[i]] = i;
+            }
+            int start = 0;
+            return DeserializePreInorder(preorder, inorder, mapping, 0, inorder.Length, ref start);
+        }
+
+        // 1. (low, high) is the index range of the current root,
+        //    root.leftChild is (low, dividerIndex) and root.rightChild is (dividerIndex + 1, high)
+        // 2. readPointer is the current root pointer in inorder mapping
+        public static TreeNode DeserializePreInorder(int[] preorder, int[] inorder, 
+            int[] mapping, int low, int high, ref int readPointer)
+        {
+            if (low == high)
+            {
+                return null;
+            }
+            TreeNode root = new TreeNode(preorder[readPointer++]);
+            int dividerIndex = mapping[root.value];
+            root.left = DeserializePreInorder(preorder, inorder, mapping, low, dividerIndex, ref readPointer);
+            root.right = DeserializePreInorder(preorder, inorder, mapping, dividerIndex + 1, high, ref readPointer);
+            return root;
+        }
     }
 
     /// <summary>
@@ -1495,10 +1574,10 @@ namespace TreeAlgo
 
 
         public static void Test()
-        { 
-        
+        {
+
         }
-    
+
     }
 
 

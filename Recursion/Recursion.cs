@@ -164,6 +164,7 @@ namespace Recursion
             return fib1;
         }
 
+        // TODO
         public static int EfficientFib(int n)
         {
             return -1;
@@ -201,21 +202,21 @@ namespace Recursion
     /// </summary>
     public class AllSubsets
     {
-        // recursive 
+        // recursive version
         // if list is empty, add the empty set and return
         // remove the first element from the list, recursively get the subsets of the current list
         // foreach of the current subsets, add the first element to it
-        public static List<List<int>> Subsets(List<int> list)
+        public static List<List<int>> Subsets_recursive(List<int> list)
         {
             List<List<int>> result = new List<List<int>>();
             if (list.Count == 0)
             {
-                result.Add(new List<int>()); // add empty set
+                result.Add(new List<int>()); // caution: don't forget the empty set
                 return result;
             }
             int first = list[0];
             list.RemoveAt(0);
-            List<List<int>> restList = Subsets(list);
+            List<List<int>> restList = Subsets_recursive(list);
             for (int i = 0; i < restList.Count; i++)
             {
                 List<int> temp = restList[i];
@@ -226,8 +227,8 @@ namespace Recursion
             return result;
         }
 
-
-        public static List<List<int>> Subsets2(List<int> list, int index)
+        // another recursive version
+        public static List<List<int>> Subsets_recursive_2(List<int> list, int index)
         {
             List<List<int>> result = new List<List<int>>();
             if (index == list.Count)
@@ -236,7 +237,7 @@ namespace Recursion
             }
             else
             {
-                result = Subsets2(list, index + 1);
+                result = Subsets_recursive_2(list, index + 1);
                 int first = list[index];
                 List<List<int>> moreList = new List<List<int>>();
                 for (int i = 0; i < result.Count; i++)
@@ -251,9 +252,9 @@ namespace Recursion
             return result;
         }
 
-        public static List<List<int>> Subsets2(List<int> list)
+        public static List<List<int>> Subsets_recursive_2(List<int> list)
         {
-            return Subsets2(list, 0);
+            return Subsets_recursive_2(list, 0);
         }
 
         private static void Print(List<List<int>> list)
@@ -275,7 +276,7 @@ namespace Recursion
         {
             int[] array = { 1, 2, 3, 4 };
             List<int> list = new List<int>(array);
-            Print(Subsets2(list));
+            Print(Subsets_recursive_2(list));
             Console.WriteLine();
         }
     }

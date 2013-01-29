@@ -24,8 +24,10 @@ namespace StringAlgo
         // Solution 1a
         // brute-force way, O(MN) time
         // nested for loop, outter loop O(N) and inner loop O(M)
-        public static int BruteForceSearch(String pat, String txt)
+        public static int BruteForceSearch(string pat, string txt)
         {
+            if (string.IsNullOrEmpty(pat) || string.IsNullOrEmpty(txt) 
+                || txt.Length < pat.Length) return -1; // not found
             for (int i = 0; i <= txt.Length - pat.Length; i++)
             {
                 int j;
@@ -42,11 +44,16 @@ namespace StringAlgo
         // alternative implementation of brute-force, O(MN) time
         public static int ImprovedBruteForceSearch(string pat, string txt)
         {
+            if (string.IsNullOrEmpty(pat) || string.IsNullOrEmpty(txt) 
+                || txt.Length < pat.Length) return -1; // not found
             int i, j;
             for (i = 0, j = 0; i < txt.Length && j < pat.Length; i++)
             {
                 if (txt[i] == pat[j]) j++;
-                else { i -= j; j = 0; }
+                else 
+                { 
+                    i -= j; j = 0; 
+                }
             }
             if (j == pat.Length) return i - pat.Length; // found it!
             else return -1; // not found
@@ -61,12 +68,13 @@ namespace StringAlgo
             int[] right = new int[256]; // assuming ASCII char
             // initialize the array into -1
             for (int i = 0; i < 256; i++) right[i] = -1;
-            // rightmost occurrence array, which is how far to skip
+            // rightmost occurrence array, right[x] how far to skip for x
             for (int j = 0; j < pat.Length; j++) right[pat[j]] = j;
             return right;
         }
 
         // O(MN) time worstcase
+        // for i, every iteration i += skip instead of i++
         public static int BoyerMooreSearch(string pat, string txt)
         {
             int[] right = BoyerMooreSkipTable(pat);
@@ -231,28 +239,28 @@ namespace StringAlgo
         }
 
         // O(Length of string) time
-        public static TrieNode Add(string s, TrieNode root)
+        public static TrieNode Add(string word, TrieNode root)
         {
-            if (string.IsNullOrEmpty(s)) return root;
+            if (string.IsNullOrEmpty(word)) return root;
             TrieNode currentNode = root;
-            for (int i = 0; i < s.Length; i++)
+            for (int i = 0; i < word.Length; i++)
             {
-                if(currentNode.children.ContainsKey(s[i])) // word already exists             
+                if(currentNode.children.ContainsKey(word[i])) // word[i] already exists             
                 {
-                    currentNode = currentNode.children[s[i]];
-                    if (i == s.Length - 1)
+                    currentNode = currentNode.children[word[i]];
+                    if (i == word.Length - 1)
                     {
                         currentNode.isTerminal = true;
                     }
                 }
                 else
-                { // word not exists
-                    TrieNode newNode = new TrieNode(s[i]);
-                    if (i == s.Length - 1)
+                { // word[i] does not exists
+                    TrieNode newNode = new TrieNode(word[i]);
+                    if (i == word.Length - 1)
                     {
                         newNode.isTerminal = true;
                     }
-                    currentNode.children.Add(s[i], newNode);
+                    currentNode.children.Add(word[i], newNode);
                     currentNode = newNode;
                 }
             }
@@ -260,16 +268,16 @@ namespace StringAlgo
         }
         
         // O(depth of trie) time
-        public static bool Search(string s, TrieNode root)
+        public static bool Search(string word, TrieNode root)
         {
-            if (string.IsNullOrEmpty(s)) return false;
+            if (string.IsNullOrEmpty(word)) return false;
             TrieNode currentNode = root;
-            for (int i = 0; i < s.Length; i++)
+            for (int i = 0; i < word.Length; i++)
             {
-                if (!currentNode.children.ContainsKey(s[i]))
+                if (!currentNode.children.ContainsKey(word[i]))
                     return false;
-                currentNode = currentNode.children[s[i]];
-                if (i == s.Length - 1 && !currentNode.isTerminal)
+                currentNode = currentNode.children[word[i]];
+                if (i == word.Length - 1 && !currentNode.isTerminal)
                     return false;                
             }
             return true;
@@ -278,7 +286,7 @@ namespace StringAlgo
 
         public static void Test()
         {
-            TrieNode root = new TrieNode(0);
+            TrieNode root = new TrieNode(0); // trie root doesn't have any value
             string[] ss = { "the", "there", "their", "bye", "by"};
             string[] sss = { "b", "them", "theirs", "thei" };
             for (int i = 0; i < ss.Length; i++) 

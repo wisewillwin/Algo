@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace StackQueueAlgo
+namespace StackQueueHeapAlgo
 {
 
 	/// <summary>
 	/// Question 2
 	/// implement a stack with push(E), pop(), min() of O(1) time
-	/// use auxilary stack to store the min value, the current min value is alway 
+	/// use auxilary stack to store the min value, the current min value is always 
 	/// on the top of the auxilary stack
 	/// </summary>
 	class StackWithMin
@@ -18,6 +18,7 @@ namespace StackQueueAlgo
 		private Stack<int> stack1 = new Stack<int>();
 		private Stack<int> stack2 = new Stack<int>();
 		
+        // push the current min onto auxilary stack
 		public void Push(int x)
 		{
 			stack1.Push(x);
@@ -25,6 +26,7 @@ namespace StackQueueAlgo
 			else if (x < stack2.Peek()) stack2.Push(x);
 		}
 
+        // pop the current min from the auxilary stack when necessary 
 		public int Pop()
 		{
 			int y = stack1.Pop();
@@ -61,7 +63,7 @@ namespace StackQueueAlgo
 	}
 
     /// <summary>
-    /// Implement a queue with enqueue() dequeue() min() all in O(1) time
+    /// Implement a queue with enqueue() dequeue() in O(1) time and min() in O(1) on average
     /// </summary>
     public class QueueWithMin
     { 
@@ -73,7 +75,7 @@ namespace StackQueueAlgo
         {
             q.Add(element);
             while (minQ.Count > 0 && minQ[minQ.Count - 1] > element)
-            {
+            { // worst case O(N) time, eg: have 2,3,4,5,...N on the queue, enqueue 1 would take O(N) time
                 minQ.RemoveAt(minQ.Count - 1);
             }
             minQ.Add(element);
@@ -81,6 +83,7 @@ namespace StackQueueAlgo
 
         public int Dequeue()
         {
+            if (q.Count == 0) throw new OverflowException();
             if (minQ[0] == q[0])
             {
                 minQ.RemoveAt(0);
@@ -92,6 +95,7 @@ namespace StackQueueAlgo
 
         public int Min()
         {
+            if (q.Count == 0) throw new OverflowException();
             return minQ[0];
         }
 
@@ -108,9 +112,31 @@ namespace StackQueueAlgo
             qwm.Enqueue(4);
             Console.WriteLine("min = " + qwm.Min());
             Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("min = " + qwm.Min());
             Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("min = " + qwm.Min());
             Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("min = " + qwm.Min());
+            Console.WriteLine("dequeue = " + qwm.Dequeue()); 
+            qwm.Enqueue(6);
+            Console.WriteLine("min = " + qwm.Min());
+            qwm.Enqueue(7);
+            Console.WriteLine("min = " + qwm.Min());
+            qwm.Enqueue(5);
+            Console.WriteLine("min = " + qwm.Min());
             Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("min = " + qwm.Min());
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
+            Console.WriteLine("min = " + qwm.Min());
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
+            try
+            {
+                Console.WriteLine("min = " + qwm.Min());
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Overflow exception caught.");
+            }
         }
     
     }

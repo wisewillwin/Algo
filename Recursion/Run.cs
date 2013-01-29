@@ -15,9 +15,9 @@ namespace Recursion
             
             //Power.ComputePowerTest();
 
-            Fibonacci.Test();
+            //Fibonacci.Test();
 
-            //AllSubsets.Test();
+            AllSubsets.Test();
 
             //StringPermutation.Test();
 

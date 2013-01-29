@@ -88,8 +88,9 @@ namespace LinkedListAlgo
         }
 
         // reverse linkedlist
-        // *special case: list is null, return null; list has one node, return itself
-        // get the second node and recursively reverse it, return the head of the reversed list (last node before reversing)
+        // special case: list is null, return null; list has one node, return itself
+        // get the second node and recursively reverse it, return the head of the 
+        // reversed list (last node before reversing)
         // connect the second node with the first node, done!
         public static LinkedListNode ReverseByRecursion(LinkedListNode list)
         {
