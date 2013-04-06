@@ -7,66 +7,66 @@ using System.Diagnostics;
 namespace StackQueueHeapAlgo
 {
 
-	/// <summary>
-	/// Question 2
-	/// implement a stack with push(E), pop(), min() of O(1) time
-	/// use auxilary stack to store the min value, the current min value is always 
-	/// on the top of the auxilary stack
-	/// </summary>
-	class StackWithMin
-	{
-		private Stack<int> stack1 = new Stack<int>();
-		private Stack<int> stack2 = new Stack<int>();
-		
+    /// <summary>
+    /// Question 2
+    /// implement a stack with push(E), pop(), min() of O(1) time
+    /// use auxilary stack to store the min value, the current min value is always 
+    /// on the top of the auxilary stack
+    /// </summary>
+    class StackWithMin
+    {
+        private Stack<int> stack1 = new Stack<int>();
+        private Stack<int> stack2 = new Stack<int>();
+
         // push the current min onto auxilary stack
-		public void Push(int x)
-		{
-			stack1.Push(x);
-			if (stack2.Count == 0) stack2.Push(x);
-			else if (x < stack2.Peek()) stack2.Push(x);
-		}
+        public void Push(int x)
+        {
+            stack1.Push(x);
+            if (stack2.Count == 0) stack2.Push(x);
+            else if (x < stack2.Peek()) stack2.Push(x);
+        }
 
         // pop the current min from the auxilary stack when necessary 
-		public int Pop()
-		{
-			int y = stack1.Pop();
-			if (y == stack2.Peek()) stack2.Pop();
-			return y;
-		}
+        public int Pop()
+        {
+            int y = stack1.Pop();
+            if (y == stack2.Peek()) stack2.Pop();
+            return y;
+        }
 
-		public int Min()
-		{
-			return stack2.Peek();
-		}
+        public int Min()
+        {
+            return stack2.Peek();
+        }
 
-		public int Count()
-		{
-			return stack1.Count;
-		}
+        public int Count()
+        {
+            return stack1.Count;
+        }
 
-		public static void Test()
-		{
-			StackWithMin swm = new StackWithMin();
-			swm.Push(2);
-			swm.Push(1);
-			swm.Push(3);
-			swm.Push(4);
-			int min = swm.Min();
-			Console.Write("Stack: ");
-			while (swm.Count() > 0)
-			{
-				Console.Write(swm.Pop() + " ");
-			}
-			Console.WriteLine("\nMin() = " + min);
-		}
+        public static void Test()
+        {
+            StackWithMin swm = new StackWithMin();
+            swm.Push(2);
+            swm.Push(1);
+            swm.Push(3);
+            swm.Push(4);
+            int min = swm.Min();
+            Console.Write("Stack: ");
+            while (swm.Count() > 0)
+            {
+                Console.Write(swm.Pop() + " ");
+            }
+            Console.WriteLine("\nMin() = " + min);
+        }
 
-	}
+    }
 
     /// <summary>
     /// Implement a queue with enqueue() dequeue() in O(1) time and min() in O(1) on average
     /// </summary>
     public class QueueWithMin
-    { 
+    {
         // C# doesn't provide Deque API (Java does), so instead use a List
         private List<int> q = new List<int>();
         private List<int> minQ = new List<int>();
@@ -117,7 +117,7 @@ namespace StackQueueHeapAlgo
             Console.WriteLine("min = " + qwm.Min());
             Console.WriteLine("dequeue = " + qwm.Dequeue());
             Console.WriteLine("min = " + qwm.Min());
-            Console.WriteLine("dequeue = " + qwm.Dequeue()); 
+            Console.WriteLine("dequeue = " + qwm.Dequeue());
             qwm.Enqueue(6);
             Console.WriteLine("min = " + qwm.Min());
             qwm.Enqueue(7);
@@ -138,104 +138,104 @@ namespace StackQueueHeapAlgo
                 Console.WriteLine("Overflow exception caught.");
             }
         }
-    
+
     }
 
 
 
 
-	/// <summary>
-	/// implement queue by stack
+    /// <summary>
+    /// implement queue by stack
     /// Enqueue() takes O(1) time, Dequeue() takes O(N) time
-	/// </summary>
-	class QueueImplByStack
-	{
-		private Stack<int> stack1;
-		private Stack<int> stack2;
+    /// </summary>
+    class QueueImplByStack
+    {
+        private Stack<int> stack1;
+        private Stack<int> stack2;
 
-		public QueueImplByStack()
-		{
-			stack1 = new Stack<int>();
-			stack2 = new Stack<int>();
-		}
-		public void Enqueue(int item)
-		{
-			stack1.Push(item);
-		}
+        public QueueImplByStack()
+        {
+            stack1 = new Stack<int>();
+            stack2 = new Stack<int>();
+        }
+        public void Enqueue(int item)
+        {
+            stack1.Push(item);
+        }
 
-		public int Dequeue()
-		{
-			if (stack1.Count == 0 && stack2.Count == 0) throw new Exception("under flow error!");
-			while (stack1.Count > 0)
-			{
-				int item = stack1.Pop();
-				stack2.Push(item);
-			}
-			return stack2.Pop();
-		}
+        public int Dequeue()
+        {
+            if (stack1.Count == 0 && stack2.Count == 0) throw new Exception("under flow error!");
+            while (stack1.Count > 0)
+            {
+                int item = stack1.Pop();
+                stack2.Push(item);
+            }
+            return stack2.Pop();
+        }
 
-		public int Count()
-		{
-			return stack1.Count;
-		}
+        public int Count()
+        {
+            return stack1.Count;
+        }
 
 
-		public static void Test()
-		{
-			QueueImplByStack q = new QueueImplByStack();
-			for (int i = 0; i < 10; i++) q.Enqueue(i);
-			Console.WriteLine("Count = " + q.Count());
-			for (int i = 0; i < 10; i++)
-			{
-				Console.WriteLine("Dequeue() = " + q.Dequeue());
-			}
-		}
-	}
+        public static void Test()
+        {
+            QueueImplByStack q = new QueueImplByStack();
+            for (int i = 0; i < 10; i++) q.Enqueue(i);
+            Console.WriteLine("Count = " + q.Count());
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine("Dequeue() = " + q.Dequeue());
+            }
+        }
+    }
 
-	/// <summary>
-	/// implement stack by queue
+    /// <summary>
+    /// implement stack by queue
     /// Push() takes O(1) time, Pop() takes O(N) time
-	/// </summary>
-	class StackImplByQueue
-	{
-		private Queue<int> queue1;
-		private Queue<int> queue2;
+    /// </summary>
+    class StackImplByQueue
+    {
+        private Queue<int> queue1;
+        private Queue<int> queue2;
 
-		public StackImplByQueue()
-		{
-			queue1 = new Queue<int>();
-			queue2 = new Queue<int>();
-		}
-		public void Push(int item)
-		{
-			queue1.Enqueue(item);
-		}
+        public StackImplByQueue()
+        {
+            queue1 = new Queue<int>();
+            queue2 = new Queue<int>();
+        }
+        public void Push(int item)
+        {
+            queue1.Enqueue(item);
+        }
 
-		public int Pop()
-		{
-			if (queue1.Count == 0) throw new Exception("under flow error!");
-			while (queue1.Count > 1)
-			{
-				queue2.Enqueue(queue1.Dequeue());
-			}
-			int item = queue1.Dequeue();
-			queue1 = queue2;
-			queue2.Clear();
-			return item;
-		}
+        public int Pop()
+        {
+            if (queue1.Count == 0) throw new Exception("under flow error!");
+            while (queue1.Count > 1)
+            {
+                queue2.Enqueue(queue1.Dequeue());
+            }
+            int item = queue1.Dequeue();
+            queue1 = queue2;
+            queue2.Clear();
+            return item;
+        }
 
-		public static void Test()
-		{
-			StackImplByQueue stack = new StackImplByQueue();
-			for (int i = 0; i < 10; i++)
-			{ 
-				stack.Push(i);
-				Console.WriteLine("Push({0})", i);
-				if ((i & 1) == 0)
-					Console.WriteLine("Pop() = " + stack.Pop()); 
-			}
-		}
-	}
+        public static void Test()
+        {
+            StackImplByQueue stack = new StackImplByQueue();
+            for (int i = 0; i < 10; i++)
+            {
+                stack.Push(i);
+                Console.WriteLine("Push({0})", i);
+                if ((i & 1) == 0)
+                    Console.WriteLine("Pop() = " + stack.Pop());
+            }
+        }
+    }
 
     /// <summary>
     /// Min Heap implementation
@@ -279,7 +279,7 @@ namespace StackQueueHeapAlgo
         {
             return size;
         }
-        
+
         // swim up from bottom towards the root
         public void Insert(int x)
         {
@@ -295,8 +295,8 @@ namespace StackQueueHeapAlgo
                 }
             }
             else // heap is full
-            { 
-                
+            {
+
             }
         }
 
@@ -330,7 +330,7 @@ namespace StackQueueHeapAlgo
                     pos = smallest;
                 }
             }
-            return heap[size + 1];     
+            return heap[size + 1];
         }
 
 
@@ -343,7 +343,7 @@ namespace StackQueueHeapAlgo
                 Console.Write(h.DeleteMin() + " ");
             Console.WriteLine();
         }
-    
+
     }
 
     /// <summary>
@@ -360,10 +360,11 @@ namespace StackQueueHeapAlgo
         public MinPQ(int max)
         {
             pq = new int[max + 1];
-            size = 0;            
+            size = 0;
         }
-        public MinPQ(int[] array) : this(array.Length)
-        {            
+        public MinPQ(int[] array)
+            : this(array.Length)
+        {
             foreach (int i in array)
                 Insert(i);
         }
@@ -377,7 +378,7 @@ namespace StackQueueHeapAlgo
         {
             if (size > 0)
                 return pq[1];
-            else 
+            else
                 return int.MaxValue;
         }
 
@@ -432,7 +433,7 @@ namespace StackQueueHeapAlgo
         private void Reheapify(int index)
         {
             int smallerChild;
-            while (!IsLeaf(index)) 
+            while (!IsLeaf(index))
             {
                 if (RightChild(index) <= size)
                     smallerChild = pq[LeftChild(index)] < pq[RightChild(index)] ? LeftChild(index) : RightChild(index);
@@ -459,14 +460,14 @@ namespace StackQueueHeapAlgo
         private void PrintHeap()
         {
             for (int i = 1; i < size; i++)
-            { 
+            {
                 Console.Write(pq[i] + " ");
             }
             Console.WriteLine();
         }
         public static void Test()
         {
-            int[] array = { 3, 1, 2, 5, 6, 7, 9, 10, 4, 8};
+            int[] array = { 3, 1, 2, 5, 6, 7, 9, 10, 4, 8 };
             MinPQ pq = new MinPQ(array);
             for (int i = 0; i < array.Length; i++)
                 Console.Write(pq.DeleteMin() + " ");
@@ -479,14 +480,14 @@ namespace StackQueueHeapAlgo
                 Console.Write(pq.DeleteMin() + " ");
             Console.WriteLine();
         }
-    
+
     }
 
     /// <summary>
     /// 100% same implementation as MinPQ
     /// </summary>
     public class MaxPQ
-    { 
+    {
         private int[] pq;
         private int size;
 
@@ -494,10 +495,11 @@ namespace StackQueueHeapAlgo
         public MaxPQ(int max)
         {
             pq = new int[max + 1];
-            size = 0;            
+            size = 0;
         }
-        public MaxPQ(int[] array) : this(array.Length)
-        {            
+        public MaxPQ(int[] array)
+            : this(array.Length)
+        {
             foreach (int i in array)
                 Insert(i);
         }
@@ -511,7 +513,7 @@ namespace StackQueueHeapAlgo
         {
             if (size > 0)
                 return pq[1];
-            else 
+            else
                 return int.MinValue;
         }
 
@@ -567,7 +569,7 @@ namespace StackQueueHeapAlgo
         private void Reheapify(int index)
         {
             int largerChild;
-            while (!IsLeaf(index)) 
+            while (!IsLeaf(index))
             {
                 if (RightChild(index) <= size)
                     largerChild = pq[LeftChild(index)] > pq[RightChild(index)] ? LeftChild(index) : RightChild(index);
@@ -594,7 +596,7 @@ namespace StackQueueHeapAlgo
         private void PrintHeap()
         {
             for (int i = 1; i < size; i++)
-            { 
+            {
                 Console.Write(pq[i] + " ");
             }
             Console.WriteLine();
@@ -602,7 +604,7 @@ namespace StackQueueHeapAlgo
 
         public static void Test()
         {
-            int[] array = { 3, 1, 2, 5, 6, 7, 9, 10, 4, 8};
+            int[] array = { 3, 1, 2, 5, 6, 7, 9, 10, 4, 8 };
             MaxPQ pq = new MaxPQ(array);
             for (int i = 0; i < array.Length; i++)
                 Console.Write(pq.DeleteMax() + " "); // 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
@@ -615,8 +617,8 @@ namespace StackQueueHeapAlgo
                 Console.Write(pq.DeleteMax() + " "); // 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
             Console.WriteLine();
         }
-    
-    
+
+
     }
 
     /// <summary>
@@ -645,13 +647,13 @@ namespace StackQueueHeapAlgo
 
         public static void Test()
         {
-            int[] a = { 3, 2, 1, 5, 8, 9, 10, 4, 7, 6};
+            int[] a = { 3, 2, 1, 5, 8, 9, 10, 4, 7, 6 };
             Console.WriteLine(KthSmallest(a, 7) == 7);
             Console.WriteLine(KthSmallest(a, 2) == 2);
-            Console.WriteLine(KthSmallest(a, 1) == 1);        
+            Console.WriteLine(KthSmallest(a, 1) == 1);
         }
-    
-    
+
+
     }
 
 
@@ -670,7 +672,7 @@ namespace StackQueueHeapAlgo
                 this.value = value;
                 this.next = new SkipNode[level];
             }
-        
+
         }
 
         private SkipNode head = new SkipNode(0, 33);
@@ -678,14 +680,14 @@ namespace StackQueueHeapAlgo
         private Random rand = new Random();
 
         //private int level = 1;
-        
+
         public void Add(int value)
         {
-            int level = 1;  
+            int level = 1;
             int r = rand.Next();
             for (int i = 1; i <= 32; i++)
             {
-                if ((r & 1) == 1) level++;    
+                if ((r & 1) == 1) level++;
             }
             SkipNode node = new SkipNode(value, level);
             SkipNode current;
@@ -705,7 +707,7 @@ namespace StackQueueHeapAlgo
         {
 
             return false;
-        
+
         }
 
 
@@ -713,19 +715,19 @@ namespace StackQueueHeapAlgo
         {
 
             return false;
-        
+
         }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
     }
 
 

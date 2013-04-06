@@ -1527,8 +1527,8 @@ namespace TreeAlgo
             */
             //int[] inorder = { 4, 2, 7, 5, 1, 3, 6, 8 };
             //int[] preorder = { 1, 2, 4, 5, 7, 3, 6, 8 };
-            int[] inorder = { 3, 1, 6, 5, 0, 2, 5, 7};
-            int[] preorder = { 0, 1, 3, 4, 6, 2, 5, 7};
+            int[] inorder = { 3, 1, 6, 5, 0, 2, 5, 7 };
+            int[] preorder = { 0, 1, 3, 4, 6, 2, 5, 7 };
             TreeNode tree1 = DeserializePreInorder(preorder, inorder);
             LevelOrderTraversal.PrintLevelOrder_by_one_queue(tree1);
             TreeNode tree2 = DeserializePreInorder(preorder, inorder);
@@ -1550,7 +1550,7 @@ namespace TreeAlgo
         // 1. (low, high) is the index range of the current root,
         //    root.leftChild is (low, dividerIndex) and root.rightChild is (dividerIndex + 1, high)
         // 2. readPointer is the current root pointer in inorder mapping
-        public static TreeNode DeserializePreInorder(int[] preorder, int[] inorder, 
+        public static TreeNode DeserializePreInorder(int[] preorder, int[] inorder,
             int[] mapping, int low, int high, ref int readPointer)
         {
             if (low == high)

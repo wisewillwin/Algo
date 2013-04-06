@@ -8,14 +8,14 @@ namespace LinkedListAlgo
 {
 
     // LinkedList implementation
-    public class LinkedListNode 
+    public class LinkedListNode
     {
         public int value { get; set; }
         public LinkedListNode next { get; set; }
         private bool isEmpty = true;
         public LinkedListNode()
         { }
-        public LinkedListNode(int value) 
+        public LinkedListNode(int value)
         {
             this.value = value;
             this.next = null;
@@ -55,7 +55,7 @@ namespace LinkedListAlgo
                 Console.WriteLine(list.value);
             }
         }
-    } 
+    }
 
     /// <summary>
     /// Reverse a linkedlist
@@ -96,7 +96,7 @@ namespace LinkedListAlgo
         {
             if (list == null) return null;
             if (list.next == null) return list;
-            LinkedListNode node2 = list.next;            
+            LinkedListNode node2 = list.next;
             LinkedListNode reversedRest = ReverseByRecursion(node2);
             node2.next = list;
             list.next = null;
@@ -178,99 +178,99 @@ namespace LinkedListAlgo
         }
     }
 
-	/// <summary>
-	/// Question 35
-	/// Find the first shared node in two linkedlist
-	/// </summary>
-	public class SharedNode
-	{
-		// LinkedList
-		public class LinkedListNode
-		{
-			public int value;
-			public LinkedListNode next;
-			public LinkedListNode(int value, LinkedListNode next)
-			{
-				this.value = value;
-				this.next = next;
-			}
-		}
+    /// <summary>
+    /// Question 35
+    /// Find the first shared node in two linkedlist
+    /// </summary>
+    public class SharedNode
+    {
+        // LinkedList
+        public class LinkedListNode
+        {
+            public int value;
+            public LinkedListNode next;
+            public LinkedListNode(int value, LinkedListNode next)
+            {
+                this.value = value;
+                this.next = next;
+            }
+        }
 
-		// O(N + M) time, traverse the list twice
-		// travese both lists, find the diff of length of this two lists
-		// use two counter and count the diff more steps at the longer list 
-		public static LinkedListNode FirstSharedNode(LinkedListNode list1, LinkedListNode list2)
-		{
-			if (list1 == null || list2 == null) return null;
-			int len1 = Length(list1);
-			int len2 = Length(list2);
-			if (len1 > len2)
-			{
-				for (int i = 0; i < len1 - len2; i++)
-					list1 = list1.next;
-			}
-			else if (len1 < len2)
-			{
-				for (int i = 0; i < len2 - len1; i++)
-					list2 = list2.next;
-			}
-			while (list1 != null)
-			{
-				if (list1 == list2) return list1;
-				list1 = list1.next;
-				list2 = list2.next;
-			}
-			return null;
-		}
+        // O(N + M) time, traverse the list twice
+        // travese both lists, find the diff of length of this two lists
+        // use two counter and count the diff more steps at the longer list 
+        public static LinkedListNode FirstSharedNode(LinkedListNode list1, LinkedListNode list2)
+        {
+            if (list1 == null || list2 == null) return null;
+            int len1 = Length(list1);
+            int len2 = Length(list2);
+            if (len1 > len2)
+            {
+                for (int i = 0; i < len1 - len2; i++)
+                    list1 = list1.next;
+            }
+            else if (len1 < len2)
+            {
+                for (int i = 0; i < len2 - len1; i++)
+                    list2 = list2.next;
+            }
+            while (list1 != null)
+            {
+                if (list1 == list2) return list1;
+                list1 = list1.next;
+                list2 = list2.next;
+            }
+            return null;
+        }
 
-		private static int Length(LinkedListNode list)
-		{
-			int len = 0;
-			while (list != null)
-			{
-				list = list.next;
-				len++;
-			}
-			return len;
-		}
+        private static int Length(LinkedListNode list)
+        {
+            int len = 0;
+            while (list != null)
+            {
+                list = list.next;
+                len++;
+            }
+            return len;
+        }
 
-		public static void FirstSharedNodeTest()
-		{
-			/*
-			    1 -> 2 -> 3 -> 6 -> 7 -> null
-				4 -> 5 -> 6 -> 7 -> null
-				First shared node: 6
-			 */
-			LinkedListNode n1 = new LinkedListNode(1, null);
-			LinkedListNode n2 = new LinkedListNode(2, null);
-			LinkedListNode n3 = new LinkedListNode(3, null);
-			LinkedListNode n4 = new LinkedListNode(4, null);
-			LinkedListNode n5 = new LinkedListNode(5, null);
-			LinkedListNode n6 = new LinkedListNode(6, null);
-			LinkedListNode n7 = new LinkedListNode(7, null);
-			n1.next = n2;
-			n2.next = n3;
-			n3.next = n6;
-			n4.next = n5;
-			n5.next = n6;
-			n6.next = n7;
-			LinkedListNode sharedNode = FirstSharedNode(n1, n4);
-			PrintLinkedList(n1);
-			PrintLinkedList(n4);
-			Console.WriteLine("First shared node: " + sharedNode.value);
-		}
+        public static void FirstSharedNodeTest()
+        {
+            /*
+                1 -> 2 -> 3 -> 6 -> 7 -> null
+                4 -> 5 -> 6 -> 7 -> null
+                First shared node: 6
+             */
+            LinkedListNode n1 = new LinkedListNode(1, null);
+            LinkedListNode n2 = new LinkedListNode(2, null);
+            LinkedListNode n3 = new LinkedListNode(3, null);
+            LinkedListNode n4 = new LinkedListNode(4, null);
+            LinkedListNode n5 = new LinkedListNode(5, null);
+            LinkedListNode n6 = new LinkedListNode(6, null);
+            LinkedListNode n7 = new LinkedListNode(7, null);
+            n1.next = n2;
+            n2.next = n3;
+            n3.next = n6;
+            n4.next = n5;
+            n5.next = n6;
+            n6.next = n7;
+            LinkedListNode sharedNode = FirstSharedNode(n1, n4);
+            PrintLinkedList(n1);
+            PrintLinkedList(n4);
+            Console.WriteLine("First shared node: " + sharedNode.value);
+        }
 
-		private static void PrintLinkedList(LinkedListNode list)
-		{
-			while (list != null)
-			{
-				Console.Write(list.value + " -> ");
-				list = list.next;
-			}
-			Console.WriteLine("null");// print NULL at the end
-		}
-		
-	}
+        private static void PrintLinkedList(LinkedListNode list)
+        {
+            while (list != null)
+            {
+                Console.Write(list.value + " -> ");
+                list = list.next;
+            }
+            Console.WriteLine("null");// print NULL at the end
+        }
+
+    }
 
     /// <summary>
     /// Careercup 2.1
@@ -311,7 +311,7 @@ namespace LinkedListAlgo
             Remove(list);
             LinkedListNode.Print(list);
         }
-    
+
     }
 
     /// <summary>
@@ -368,7 +368,7 @@ namespace LinkedListAlgo
                     value = list2.value;
                 if (list2 == null)
                     value = list1.value;
-                else 
+                else
                     value = list1.value + list2.value;
                 if (carry)
                 {
@@ -452,7 +452,7 @@ namespace LinkedListAlgo
                     limit *= 2;
                     slowNode = fastNode; // teleport slowNode to fastNode
                 }
-            }           
+            }
         }
 
         // ONLY works for list of distinct value nodes
@@ -476,7 +476,7 @@ namespace LinkedListAlgo
         }
 
         public static void Test()
-        { 
+        {
             /*
              * circular list: 1 -> 2 -> 3 -> 4 -> 5 
              *                          ^         |
@@ -493,7 +493,7 @@ namespace LinkedListAlgo
             node4.next = node5;
             node5.next = node3;
             LinkedListNode node = TortoiseAndHareCycleDetection(list);
-            PrintCircularList(list, node); 
+            PrintCircularList(list, node);
             Console.WriteLine("Loop starts from: " + node.value);
             node = BrentCycleDetection(list);
             PrintCircularList(list, node);
@@ -544,14 +544,17 @@ namespace LinkedListAlgo
 
 
         // print a sorted cyclic linkedlist from head to tail
-        private static void print(LinkedListNode node) {
+        private static void print(LinkedListNode node)
+        {
             if (node == null) return;
-            if (node.next == null) Console.WriteLine(node.value);        
-            while (node.next.value > node.value) {            
+            if (node.next == null) Console.WriteLine(node.value);
+            while (node.next.value > node.value)
+            {
                 node = node.next;
-            }    
+            }
             node = node.next;
-            while (true) {
+            while (true)
+            {
                 Console.Write(node.value + " -> ");
                 if (node.next.value < node.value) break;
                 node = node.next;
@@ -577,7 +580,7 @@ namespace LinkedListAlgo
             LinkedListNode n3 = Insert(node2, 50);
             print(n3);// 0->10->15->20->30->40->50->
         }
-    
+
     }
 
     /// <summary>
@@ -601,7 +604,7 @@ namespace LinkedListAlgo
             LinkedListNode rightHalf = list;
             for (; mid > 0; mid--)
             {
-                rightHalf = rightHalf.next; 
+                rightHalf = rightHalf.next;
             }
             // (2) reverse the right half of the linkedlist in O(N/2) time
             LinkedListNode reversedRightHalf = ReverseLinkedList.ReverseByIterative(rightHalf);
@@ -741,7 +744,7 @@ namespace LinkedListAlgo
             ComplexNode clonedList = clone(A);
             printList(clonedList);
         }
-    
+
     }
 
 

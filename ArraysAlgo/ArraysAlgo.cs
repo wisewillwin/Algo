@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Collections;
 
 namespace ArraysAlgo
-{    
+{
 
     /// <summary>
     /// Question 5
@@ -21,7 +21,7 @@ namespace ArraysAlgo
         {
             SortedList list = new SortedList();
             int m = a.Length - k + 1;
-            for (int i = 0; i < m; i++) 
+            for (int i = 0; i < m; i++)
                 list.Add(a[i], null);
             for (int i = m; i < a.Length; i++)
             {
@@ -42,7 +42,7 @@ namespace ArraysAlgo
         }
     }
 
- 
+
 
     /// <summary>
     /// Question 10
@@ -96,7 +96,7 @@ namespace ArraysAlgo
 
         public static void FindTwoNumWithSumTest()
         {
-            int[] a = {2, 4, 7, 11, 15};
+            int[] a = { 2, 4, 7, 11, 15 };
             num1 = num2 = 0;
             bool result = FindTwoNumWithSum(a, 15);
             Console.WriteLine("N = 15, num1 = {0}, num2 = {1}", num1, num2);
@@ -106,7 +106,7 @@ namespace ArraysAlgo
             if (result) Console.WriteLine("N = 12, num1 = {0}, num2 = {1}", num1, num2);
             Debug.Assert(!result);
         }
-        
+
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace ArraysAlgo
             for (int i = 0; i < a.Length; i++) // O(N^2) time and space
             {
                 for (int j = 1; j < a.Length; j++)
-                {                  
+                {
                     hm.Add(a[i] + a[j]);
                 }
             }
@@ -149,12 +149,12 @@ namespace ArraysAlgo
 
 
         private static Dictionary<int, int> FindTwoNumWithSum(int[] a, int N)
-        {            
+        {
             Dictionary<int, int> result = new Dictionary<int, int>();
             if (a.Length < 2) return result;
             int p1 = 0;
             int p2 = a.Length - 1;
-           
+
             while (p1 < p2)
             {
                 if (a[p1] + a[p2] == N)
@@ -166,14 +166,14 @@ namespace ArraysAlgo
                     p1++;
                 else if (a[p1] + a[p2] > N && p1 + 1 < p2)
                     p2--;
-                    
+
             }
-            return result;        
+            return result;
         }
 
         public static void FourSum(int[] a, int N)
-        { 
-        
+        {
+
 
 
         }
@@ -181,7 +181,7 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            int[] a1 = { 2, 4, 3, 2, 1, 2};
+            int[] a1 = { 2, 4, 3, 2, 1, 2 };
             bool result;
             result = ThreeSum_by_hashtable(a1, 3);
             if (result)
@@ -199,7 +199,7 @@ namespace ArraysAlgo
             else
                 Console.WriteLine("no solution");
         }
-    
+
     }
 
     /// <summary>
@@ -259,9 +259,9 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            int[] a = { 5, 20, 3, 50, 80, 81};
+            int[] a = { 5, 20, 3, 50, 80, 81 };
             bool result = FindTwoNumWithDiff(a, 1);
-            if (result) 
+            if (result)
                 Console.WriteLine("N = 1, num1 = {0}, num2 = {1}", num1, num2);
             result = FindTwoNumWithDiff_By_Hashmap(a, 75);
             if (result)
@@ -318,7 +318,7 @@ namespace ArraysAlgo
             while (p2 <= limit)
             {
                 if (sum < N) // move p2 right by 1
-                { 
+                {
                     sum += ++p2;
                 }
                 else if (sum > N) // move p1 right by 1
@@ -332,7 +332,7 @@ namespace ArraysAlgo
                     result.Add(array);
                     p2++; // move p2 right by 1
                     sum += p2;
-                }   
+                }
             }
             return result;
         }
@@ -355,84 +355,84 @@ namespace ArraysAlgo
         }
     }
 
-	/// <summary>
-	/// Question 41
-	/// given an integer array, concat all the numbers in the array to make a new integer as
-	/// small as possible
-	/// </summary>
-	public class MakeSmallestNumber
-	{
-		// O(N lg N) time
-		// 1. convert all the inteter to string
-		// 2. quicksort the string array by custom comparator
-		// 3. concat all the string, print it out
-		public static void PrintMinNumber(int[] a)
-		{
-			string[] ss = new string[a.Length];
-			for (int i = 0; i < ss.Length; i++) ss[i] = a[i].ToString();
-			Array.Sort(ss, Compare);// qsort
-			for (int i = 0; i < ss.Length; i++) Console.Write(ss[i]);
-		}
-		// if s1 > s2, then s1 + s2 > s2 + s1; vice vesa
-		public static int Compare(string s1, string s2)
-		{
-			return (s1 + s2).CompareTo(s2 + s1);
-		}
+    /// <summary>
+    /// Question 41
+    /// given an integer array, concat all the numbers in the array to make a new integer as
+    /// small as possible
+    /// </summary>
+    public class MakeSmallestNumber
+    {
+        // O(N lg N) time
+        // 1. convert all the inteter to string
+        // 2. quicksort the string array by custom comparator
+        // 3. concat all the string, print it out
+        public static void PrintMinNumber(int[] a)
+        {
+            string[] ss = new string[a.Length];
+            for (int i = 0; i < ss.Length; i++) ss[i] = a[i].ToString();
+            Array.Sort(ss, Compare);// qsort
+            for (int i = 0; i < ss.Length; i++) Console.Write(ss[i]);
+        }
+        // if s1 > s2, then s1 + s2 > s2 + s1; vice vesa
+        public static int Compare(string s1, string s2)
+        {
+            return (s1 + s2).CompareTo(s2 + s1);
+        }
 
-		public static void PrintMinNumberTest()
-		{
-			int[] a = { 43, 4, 432, 4321, 54321};
-			foreach (int i in a) Console.Write(i + " ");
-			Console.WriteLine();
-			PrintMinNumber(a); // "432143243454321"
-			Console.WriteLine();
-		}
+        public static void PrintMinNumberTest()
+        {
+            int[] a = { 43, 4, 432, 4321, 54321 };
+            foreach (int i in a) Console.Write(i + " ");
+            Console.WriteLine();
+            PrintMinNumber(a); // "432143243454321"
+            Console.WriteLine();
+        }
 
-	}
-	/// <summary>
-	/// Question 47
-	/// find the number that appear in the given array more than half of the times
-	/// </summary>
-	public class MajorityElement
-	{
-		
-		// use a counter, and a variable to hold the temperal most frequent number
-		public static bool FrequencyMoreThanHalf(int[] a, out int b)
-		{			
-			int count = 1;
-			b = a[0];
-			if (a.Length == 1) return true;
-			for (int i = 1; i < a.Length; i++)
-			{
-				if (b == a[i])
-				{
-					count++;
-				}
-				else
-				{
-					count--;
-					if (count == 0) b = a[i]; // change the temp variable to the new value
-				}
-			}
-			if (count > 0) return true;
-			else return false;
-		}
+    }
+    /// <summary>
+    /// Question 47
+    /// find the number that appear in the given array more than half of the times
+    /// </summary>
+    public class MajorityElement
+    {
+
+        // use a counter, and a variable to hold the temperal most frequent number
+        public static bool FrequencyMoreThanHalf(int[] a, out int b)
+        {
+            int count = 1;
+            b = a[0];
+            if (a.Length == 1) return true;
+            for (int i = 1; i < a.Length; i++)
+            {
+                if (b == a[i])
+                {
+                    count++;
+                }
+                else
+                {
+                    count--;
+                    if (count == 0) b = a[i]; // change the temp variable to the new value
+                }
+            }
+            if (count > 0) return true;
+            else return false;
+        }
 
 
-		public static void FrequencyMoreThanHalfTest()
-		{
-			int[] a = { 2, 2, 2, 3, 2, 3, 3, 3};
-			Console.Write("int array: ");
-			foreach (int i in a) Console.Write(i + " ");
-			int result;
-			bool found = FrequencyMoreThanHalf(a, out result);
-			if (found)
-				Console.WriteLine("\nFrequence more than 50% is " + result);
-			else
-				Console.WriteLine("\nNot found!");
-		}
+        public static void FrequencyMoreThanHalfTest()
+        {
+            int[] a = { 2, 2, 2, 3, 2, 3, 3, 3 };
+            Console.Write("int array: ");
+            foreach (int i in a) Console.Write(i + " ");
+            int result;
+            bool found = FrequencyMoreThanHalf(a, out result);
+            if (found)
+                Console.WriteLine("\nFrequence more than 50% is " + result);
+            else
+                Console.WriteLine("\nNot found!");
+        }
 
-	}
+    }
 
     /// <summary>
     /// Careercup 1.4
@@ -446,7 +446,7 @@ namespace ArraysAlgo
             if (s1 == null || s2 == null) return false;
             if (s1.Length != s2.Length) return false;
             int[] ascii = new int[256];
-            for (int i = 0; i < s1.Length; i++)            
+            for (int i = 0; i < s1.Length; i++)
                 ascii[s1[i]]++;
             for (int i = 0; i < s2.Length; i++)
             {
@@ -458,10 +458,10 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            string[] ss = { null, "", "a", "aabb", "abab", "bbaa", "aaab"};
+            string[] ss = { null, "", "a", "aabb", "abab", "bbaa", "aaab" };
             for (int i = 0; i < ss.Length - 1; i++)
             {
-                Console.WriteLine(ss[i] + " vs " + ss[i + 1] + " : " + IsAnagram(ss[i], ss[i + 1]));                
+                Console.WriteLine(ss[i] + " vs " + ss[i + 1] + " : " + IsAnagram(ss[i], ss[i + 1]));
             }
             Console.WriteLine();
         }
@@ -472,11 +472,11 @@ namespace ArraysAlgo
     /// Rotate a NxN matrix by 90 degrees clockwise, inplace
     /// </summary>
     public class RotateMatrix
-    { 
-    
+    {
+
         public static void Rotate90Degrees(int[,] matrix)
         {
-            
+
         }
 
 
@@ -494,7 +494,7 @@ namespace ArraysAlgo
             }
             Console.WriteLine("-------------------");
         }
-        
+
         public static void Test()
         {
             int[,] mr = { {1, 2, 3, 4},
@@ -556,7 +556,7 @@ namespace ArraysAlgo
                          {1, 1, 0, 1},
                          {1, 1, 1, 0},
                          {1, 1, 1, 1}};
-            RotateMatrix.PrintMatrix(mr);            
+            RotateMatrix.PrintMatrix(mr);
             Console.WriteLine(@"       ||");
             Console.WriteLine(@"       \/");
             RotateMatrix.PrintMatrix(SetZero(mr));
@@ -668,16 +668,16 @@ namespace ArraysAlgo
             {
                 if (a[i] > 0) return i + 1;
             }
-            return k; 
+            return k;
         }
 
         public static void Test()
         {
-            int[] a = { 2, 3, -7, 6, 8, 1, -10, 15};
+            int[] a = { 2, 3, -7, 6, 8, 1, -10, 15 };
             Debug.Assert(4 == SmallestMissingNumber(a));
 
         }
-    
+
     }
 
     /// <summary>
@@ -718,7 +718,7 @@ namespace ArraysAlgo
             int x = 3;
             int y = 2;
             int[] a1 = { 2, 5, 3, 5, 4, 4, 2, 3 };
-            int[] a2 = { 2, 1, 3, 1, 1, 2, 1, 1, 1, 3};
+            int[] a2 = { 2, 1, 3, 1, 1, 2, 1, 1, 1, 3 };
             Console.WriteLine(MinDist(a1, x, y));
             Console.WriteLine(MinDist(a2, x, y));
             //Debug.Assert(1 == MinDist(a1, x, y));
@@ -769,16 +769,16 @@ namespace ArraysAlgo
                 else if (j > hi)
                     a[k] = aux[i++];
             }
-        } 
+        }
 
 
         public static void Test()
         {
-            int[] a1 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }; // all identical
-            int[] a2 = {2, 3, 1, 4, 5, 8, 7, 10, 9, 6 }; // random
-            int[] a3 = {2, 2, 2, 1, 1, 1, 3, 3, 3, 1 }; // few elements
-            int[] a4 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; // sorted
-            int[] a5 = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }; // reverse sorted
+            int[] a1 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }; // all identical
+            int[] a2 = { 2, 3, 1, 4, 5, 8, 7, 10, 9, 6 }; // random
+            int[] a3 = { 2, 2, 2, 1, 1, 1, 3, 3, 3, 1 }; // few elements
+            int[] a4 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; // sorted
+            int[] a5 = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }; // reverse sorted
             int[][] arrays = { a1, a2, a3, a4, a5 };
             for (int i = 0; i < 5; i++)
             {
@@ -798,7 +798,7 @@ namespace ArraysAlgo
     /// solution 3. min heap
     /// </summary>
     public class KWayMerge
-    { 
+    {
 
         // merge two sorted arrays
         private static int[] Merge(int[] a1, int[] a2)
@@ -878,13 +878,13 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            int[] a1 = { 1, 3, 5};
-            int[] a2 = { 2, 4, 6};
-            int[] a3 = { 7, 8, 9};
-            int[] a4 = { 10, 11, 12};
-            int[] a5 = { 13, 15, 19};
-            int[] a6 = { 17, 20, 21};
-            int[] a7 = { 14, 16, 18};
+            int[] a1 = { 1, 3, 5 };
+            int[] a2 = { 2, 4, 6 };
+            int[] a3 = { 7, 8, 9 };
+            int[] a4 = { 10, 11, 12 };
+            int[] a5 = { 13, 15, 19 };
+            int[] a6 = { 17, 20, 21 };
+            int[] a7 = { 14, 16, 18 };
             int[] result = KWayMergeSort_BruteForce(a1, a2, a3, a4, a5, a6, a7);
             foreach (int i in result) Console.Write(i + " ");
             Console.WriteLine();
@@ -894,7 +894,7 @@ namespace ArraysAlgo
 
         }
 
-        
+
     }
 
     /// <summary>
@@ -929,7 +929,7 @@ namespace ArraysAlgo
             Console.WriteLine();
             Console.WriteLine("N = 1500, Ugly number = " + FindNthUglyNumber(1500));
         }
-    
+
     }
     /// <summary>
     /// Beauty 2.10
@@ -971,9 +971,9 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            int[] a1 = {1};
-            int[] a2 = {1, 2, 3, 4, 5, 6};
-            int[] a3 = {6, 5, 4, 3, 2};
+            int[] a1 = { 1 };
+            int[] a2 = { 1, 2, 3, 4, 5, 6 };
+            int[] a3 = { 6, 5, 4, 3, 2 };
             max = int.MinValue;
             min = int.MaxValue;
             FindMaxAndMin(a1);
@@ -987,7 +987,7 @@ namespace ArraysAlgo
             FindMaxAndMin(a3);
             Console.WriteLine(max + " " + min);
         }
-    
+
     }
 
     /// <summary>
@@ -1012,8 +1012,8 @@ namespace ArraysAlgo
                 }
                 else if (a[i] == 0)
                     hasZero = true;
-                else          
-                    minPositive = a[i] < minPositive ? a[i] : minPositive;               
+                else
+                    minPositive = a[i] < minPositive ? a[i] : minPositive;
             }
             List<int> result = a.ToList();
             if (hasZero)
@@ -1026,7 +1026,7 @@ namespace ArraysAlgo
                 { // remove any number but a zero
                     foreach (int item in result)
                     {
-                        if (item != 0) 
+                        if (item != 0)
                         {
                             result.Remove(item);
                             break;
@@ -1038,7 +1038,7 @@ namespace ArraysAlgo
             { // remove smallest positive number
                 result.Remove(minPositive);
             }
-            else 
+            else
             { // remove biggest negative number
                 result.Remove(maxNegative);
             }
@@ -1055,12 +1055,12 @@ namespace ArraysAlgo
 
         public static void Test()
         {
-            int[] a1 = {1, 2, 3, -3, -4, -5};
-            int[] a2 = {1, 3, -1, -2, 4, 5};
-            int[] a3 = {1, 2, 0, 3, 4, 5};
-            int[] a4 = {0, -1, -2, 3, 4, 5};
-            int[] a5 = {0, -1, -2, -3, 4, 5};
-            Debug.Assert(120 == Product(FindMaxProduct(a1))); 
+            int[] a1 = { 1, 2, 3, -3, -4, -5 };
+            int[] a2 = { 1, 3, -1, -2, 4, 5 };
+            int[] a3 = { 1, 2, 0, 3, 4, 5 };
+            int[] a4 = { 0, -1, -2, 3, 4, 5 };
+            int[] a5 = { 0, -1, -2, -3, 4, 5 };
+            Debug.Assert(120 == Product(FindMaxProduct(a1)));
             Debug.Assert(120 == Product(FindMaxProduct(a2)));
             Debug.Assert(120 == Product(FindMaxProduct(a3)));
             Debug.Assert(120 == Product(FindMaxProduct(a4)));
@@ -1077,7 +1077,7 @@ namespace ArraysAlgo
     {
         static int num1;
         static int num2;
-        
+
         // x + y = sum(1, 2...n) - sum(a)
         // x^2 + y^2 = sum(1, 4, 9...n^2) - sum(a[i]^2)
         // x * y = ((x + y) ^ 2 - (x^2 + y^2)) / 2
@@ -1086,7 +1086,7 @@ namespace ArraysAlgo
         {
             int N = a.Length + 2;
             int sumOfArray = 0;
-            foreach (int i in a) 
+            foreach (int i in a)
                 sumOfArray += i;
             int sumOfTwoNumbers = N * (N + 1) / 2 - sumOfArray;
             int squareSum = 0;
@@ -1106,8 +1106,8 @@ namespace ArraysAlgo
             FindTwoNumbers(a);
             Console.WriteLine("Two missing numbers are: " + num1 + " " + num2);
         }
-    
-    
+
+
     }
 
 
@@ -1146,12 +1146,12 @@ namespace ArraysAlgo
                     i++;
                 }
                 else // a[i] == 2
-                { 
+                {
                     swap(a, i, high);
                     high--;
-                }             
+                }
             }
-            return a;        
+            return a;
         }
 
 
@@ -1186,9 +1186,9 @@ namespace ArraysAlgo
         public static void Test()
         {
             // three colors sorting
-            int[] a1 = {1, 2, 0, 0, 1, 2 };
-            int[] a2 = {1, 2, 2, 2, 0, 1 };
-            int[] a3 = {1, 1, 2, 1, 1, 1 };
+            int[] a1 = { 1, 2, 0, 0, 1, 2 };
+            int[] a2 = { 1, 2, 2, 2, 0, 1 };
+            int[] a3 = { 1, 1, 2, 1, 1, 1 };
             a1 = SortThreeColors(a1);
             a2 = SortThreeColors(a2);
             a3 = SortThreeColors(a3);
@@ -1200,8 +1200,8 @@ namespace ArraysAlgo
             Console.WriteLine();
 
             // two colors sorting
-            int[] a4 = {1, 1, 0, 0, 1, 0 };
-            int[] a5 = {1, 1, 1, 1, 1, 1 };
+            int[] a4 = { 1, 1, 0, 0, 1, 0 };
+            int[] a5 = { 1, 1, 1, 1, 1, 1 };
             a4 = SortTwoColors(a4);
             a5 = SortTwoColors(a5);
             foreach (int i in a4) Console.Write(i + " ");
@@ -1209,7 +1209,7 @@ namespace ArraysAlgo
             foreach (int i in a5) Console.Write(i + " ");
             Console.WriteLine();
         }
-    
+
     }
 
 
@@ -1239,10 +1239,10 @@ namespace ArraysAlgo
 
 
         }
-    
 
-    
-    
+
+
+
     }
 
     /// <summary>
@@ -1270,7 +1270,7 @@ namespace ArraysAlgo
                     return kthlargest(arr1, arr2[:mida2], k)
          
          */
-        
+
         // N(lg N1 + lg N2) time
         public static int KthSmallest(int[] a1, int[] a2)
         {
@@ -1279,9 +1279,9 @@ namespace ArraysAlgo
         }
 
         public static void Test()
-        { 
-            
-        
+        {
+
+
         }
 
     }
@@ -1292,10 +1292,10 @@ namespace ArraysAlgo
     /// Sort the array in O(N lgk) time
     /// </summary>
     public class NearlySortedArray
-    { 
+    {
         // use a min heap of size k+1, add the first k+1 elements to the heap
         // every time remove the min element from the heap and add a new one in
-        public static int[] KSort(int[] a) 
+        public static int[] KSort(int[] a)
         {
 
             return null;
@@ -1303,10 +1303,10 @@ namespace ArraysAlgo
 
 
         public static void Test()
-        { 
-        
-        }    
-    
+        {
+
+        }
+
     }
 
 
@@ -1355,11 +1355,11 @@ namespace ArraysAlgo
         public static void Test()
         {
             int[] a1 = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 }; // 6
-            int[] a2 = { 0, 1, 2, 3, 4, 5, 5, 5, 6}; // 0
-            int[] a3 = { 6, 5, 4, 3, 3, 3, 2, 1}; // 0
-            int[] a4 = { 1, 2, 3, 4, 3, 2, 1}; // 0
-            int[] a5 = { 3, 1, 2}; // 1
-            int[] a6 = { 3, 1, 2, 2}; // 1
+            int[] a2 = { 0, 1, 2, 3, 4, 5, 5, 5, 6 }; // 0
+            int[] a3 = { 6, 5, 4, 3, 3, 3, 2, 1 }; // 0
+            int[] a4 = { 1, 2, 3, 4, 3, 2, 1 }; // 0
+            int[] a5 = { 3, 1, 2 }; // 1
+            int[] a6 = { 3, 1, 2, 2 }; // 1
             Console.WriteLine(MaxTrappedWater(a1));
             Console.WriteLine(MaxTrappedWater(a2));
             Console.WriteLine(MaxTrappedWater(a3));
@@ -1367,7 +1367,7 @@ namespace ArraysAlgo
             Console.WriteLine(MaxTrappedWater(a5));
             Console.WriteLine(MaxTrappedWater(a6));
         }
-    
+
     }
 
     /// <summary>
@@ -1426,7 +1426,7 @@ namespace ArraysAlgo
         }
         public static void Test()
         {
-            int[] a1 = { 1, 7, -5, 9, -12, 15};
+            int[] a1 = { 1, 7, -5, 9, -12, 15 };
             foreach (int i in a1) Console.Write(i + " ");
             Console.WriteLine();
             a1 = partition(a1);
@@ -1452,13 +1452,15 @@ namespace ArraysAlgo
     {
         // O(N) time and O(1) space
         public static bool IsPalindrome(int x)
-        { 
+        {
             if (x < 0) return false;
             if (x == 0) return true;
             int n = (int)Math.Log10(x) + 1; // number of digits
-            for (int i = 1; i <= n/2; i++) {
-                if ((x % (int)Math.Pow(10,i)) / (int)Math.Pow(10,i-1)
-                    != (x / (int)Math.Pow(10,(n-i))) % 10) {
+            for (int i = 1; i <= n / 2; i++)
+            {
+                if ((x % (int)Math.Pow(10, i)) / (int)Math.Pow(10, i - 1)
+                    != (x / (int)Math.Pow(10, (n - i))) % 10)
+                {
                     return false;
                 }
             }
@@ -1497,7 +1499,7 @@ namespace ArraysAlgo
             Console.WriteLine(IsPalindrome_recursive(1234321));
             Console.WriteLine(IsPalindrome_recursive(1234521));
         }
-    
+
     }
 
 

@@ -132,7 +132,7 @@ namespace GraphAlgo
                         visited[neighbor] = n;
                         queue.Enqueue(neighbor);
                     }
-                    else 
+                    else
                     {
                         visited[node].neighbors.Add(visited[neighbor]);
                     }
@@ -156,10 +156,10 @@ namespace GraphAlgo
             node3.neighbors.Add(node5);
             node3.neighbors.Add(node4);
             node1.DFS();
-            GraphNode copy = Clone(node1);            
+            GraphNode copy = Clone(node1);
             copy.DFS();
         }
-    
+
     }
 
 }

@@ -7,7 +7,8 @@ using System.Diagnostics;
 namespace BitAlgo
 {
 
-	public class BitAlgos {
+    public class BitAlgos
+    {
 
         // Q1: toggle from bit i to bit j
         // XOR trick: X ^ 111...1 can toggle all the bits in X
@@ -34,14 +35,14 @@ namespace BitAlgo
 
         // Q2: swap bit i and j of integer x
         // XOR trick: X ^ 0 = X
-		public static int SwapBits(int x, int i, int j)
+        public static int SwapBits(int x, int i, int j)
         {
             // if bit i and bit j is he same, no need to do anything
             if ((x >> i & 1) == (x >> j & 1)) return x;
             // else, toggle bit i and j
             else return x ^ ((1 << i) | (1 << j));
         }
-		public static void SwapBitsTest()
+        public static void SwapBitsTest()
         {
             int x = 100; // "1100100"
             Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(SwapBits(x, 1, 3), 2));
@@ -51,11 +52,11 @@ namespace BitAlgo
         }
 
         // Q3: turn off the right-most 1 bit
-		public static int TurnOffRightestOne(int x)
+        public static int TurnOffRightestOne(int x)
         {
             return x & (x - 1);
         }
-		public static void TurnOffRightestOneTest()
+        public static void TurnOffRightestOneTest()
         {
             int x = 100; // "1100100"
             Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(TurnOffRightestOne(x), 2));
@@ -63,7 +64,7 @@ namespace BitAlgo
         }
 
         // Q4: count the number of 1 bit in x
-		public static int CountBitOne(int x)
+        public static int CountBitOne(int x)
         {
             int count = 0;
             while (x != 0)
@@ -73,7 +74,7 @@ namespace BitAlgo
             }
             return count;
         }
-		public static void CountBitOneTest()
+        public static void CountBitOneTest()
         {
             int x = 100;
             Console.WriteLine(Convert.ToString(x, 2) + " count: " + CountBitOne(x));
@@ -82,7 +83,7 @@ namespace BitAlgo
 
         // Q5: swap every two bits, eg: 10100101 -> 01011010
         // Careercup 5.6
-		public static int SwapPairs(int x)
+        public static int SwapPairs(int x)
         {
             for (int i = 0; i < 32; i += 2)
             {
@@ -94,10 +95,10 @@ namespace BitAlgo
         {
             return ((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1);
         }
-		public static void SwapPairsTest()
+        public static void SwapPairsTest()
         {
             int x = 165;
-            Console.WriteLine(Convert.ToString(x, 2) + " swap every pair of bits: " + 
+            Console.WriteLine(Convert.ToString(x, 2) + " swap every pair of bits: " +
                 Convert.ToString(SwapPairs_manually(x), 2));
             Console.WriteLine();
         }
@@ -105,7 +106,7 @@ namespace BitAlgo
         // http://www.leetcode.com/2011/08/reverse-bits.html 
         // Swap each pair by XOR tricks
         // Q6: reverse 32-bit integer, eg: 10101111 -> 11110101
-		public static int Reverse(int x)
+        public static int Reverse(int x)
         {
             for (int i = 0; i < 16; i++)
             {
@@ -123,7 +124,7 @@ namespace BitAlgo
             return (byte)rev;
         }
 
-		public static void ReverseTest()
+        public static void ReverseTest()
         {
             int x = (int)Math.Pow(2, 16) - 1;
             Console.WriteLine(Convert.ToString(x, 2) + " reverse: " + Convert.ToString(Reverse(x), 2));
@@ -135,7 +136,7 @@ namespace BitAlgo
         }
 
         // Q8: add operation without operator +-*/, only bitwise operation
-		public static int Add(int x, int y)
+        public static int Add(int x, int y)
         {
             if (x == 0) return y;
             if (y == 0) return x;
@@ -143,7 +144,7 @@ namespace BitAlgo
             int b = (x & y) << 1; // carry
             return Add(a, b);
         }
-		public static void AddTest()
+        public static void AddTest()
         {
             int x = 100, y = 23;
             Console.WriteLine("{0} + {1} = {2}", x, y, Add(x, y));
@@ -155,12 +156,12 @@ namespace BitAlgo
 
         // Q9: compare two integer without comparator ">" or "<", return the larger number
         // trick: use the sign of signed interger
-		public static int Compare(int x, int y)
+        public static int Compare(int x, int y)
         {
             int diff = x - y;
             return (diff >> 31 & 1) == 0 ? x : y;
         }
-		public static void CompareTest()
+        public static void CompareTest()
         {
             int x = 100, y = 23;
             int result = Compare(x, y);
@@ -174,25 +175,25 @@ namespace BitAlgo
 
         // Q10: swap two integer without temperary variable
         static int x = 100, y = 23;
-		public static void SwapNum_XOR()
+        public static void SwapNum_XOR()
         { // XOR trick
             x = x ^ y;
             y = x ^ y;
             x = x ^ y;
         }
-		public static void SwapNum_PlusMinus()
+        public static void SwapNum_PlusMinus()
         {
             x = x - y;
             y = x + y;
             x = y - x;
         }
-		public static void SwapNum_PlusMinus_2()
+        public static void SwapNum_PlusMinus_2()
         {
             x = x + y;
             y = x - y;
             x = x - y;
         }
-		public static void SwapNumTest()
+        public static void SwapNumTest()
         {
             Console.WriteLine("Before Swap: x = {0}, y = {1}", x, y);
             SwapNum_XOR();
@@ -211,67 +212,67 @@ namespace BitAlgo
 
     }
 
-	/// <summary>
-	/// Question 34
-	/// Given an array, of which two numbers appear once and other numbers appear exact twice
-	/// Find the two number that appear once, return true if they are found
-	/// </summary>
-	public class TwoUniqueNumber
-	{
-		// 1. XOR the whole array
-		// 2. find the right-most kth bit-one in the XOR result
-		// 3. divide the array into two subarray: if the kth bit is 1 put in first subarray, if not put in the second subarray
- 		// 4. xor all the element in first subarray, the result is the first unique number
-		//    xor all the element in second subarray, the result is the second unique number
-		public static bool FindTwoUniqueNumbers(int[] a, out int num1, out int num2)
-		{
-			int xorAll = 0;
-			for (int i = 0; i < a.Length; i++) 
-				xorAll ^= a[i];
-			int rightBitOne = 0; // find the right-most bit one
-			while (true)
-			{
-				if (((xorAll >> rightBitOne++) & 1) == 1) break;
-				if (rightBitOne >= 31) // IMPORTANT!!! checking the boundary case!
-				{
-					num1 = num2 = 0;
-					return false;
-				}
-			}
+    /// <summary>
+    /// Question 34
+    /// Given an array, of which two numbers appear once and other numbers appear exact twice
+    /// Find the two number that appear once, return true if they are found
+    /// </summary>
+    public class TwoUniqueNumber
+    {
+        // 1. XOR the whole array
+        // 2. find the right-most kth bit-one in the XOR result
+        // 3. divide the array into two subarray: if the kth bit is 1 put in first subarray, if not put in the second subarray
+        // 4. xor all the element in first subarray, the result is the first unique number
+        //    xor all the element in second subarray, the result is the second unique number
+        public static bool FindTwoUniqueNumbers(int[] a, out int num1, out int num2)
+        {
+            int xorAll = 0;
+            for (int i = 0; i < a.Length; i++)
+                xorAll ^= a[i];
+            int rightBitOne = 0; // find the right-most bit one
+            while (true)
+            {
+                if (((xorAll >> rightBitOne++) & 1) == 1) break;
+                if (rightBitOne >= 31) // IMPORTANT!!! checking the boundary case!
+                {
+                    num1 = num2 = 0;
+                    return false;
+                }
+            }
             num1 = 0; num2 = 0;
             for (int i = 0; i < a.Length; i++)
-			{
+            {
                 if (((a[i] >> (rightBitOne - 1) & 1) == 1))
-                    num1 ^= a[i]; 
+                    num1 ^= a[i];
                 else
-                    num2 ^= a[i]; 
-			}
+                    num2 ^= a[i];
+            }
             if (num1 == num2) return false;
             else return true;
-		}
+        }
 
-		public static void Test()
-		{
-			int[] a = { 1, 2, 1, 2, 3, 4, 5, 6, 6, 5, 4, 7, 8, 8, 9, 9 };
-			FindTwoUniqueNumbersTest(a);
-			int[] a2 = { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8 };
-			FindTwoUniqueNumbersTest(a2);
-		}
+        public static void Test()
+        {
+            int[] a = { 1, 2, 1, 2, 3, 4, 5, 6, 6, 5, 4, 7, 8, 8, 9, 9 };
+            FindTwoUniqueNumbersTest(a);
+            int[] a2 = { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8 };
+            FindTwoUniqueNumbersTest(a2);
+        }
 
-		public static void FindTwoUniqueNumbersTest(int[] a)
-		{
-			Console.Write("array: ");
-			foreach (int i in a) Console.Write(i + " ");
-			Console.WriteLine();
-			int num1, num2;
-			bool found = FindTwoUniqueNumbers(a, out num1, out num2);
-			if (found)
-				Console.WriteLine("num1 = {0}, num2 = {1}", num1, num2);
-			else
-				Console.WriteLine("Not Found!");
-		}
+        public static void FindTwoUniqueNumbersTest(int[] a)
+        {
+            Console.Write("array: ");
+            foreach (int i in a) Console.Write(i + " ");
+            Console.WriteLine();
+            int num1, num2;
+            bool found = FindTwoUniqueNumbers(a, out num1, out num2);
+            if (found)
+                Console.WriteLine("num1 = {0}, num2 = {1}", num1, num2);
+            else
+                Console.WriteLine("Not Found!");
+        }
 
-	}
+    }
 
     /// <summary>
     /// Careercup 5.2
@@ -287,7 +288,7 @@ namespace BitAlgo
         public static void Test()
         {
             string s = "0.625";
-            Console.WriteLine(s + " -> " + ToBinary(s));   
+            Console.WriteLine(s + " -> " + ToBinary(s));
         }
     }
 
@@ -315,7 +316,7 @@ namespace BitAlgo
             int a = 10;
             int b = 23;
             int c = BitsDiffCount(a, b);
-            Console.WriteLine("a = {0}, b = {1}, count = {2}", 
+            Console.WriteLine("a = {0}, b = {1}, count = {2}",
                 Convert.ToString(a, 2), Convert.ToString(b, 2), c);
         }
     }
@@ -327,10 +328,10 @@ namespace BitAlgo
     /// </summary>
     public class BinaryAddition
     {
-        
+
         public static string Addition(string s1, string s2)
         {
-            if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2)) 
+            if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2))
                 return ""; // invalid input
             string longer = s1.Length > s2.Length ? s1 : s2;
             string shorter = s1.Length <= s2.Length ? s1 : s2;
@@ -342,39 +343,39 @@ namespace BitAlgo
             string result = "";
             bool carry = false;
             for (int i = longer.Length - 1; i >= 0; i--)
-            {                
+            {
                 if (longer[i] == '0' && shorter[i] == '0' && carry)
                 {
                     result = "1" + result; carry = false;
                 }
                 else if (longer[i] == '0' && shorter[i] == '1' && carry)
-                { 
-                    result = "0" + result; 
+                {
+                    result = "0" + result;
                 }
                 else if (longer[i] == '1' && shorter[i] == '0' && carry)
-                { 
-                    result = "0" + result; 
+                {
+                    result = "0" + result;
                 }
                 else if (longer[i] == '1' && shorter[i] == '1' && carry)
-                { 
+                {
                     result = "1" + result;
                 }
                 else if (longer[i] == '0' && shorter[i] == '0' && !carry)
-                { 
-                    result = "0" + result; 
+                {
+                    result = "0" + result;
                 }
                 else if (longer[i] == '0' && shorter[i] == '1' && !carry)
-                {    
+                {
                     result = "1" + result;
                 }
                 else if (longer[i] == '1' && shorter[i] == '0' && !carry)
-                {   
+                {
                     result = "1" + result;
                 }
                 else if (longer[i] == '1' && shorter[i] == '1' && !carry)
-                { 
-                    result = "0" + result; carry = true; 
-                }                   
+                {
+                    result = "0" + result; carry = true;
+                }
             }
             if (carry) result = "1" + result;
             return result;
@@ -382,20 +383,20 @@ namespace BitAlgo
 
 
         public static void Test()
-        {         
+        {
             Random r = new Random();
             for (int i = 0; i < 10; i++)
             {
                 int x = r.Next(100);
                 int y = r.Next(100);
                 string z = Addition(Convert.ToString(x, 2), Convert.ToString(y, 2));
-                Console.WriteLine("{0}({1}) + {2}({3}) = {4}({5})", 
+                Console.WriteLine("{0}({1}) + {2}({3}) = {4}({5})",
                     x, Convert.ToString(x, 2),
                     y, Convert.ToString(y, 2),
-                    Convert.ToInt32(z, 2), z);              
+                    Convert.ToInt32(z, 2), z);
             }
         }
-        
+
     }
 
     /// <summary>
@@ -433,13 +434,13 @@ namespace BitAlgo
                 }
             }
         }
-        
+
 
         public static void Test()
         {
             SortBySetBits(64);
         }
-    
+
     }
 
 

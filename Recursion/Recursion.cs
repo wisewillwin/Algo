@@ -21,7 +21,7 @@ namespace Recursion
         private static void FindAll(int[] queens, int n)
         {
             if (n == queens.Length)
-            { 
+            {
                 PrintQueens(queens);  // found it
                 return;
             }
@@ -29,10 +29,10 @@ namespace Recursion
             for (int i = 0; i < queens.Length; i++)
             {
                 queens[n] = i;
-                if (IsLegal(queens, n)) 
+                if (IsLegal(queens, n))
                     FindAll(queens, n + 1);
-            }    
-            
+            }
+
         }
 
         private static bool IsLegal(int[] queens, int n)
@@ -490,12 +490,12 @@ namespace Recursion
                 PrintArray(a);
                 return;
             }
-            if (left > 0) 
+            if (left > 0)
             { // if there are left paren, try a left paren
                 a[N * 2 - left - right] = '(';
                 Permu(N, a, left - 1, right);
             }
-            if (right > 0 && left < right) 
+            if (right > 0 && left < right)
             { // if there are right paren, more right paren than left paren
                 a[N * 2 - left - right] = ')';
                 Permu(N, a, left, right - 1);
@@ -525,13 +525,13 @@ namespace Recursion
             if (right < N && left > right)
             {
                 a[left + right] = ')';
-                Permu2(N, a, left, right + 1);              
+                Permu2(N, a, left, right + 1);
             }
 
         }
 
         public static void Permu3(int N)
-        {            
+        {
             Permu3(N, "", N, 0);
         }
 
@@ -567,7 +567,7 @@ namespace Recursion
             Console.WriteLine();
             Permu2(4);
             Console.WriteLine();
-            Permu3(5);        
+            Permu3(5);
         }
 
 

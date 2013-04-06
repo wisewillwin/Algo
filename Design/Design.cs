@@ -62,7 +62,7 @@ namespace Design
         public static void Test()
         {
             QuickSetAllObject sd = new QuickSetAllObject(10);
-            for (int i = 0; i < 10; i++) 
+            for (int i = 0; i < 10; i++)
                 sd.set(i, i);
             for (int i = 0; i < 10; i++)
                 Console.WriteLine("get[{0}] = {1}", i, sd.get(i).value);
@@ -97,7 +97,7 @@ namespace Design
         public static int[] MakeBadArray(int length)
         {
             int[] arr = Enumerable.Range(0, length).ToArray();
-            Array.Sort(arr, new QuicksortKiller()); 
+            Array.Sort(arr, new QuicksortKiller());
             int[] ret = new int[length];
 
             for (int i = 0; i < length; i++)
@@ -121,7 +121,7 @@ namespace Design
                 MakeBadArray(size);
                 sw.Stop();
                 milliseconds[i - 1] = sw.ElapsedMilliseconds;
-                
+
             }
             size = 1;
             for (int i = 1; i <= N; i++)
@@ -148,12 +148,12 @@ namespace Design
     {
 
         int limit;
-      
+
         // sequence number of each value
         List<int> keyList;  /* a doubly-linked list is needed*/
         // hashmap of <sequence_number, value>
-        Dictionary<int, string> map; 
-        
+        Dictionary<int, string> map;
+
         public LRUCache(int limit)
         {
             this.limit = limit;

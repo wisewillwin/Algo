@@ -79,13 +79,13 @@ namespace DynamicProgramming
                 {
                     if (j == 0)
                     {
-                        if (i + 1 == a[j]) 
+                        if (i + 1 == a[j])
                             table[i, j] = true;
                     }
                     else
                     {
-                        table[i, j] = table[i, j - 1] 
-                            || (i + 1 >= a[j] && table[i + 1 - a[j], j - 1]);                            
+                        table[i, j] = table[i, j - 1]
+                            || (i + 1 >= a[j] && table[i + 1 - a[j], j - 1]);
                     }
                 }
             }
@@ -110,22 +110,22 @@ namespace DynamicProgramming
                 for (int j = 1; j < col; j++)
                 {
                     table[i, j] = table[i, j - 1]
-                        || (i + 1 >= a[j] && table[i + 1 - a[j], j - 1]);    
+                        || (i + 1 >= a[j] && table[i + 1 - a[j], j - 1]);
                 }
             }
-            return table[row - 1, col - 1];        
+            return table[row - 1, col - 1];
         }
 
         public static void Test()
         {
-            int[] a1 = {1, 2, 2, 3, 1, 1}; // true
-            int[] a2 = {1, 2, 2, 3, 1, 2}; // false
-            int[] a3 = {1, 2, 2, 3, 3, 13}; // false
+            int[] a1 = { 1, 2, 2, 3, 1, 1 }; // true
+            int[] a2 = { 1, 2, 2, 3, 1, 2 }; // false
+            int[] a3 = { 1, 2, 2, 3, 3, 13 }; // false
             Debug.Assert(CanPartition(a1) && (CanPartition(a1) == CanPartition_version2(a1)));
             Debug.Assert(!CanPartition(a2) && (CanPartition(a2) == CanPartition_version2(a2)));
-            Debug.Assert(!CanPartition(a3) && (CanPartition(a3) == CanPartition_version2(a3))); 
+            Debug.Assert(!CanPartition(a3) && (CanPartition(a3) == CanPartition_version2(a3)));
         }
-    
+
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ namespace DynamicProgramming
             int sum = a[a.Length - 1];
             int temp = a[a.Length - 1];
             for (int i = a.Length - 2; i > 0; i--)
-            { 
+            {
                 // 1. update temp
                 // 2. update global sum
                 temp = Math.Max(a[i], a[i] + temp);
@@ -155,15 +155,15 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            int[] a1 = {1, -2, 3, 5, -3, 2 }; // 8
-            int[] a2 = {0, -2, 3, 5, -1, 2 }; // 9
-            int[] a3 = {-9, -2, -3, -5, -3 }; // -2
+            int[] a1 = { 1, -2, 3, 5, -3, 2 }; // 8
+            int[] a2 = { 0, -2, 3, 5, -1, 2 }; // 9
+            int[] a3 = { -9, -2, -3, -5, -3 }; // -2
             Debug.Assert(MaxSum(a1) == 8);
             Debug.Assert(MaxSum(a2) == 9);
             Debug.Assert(MaxSum(a3) == -2);
         }
 
-    
+
     }
 
     /// <summary>
@@ -189,10 +189,10 @@ namespace DynamicProgramming
                         { 26, 1, 1, 27}
                       };
             Console.WriteLine(MaxSum(a));
-        
-        
+
+
         }
-    
+
     }
 
 
@@ -264,9 +264,9 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            int[] a1 = {1, 0, 3, 2, 5, 4, 7}; // length of {1 3 5 7} is 4
-            int[] a2 = {1, 0, 3, 2, 5, 4, 7, 5, 6}; // length of {0 2 4 5 6} is 5 
-            int[] a3 = {10, 20, 30, 1, 2, 3, 4}; // length of {1 2 3 4} is 4 
+            int[] a1 = { 1, 0, 3, 2, 5, 4, 7 }; // length of {1 3 5 7} is 4
+            int[] a2 = { 1, 0, 3, 2, 5, 4, 7, 5, 6 }; // length of {0 2 4 5 6} is 5 
+            int[] a3 = { 10, 20, 30, 1, 2, 3, 4 }; // length of {1 2 3 4} is 4 
             Console.WriteLine(LIS_DP(a1) + "  " + LIS_BinarySearch(a1));
             Console.WriteLine(LIS_DP(a2) + "  " + LIS_BinarySearch(a2));
             Console.WriteLine(LIS_DP(a3) + "  " + LIS_BinarySearch(a3));
@@ -281,8 +281,8 @@ namespace DynamicProgramming
     /// </summary>
     public class ClosestPartitionSum
     {
-    
-    
+
+
     }
 
 
@@ -338,7 +338,7 @@ namespace DynamicProgramming
                     }
                 }
             }
-            return table[table.GetLength(0) - 1, table.GetLength(1) - 1];        
+            return table[table.GetLength(0) - 1, table.GetLength(1) - 1];
         }
 
         public static void Test()
@@ -348,7 +348,7 @@ namespace DynamicProgramming
                           "sea", "eat", "mart", "karma", "park", "spake", "food", "money", "horse", "ros",
                           "spartan", "part", "plasma", "altruism", "kitten", "sitting", "islander", "islander", "islander", "slander",
                           "industry", "interest", "intention", "execution", "prosperity", "properties", "algorithm", "altruistic"};
-            int[] exptected = {0, 1, 1, 0, 1, 1, 1, 2, 3, 2, 3, 3, 4, 3, 3, 6, 3, 0, 1, 6, 5, 4, 6 };
+            int[] exptected = { 0, 1, 1, 0, 1, 1, 1, 2, 3, 2, 3, 3, 4, 3, 3, 6, 3, 0, 1, 6, 5, 4, 6 };
             for (int i = 0; i < input.Length; i += 2)
             {
                 Console.WriteLine("\"{0}\" \"{1}\" result: {2} expected: {3}", input[i], input[i + 1],
@@ -356,7 +356,7 @@ namespace DynamicProgramming
             }
 
         }
-    
+
     }
 
     /// <summary>
@@ -388,15 +388,15 @@ namespace DynamicProgramming
                         else table[i, j] = 0;
                     }
                     else
-                    { 
-                        if (s1[i] == s2[j]) 
+                    {
+                        if (s1[i] == s2[j])
                             table[i, j] = table[i - 1, j - 1] + 1;
-                        else  
+                        else
                             table[i, j] = Math.Max(table[i - 1, j], table[i, j - 1]);
                     }
                 }
             }
-            return table[table.GetLength(0) - 1, table.GetLength(1) - 1];        
+            return table[table.GetLength(0) - 1, table.GetLength(1) - 1];
         }
 
         public static void Test()
@@ -410,7 +410,7 @@ namespace DynamicProgramming
             Debug.Assert(0 == LCS(s1, ""));
             Debug.Assert(-1 == LCS(s1, null));
         }
-    
+
     }
 
     /// <summary>
@@ -477,12 +477,12 @@ namespace DynamicProgramming
             Console.WriteLine("max path sum = " + MaxPathSum(a));
             Console.WriteLine("max path sum = " + MaxPathSum_optimized_for_space(a));
             //FindMaxPath(a);
-            
-        
+
+
         }
 
-    
-    
+
+
     }
 
     /// <summary>
@@ -508,7 +508,7 @@ namespace DynamicProgramming
             //Debug.Assert(6 == LongestSubstring(s1));
             //Debug.Assert(9 == LongestSubstring(s2));
         }
-    
+
     }
 
 
@@ -547,7 +547,7 @@ namespace DynamicProgramming
         public static int BiCoefficient_DP_2(int n, int k)
         {
             if (n < 1 || k < 0 || n < k) return -1; // check for illegal inputs
-            if (k > n / 2) 
+            if (k > n / 2)
                 k = n - k;
             int[] array = new int[k + 1];
             array[0] = 1;
@@ -558,10 +558,10 @@ namespace DynamicProgramming
                     array[j] += array[j - 1];
                 }
             }
-            return array[k];            
+            return array[k];
         }
 
-        
+
 
         // directly compute, O(K) time and O(1) space
         public static int BiCoefficient(int n, int k)
@@ -574,7 +574,7 @@ namespace DynamicProgramming
             {
                 result *= (n - i) / (double)(i + 1);
             }
-            return (int)(Math.Round(result)); 
+            return (int)(Math.Round(result));
         }
 
         public static void Test()
@@ -601,8 +601,8 @@ namespace DynamicProgramming
         // (3) else if a smaller local min is seen, reset local min and local max
         public static int MaxStockProfit(int[] a)
         {
-            if (a.Length <= 1) return 0;          
-            if (a.Length == 2) 
+            if (a.Length <= 1) return 0;
+            if (a.Length == 2)
                 return Math.Abs(a[0] - a[1]);
             int p = a[0] < a[1] ? 0 : 1; // min index so far
             int q = 1 - p; // max index so far
@@ -615,11 +615,11 @@ namespace DynamicProgramming
                     p = pp;
                     q = i;
                 }
-                else if (a[i] > a[qq]) 
+                else if (a[i] > a[qq])
                 {
                     qq = i;
                 }
-                else if (a[i] < a[pp]) 
+                else if (a[i] < a[pp])
                 {
                     pp = qq = i;
                 }
@@ -630,7 +630,7 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            int[] a = { 10, 11, 20, 13, 5, 8, 17, 11 }; 
+            int[] a = { 10, 11, 20, 13, 5, 8, 17, 11 };
             int profit = MaxStockProfit(a);
             Debug.Assert(profit == 12);
             profit = 0;
@@ -706,7 +706,7 @@ namespace DynamicProgramming
     /// all the characters in T in complexity O(n).    
     /// eg, S = “ADOBECODEBANC”, T = “ABC”, Minimum window is “BANC”.
     /// </summary>
-    public class SubstringMinWindow 
+    public class SubstringMinWindow
     {
 
         public static String minWindow(String s1, String s2)
@@ -755,29 +755,33 @@ namespace DynamicProgramming
         }
 
         public static void Test()
-        { 
+        {
             String[] s1_array = {"cabeca", "cfabeca", "cabefgecdaecf", "cabwefgewcwaefcf", 
             "abcabdebac", "abcabdebac", "acbdbaab", "caaec", "caae", "acbbaab", "acbba",
             "adobecodebanc", "adobecodebanc", "adobecodebanc", "adobecodebancbbcaa", 
             "aaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaa", "acccabeb", "aaabdacefaecbef", 
             "coobdafceeaxab", "of_characters_and_as", "a", "a", "aa", "aaa", "aab"};
-        
+
             String[] s2_array = {"cae", "cae", "cae", "cae", "cda", "cea",
             "aabd", "cae", "cae", "aab", "aab", "abc",
             "abcda", "abdbac", "abc", "a", "aaaaaaaaaaaaaa", "ab",
             "abc", "abc", "aas", "a", "b", "a", "aaa", "aab"};
-        
+
             String[] min_window_array = {"eca", "eca", "aec", "cwae", "cabd", "ebac",
             "dbaa", "aec", "caae", "baa", "acbba", "banc",
             "adobecodeba", "adobecodeba", "bca", "a", "aaaaaaaaaaaaaa", "ab",
             "bdac", "bdafc", "and_as", "a", "", "a",
             "aaa", "aab"};
-        
-            for (int i = 0; i < s1_array.Length; i++) {
-                if (min_window_array[i] != minWindow(s1_array[i], s2_array[i])) {
+
+            for (int i = 0; i < s1_array.Length; i++)
+            {
+                if (min_window_array[i] != minWindow(s1_array[i], s2_array[i]))
+                {
                     Console.WriteLine(s1_array[i] + "  " + s2_array[i] + " => "
                      + minWindow(s1_array[i], s2_array[i]) + " should be " + min_window_array[i]);
-                } else {
+                }
+                else
+                {
                     Console.WriteLine(s1_array[i] + "  " + s2_array[i] + " => "
                      + minWindow(s1_array[i], s2_array[i]));
                 }
@@ -809,7 +813,7 @@ namespace DynamicProgramming
                     if (q - p + 1 > result.Length)
                         result = s.Substring(p, q - p + 1);
                 }
-                else 
+                else
                 {
                     while (p <= q)
                     {
@@ -819,7 +823,7 @@ namespace DynamicProgramming
                             break;
                         }
                         else
-                        {                            
+                        {
                             counts[s[p]] = false;
                             p++;
                         }
@@ -832,10 +836,10 @@ namespace DynamicProgramming
 
         public static void Test()
         {
-            string s1 = "abcabcbb";    
+            string s1 = "abcabcbb";
             string s2 = "hello world";
             string s3 = "One World One Dream";
-            Console.WriteLine(NonrepeatedSubstring(s1)); 
+            Console.WriteLine(NonrepeatedSubstring(s1));
             Console.WriteLine(NonrepeatedSubstring(s2));
             Console.WriteLine(NonrepeatedSubstring(s3));
         }
