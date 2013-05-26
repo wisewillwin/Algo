@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using NUnit.Framework;
 
 namespace BitAlgo
 {
+    class BitAlgo
+    { 
+        static void Main()
+        {
+            
+        }
+    }
 
     public class BitAlgos
     {
@@ -251,27 +259,20 @@ namespace BitAlgo
             else return true;
         }
 
-        public static void Test()
+        [Test]
+        public static void TwoUniqueNumber_Test()
         {
-            int[] a = { 1, 2, 1, 2, 3, 4, 5, 6, 6, 5, 4, 7, 8, 8, 9, 9 };
-            FindTwoUniqueNumbersTest(a);
-            int[] a2 = { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8 };
-            FindTwoUniqueNumbersTest(a2);
-        }
-
-        public static void FindTwoUniqueNumbersTest(int[] a)
-        {
-            Console.Write("array: ");
-            foreach (int i in a) Console.Write(i + " ");
-            Console.WriteLine();
             int num1, num2;
+            int[] a = new int[] { 1, 2, 1, 2, 3, 4, 5, 6, 6, 5, 4, 7, 8, 8, 9, 9 };
             bool found = FindTwoUniqueNumbers(a, out num1, out num2);
-            if (found)
-                Console.WriteLine("num1 = {0}, num2 = {1}", num1, num2);
-            else
-                Console.WriteLine("Not Found!");
-        }
+            Assert.True(found);
+            Assert.AreEqual(7, num1);
+            Assert.AreEqual(3, num2);
 
+            a = new int[]{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8 };
+            found = FindTwoUniqueNumbers(a, out num1, out num2);
+            Assert.False(found);
+        }
     }
 
     /// <summary>
@@ -311,13 +312,12 @@ namespace BitAlgo
             return count;
         }
 
-        public static void Test()
+        [Test]
+        public static void BitDiff_Test()
         {
             int a = 10;
             int b = 23;
-            int c = BitsDiffCount(a, b);
-            Console.WriteLine("a = {0}, b = {1}, count = {2}",
-                Convert.ToString(a, 2), Convert.ToString(b, 2), c);
+            Assert.AreEqual(4, BitsDiffCount(a, b));
         }
     }
 
@@ -328,7 +328,6 @@ namespace BitAlgo
     /// </summary>
     public class BinaryAddition
     {
-
         public static string Addition(string s1, string s2)
         {
             if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2))
@@ -381,8 +380,8 @@ namespace BitAlgo
             return result;
         }
 
-
-        public static void Test()
+        [Test]
+        public static void BinaryAddition_Test()
         {
             Random r = new Random();
             for (int i = 0; i < 10; i++)
@@ -390,10 +389,7 @@ namespace BitAlgo
                 int x = r.Next(100);
                 int y = r.Next(100);
                 string z = Addition(Convert.ToString(x, 2), Convert.ToString(y, 2));
-                Console.WriteLine("{0}({1}) + {2}({3}) = {4}({5})",
-                    x, Convert.ToString(x, 2),
-                    y, Convert.ToString(y, 2),
-                    Convert.ToInt32(z, 2), z);
+                Assert.AreEqual(x + y, Convert.ToInt32(z, 2));
             }
         }
 
@@ -410,7 +406,7 @@ namespace BitAlgo
         // (1) traverse through the number, for each number, reset the lowest bit using n & (n - 1), 
         // if the number becomes zero, append it to the result list. 
         // (2) repeat (1) until the result list length equals to n
-        public static void SortBySetBits(int n)
+        public static int[] SortBySetBits(int n)
         {
             int[] nums = new int[n];
             for (int i = 1; i <= nums.Length; i++)
@@ -418,6 +414,8 @@ namespace BitAlgo
                 nums[i - 1] = i;
             }
             int zeros = 0;
+            int index = 0;
+            int[] result = new int[n];
             while (zeros < n)
             {
                 for (int i = 0; i < nums.Length; i++)
@@ -428,30 +426,20 @@ namespace BitAlgo
                         if (nums[i] == 0)
                         {
                             zeros++;
-                            Console.Write((i + 1) + " ");
+                            result[index++] = i + 1;
                         }
                     }
                 }
             }
+            return result;
         }
 
-
-        public static void Test()
+        [Test]
+        public static void SetBitsSorting_Test()
         {
-            SortBySetBits(64);
+            Assert.AreEqual(new int[] { 1, 2, 4, 3, 5 }, SortBySetBits(5));
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

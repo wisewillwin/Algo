@@ -12,7 +12,6 @@ namespace ArraysAlgo
     {
         static void Main() 
         {
-            //PalindromeNumber.Test();
         }
     }
 
@@ -186,6 +185,7 @@ namespace ArraysAlgo
                 Console.WriteLine(num1 + " + " + num2 + " + " + num3 + " = " + 3);
             else
                 Console.WriteLine("no solution");
+            
             result = ThreeSum_by_hashtable(a1, 6);
             if (result)
                 Console.WriteLine(num1 + " + " + num2 + " + " + num3 + " = " + 3);
@@ -255,16 +255,18 @@ namespace ArraysAlgo
             return false;
         }
 
-        //[Test]
+        [Test]
         public static void TwoNumWithDiff_Test()
         {
             int[] a = { 5, 20, 3, 50, 80, 81 };
             bool result = FindTwoNumWithDiff(a, 1);
             if (result)
                 Console.WriteLine("N = 1, num1 = {0}, num2 = {1}", num1, num2);
-            result = FindTwoNumWithDiff_By_Hashmap(a, 75);
+            Assert.IsTrue(result);
+            bool result2 = FindTwoNumWithDiff_By_Hashmap(a, 75);
             if (result)
                 Console.WriteLine("N = 75, num1 = {0}, num2 = {1}", num1, num2);
+            Assert.IsTrue(result2);
         }
     }
 
@@ -351,6 +353,7 @@ namespace ArraysAlgo
                 }
                 Console.WriteLine("{0}", array[array.Length - 1]);
             }
+            Assert.AreEqual(new int[] { }, list);
         }
     }
 
@@ -469,48 +472,6 @@ namespace ArraysAlgo
     }
 
     /// <summary>
-    /// Careercup 1.6
-    /// Rotate a NxN matrix by 90 degrees clockwise, inplace
-    /// </summary>
-    public class RotateMatrix
-    {
-
-        public static void Rotate90Degrees(int[,] matrix)
-        {
-
-        }
-
-
-        public static void PrintMatrix(int[,] matrix)
-        {
-            int N = matrix.GetLength(0);
-            Console.WriteLine("-------------------");
-            for (int i = 0; i < N; i++)
-            {
-                for (int j = 0; j < N; j++)
-                {
-                    Console.Write(matrix[i, j] + " ");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("-------------------");
-        }
-
-        public static void RotateMatrix_Test()
-        {
-            int[,] mr = { {1, 2, 3, 4},
-                         {5, 6, 7, 8},
-                         {9, 10, 11, 12},
-                         {13, 14, 15, 16}};
-            PrintMatrix(mr);
-            Rotate90Degrees(mr);
-            Console.WriteLine(@"       ||");
-            Console.WriteLine(@"       \/");
-            PrintMatrix(mr);
-        }
-    }
-
-    /// <summary>
     /// Careercup 1.7
     /// Given a matrix of 0s and 1s, if an element is 0 set the entire row and column to 0
     /// </summary>
@@ -557,10 +518,10 @@ namespace ArraysAlgo
                          {1, 1, 0, 1},
                          {1, 1, 1, 0},
                          {1, 1, 1, 1}};
-            RotateMatrix.PrintMatrix(mr);
+            //RotateMatrix.PrintMatrix(mr);
             Console.WriteLine(@"       ||");
             Console.WriteLine(@"       \/");
-            RotateMatrix.PrintMatrix(SetZero(mr));
+            //RotateMatrix.PrintMatrix(SetZero(mr));
         }
 
     }
@@ -604,15 +565,7 @@ namespace ArraysAlgo
             return n;
         }
 
-        // int to string, special cases:
-        // 1. negative numbers
-        // 2. base in 2
-        public static string itoa(int i, int Base)
-        {
-            return null; // TODO
-        }
-
-        //[Test]
+        [Test]
         public static void IntegerStringConversion_Test()
         {
             string[] ss = { null, 
@@ -626,15 +579,23 @@ namespace ArraysAlgo
                           "-2147483648", // int.MinValue
                           "-2147483649" // underflow
                           };
-            foreach (string s in ss)
+            int[] ints = { 0,
+                                0,
+                                123,
+                                123,
+                                123,
+                                -123,
+                                int.MaxValue,
+                                int.MaxValue,
+                                int.MinValue,
+                                int.MinValue
+                              };
+            for (int i = 0; i < ss.Length; i++)
             {
-                Console.WriteLine("\"" + s + "\" -> " + atoi(s));
-            }
-            Console.WriteLine();
+                Assert.AreEqual(ints[i], atoi(ss[i]));
+            }            
         }
     }
-
-
 
     /// <summary>
     /// Given an integer array, find the smallest positive number missing from the array
@@ -683,9 +644,7 @@ namespace ArraysAlgo
         {
             int[] a = { 2, 3, -7, 6, 8, 1, -10, 15 };
             Assert.AreEqual(4, SmallestMissingNumber(a));
-
         }
-
     }
 
     /// <summary>
@@ -882,7 +841,7 @@ namespace ArraysAlgo
         
         public static int[] KWayMergeSort_MinHeap(params int[][] array)
         {
-
+            // TODO
             return null;
         }
 
@@ -905,8 +864,6 @@ namespace ArraysAlgo
             Console.WriteLine();
             Assert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 }, result2);
         }
-
-
     }
 
     /// <summary>
@@ -1243,95 +1200,7 @@ namespace ArraysAlgo
     }
 
 
-    /// <summary>
-    /// Find the median of two sorted arrays
-    /// </summary>
-    public class MedianOfTwoSortedArray
-    {
-        /*
-        public static int FindMedian(int[] a1, int[] a2)
-        {
 
-        }
-        
-        public static void Test()
-        {
-            int[] a1 = { 1, 12, 15, 26, 38 };
-            int[] a2 = { 2, 13, 17, 30, 45 };
-            Console.WriteLine(FindMedian(a1, a2));
-
-        }
-        */
-
-
-
-    }
-
-    /// <summary>
-    /// Find the kth smallest element of the union of two sorted array
-    /// </summary>
-    public class KthElementOfTwoSortedArray
-    {
-        /*
-         def kthlargest(arr1, arr2, k):
-            if len(arr1) == 0:
-                return arr2[k]
-            elif len(arr2) == 0:
-                return arr1[k]
-            mida1 = len(arr1)/2
-            mida2 = len(arr2)/2
-            if mida1+mida2<k:
-                if arr1[mida1]>arr2[mida2]:
-                    return kthlargest(arr1, arr2[mida2+1:], k-mida2-1)
-                else:
-                    return kthlargest(arr1[mida1+1:], arr2, k-mida1-1)
-            else:
-                if arr1[mida1]>arr2[mida2]:
-                    return kthlargest(arr1[:mida1], arr2, k)
-                else:
-                    return kthlargest(arr1, arr2[:mida2], k)
-         
-         */
-
-        /*
-        // N(lg N1 + lg N2) time
-        public static int KthSmallest(int[] a1, int[] a2)
-        {
-
-            
-        }
-        */
-
-        public static void Test()
-        {
-
-
-        }
-
-    }
-
-
-    /// <summary>
-    /// Given an nearly sorted array where each element is at most k away of its target position
-    /// Sort the array in O(N lgk) time
-    /// </summary>
-    public class NearlySortedArray
-    {
-        /*
-        // use a min heap of size k+1, add the first k+1 elements to the heap
-        // every time remove the min element from the heap and add a new one in
-        public static int[] KSort(int[] a)
-        {
-
-        }
-        */
-
-        public static void Test()
-        {
-
-        }
-        
-    }
 
 
     /// <summary>
@@ -1435,7 +1304,6 @@ namespace ArraysAlgo
             return a;
         }
 
-
         private static int[] ReverseRange(int[] a, int low, int high)
         {
             while (low < high)
@@ -1448,24 +1316,16 @@ namespace ArraysAlgo
             }
             return a;
         }
-        public static void Test()
+
+        [Test]
+        public static void PartitionArrayByZero_Test()
         {
             int[] a1 = { 1, 7, -5, 9, -12, 15 };
-            foreach (int i in a1) Console.Write(i + " ");
-            Console.WriteLine();
-            a1 = partition(a1);
-            foreach (int i in a1) Console.Write(i + " ");
-            Console.WriteLine();
+            Assert.AreEqual(new int[] { -5, -12, 1, 7, 9, 15 }, partition(a1));
+
             int[] a2 = { 3, 2, 1, -3, -2, -1 };
-            foreach (int i in a2) Console.Write(i + " ");
-            Console.WriteLine();
-            a2 = partition(a2);
-            foreach (int i in a2) Console.Write(i + " ");
-            Console.WriteLine();
-
+            Assert.AreEqual(new int[] { -3, -2, -1, 3, 2, 1 }, partition(a2));
         }
-
-
     }
 
 
@@ -1525,4 +1385,130 @@ namespace ArraysAlgo
         }
 
     }
+
+    ///// <summary>
+    ///// Find the median of two sorted arrays
+    ///// </summary>
+    //public class MedianOfTwoSortedArray
+    //{    
+    //    public static int FindMedian(int[] a1, int[] a2)
+    //    {
+
+    //    }
+
+    //    public static void Test()
+    //    {
+    //        int[] a1 = { 1, 12, 15, 26, 38 };
+    //        int[] a2 = { 2, 13, 17, 30, 45 };
+    //        Console.WriteLine(FindMedian(a1, a2));
+
+    //    }
+    //}
+
+    ///// <summary>
+    ///// Find the kth smallest element of the union of two sorted array
+    ///// </summary>
+    //public class KthElementOfTwoSortedArray
+    //{
+    //    /*
+    //     def kthlargest(arr1, arr2, k):
+    //        if len(arr1) == 0:
+    //            return arr2[k]
+    //        elif len(arr2) == 0:
+    //            return arr1[k]
+    //        mida1 = len(arr1)/2
+    //        mida2 = len(arr2)/2
+    //        if mida1+mida2<k:
+    //            if arr1[mida1]>arr2[mida2]:
+    //                return kthlargest(arr1, arr2[mida2+1:], k-mida2-1)
+    //            else:
+    //                return kthlargest(arr1[mida1+1:], arr2, k-mida1-1)
+    //        else:
+    //            if arr1[mida1]>arr2[mida2]:
+    //                return kthlargest(arr1[:mida1], arr2, k)
+    //            else:
+    //                return kthlargest(arr1, arr2[:mida2], k)
+
+    //     */
+
+    //    /*
+    //    // N(lg N1 + lg N2) time
+    //    public static int KthSmallest(int[] a1, int[] a2)
+    //    {
+
+
+    //    }
+    //    */
+
+    //    public static void Test()
+    //    {
+
+
+    //    }
+
+    //}
+
+
+    ///// <summary>
+    ///// Given an nearly sorted array where each element is at most k away of its target position
+    ///// Sort the array in O(N lgk) time
+    ///// </summary>
+    //public class NearlySortedArray
+    //{
+    //    /*
+    //    // use a min heap of size k+1, add the first k+1 elements to the heap
+    //    // every time remove the min element from the heap and add a new one in
+    //    public static int[] KSort(int[] a)
+    //    {
+
+    //    }
+    //    */
+
+    //    public static void Test()
+    //    {
+
+    //    }
+
+    //}
+
+    ///// <summary>
+    ///// Careercup 1.6
+    ///// Rotate a NxN matrix by 90 degrees clockwise, inplace
+    ///// </summary>
+    //public class RotateMatrix
+    //{
+
+    //    public static void Rotate90Degrees(int[,] matrix)
+    //    {
+
+    //    }
+
+    //    public static void PrintMatrix(int[,] matrix)
+    //    {
+    //        int N = matrix.GetLength(0);
+    //        Console.WriteLine("-------------------");
+    //        for (int i = 0; i < N; i++)
+    //        {
+    //            for (int j = 0; j < N; j++)
+    //            {
+    //                Console.Write(matrix[i, j] + " ");
+    //            }
+    //            Console.WriteLine();
+    //        }
+    //        Console.WriteLine("-------------------");
+    //    }
+
+    //    public static void RotateMatrix_Test()
+    //    {
+    //        int[,] mr = { {1, 2, 3, 4},
+    //                     {5, 6, 7, 8},
+    //                     {9, 10, 11, 12},
+    //                     {13, 14, 15, 16}};
+    //        PrintMatrix(mr);
+    //        Rotate90Degrees(mr);
+    //        Console.WriteLine(@"       ||");
+    //        Console.WriteLine(@"       \/");
+    //        PrintMatrix(mr);
+    //    }
+    //}
 }
