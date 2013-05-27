@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using NUnit.Framework;
 
 namespace Design
 {
-
     /// <summary>
     /// Design a data structure, which get(int index), set(int index, object value) and 
     /// setAll(object value) are O(1) operation
@@ -59,6 +59,8 @@ namespace Design
             for (int i = 0; i < size; i++)
                 this.array[i] = new SpecialObject();
         }
+
+        //[Test]
         public static void Test()
         {
             QuickSetAllObject sd = new QuickSetAllObject(10);
@@ -211,6 +213,7 @@ namespace Design
             Console.WriteLine();
         }
 
+        //[Test]
         public static void Test()
         {
             LRUCache lru = new LRUCache(3);
@@ -234,7 +237,4 @@ namespace Design
             Console.WriteLine("search for 1: " + lru.search(1));
         }
     }
-
-
-
 }

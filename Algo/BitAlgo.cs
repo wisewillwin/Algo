@@ -7,14 +7,6 @@ using NUnit.Framework;
 
 namespace BitAlgo
 {
-    class BitAlgo
-    { 
-        static void Main()
-        {
-
-        }
-    }
-
     public class BitAlgos
     {
         // Q1: toggle from bit i to bit j

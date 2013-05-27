@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Design
+namespace Algo
 {
-    class Run
+    class Program
     {
         static void Main(string[] args)
         {
-            //QuickSetAllObject.Test();
-
-            //QuicksortKiller.Test();
-
-            LRUCache.Test();
         }
     }
 }

@@ -8,13 +8,6 @@ using NUnit.Framework;
 
 namespace ArraysAlgo
 {
-    class ArraysAlgo
-    {
-        static void Main() 
-        {
-        }
-    }
-
     /// <summary>
     /// Question 5
     /// find the kth smallest number of the given array
@@ -1317,7 +1310,7 @@ namespace ArraysAlgo
             return a;
         }
 
-        [Test]
+        //[Test]
         public static void PartitionArrayByZero_Test()
         {
             int[] a1 = { 1, 7, -5, 9, -12, 15 };
