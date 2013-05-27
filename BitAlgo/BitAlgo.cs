@@ -11,13 +11,12 @@ namespace BitAlgo
     { 
         static void Main()
         {
-            
+
         }
     }
 
     public class BitAlgos
     {
-
         // Q1: toggle from bit i to bit j
         // XOR trick: X ^ 111...1 can toggle all the bits in X
         public static int ToggleBits(int x, int i, int j)
@@ -30,16 +29,15 @@ namespace BitAlgo
             }
             return x ^ mask;
         }
-        public static void ToggleBitsTest()
+
+        [Test]
+        public static void ToggleBits_Test()
         {
             int x = 100; // "1100100"
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(ToggleBits(x, 1, 3), 2));
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(ToggleBits(x, 2, 4), 2));
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(ToggleBits(x, 3, 5), 2));
-            Console.WriteLine();
+            Assert.AreEqual("1100010", Convert.ToString(ToggleBits(x, 1, 3), 2));
+            Assert.AreEqual("1101000", Convert.ToString(ToggleBits(x, 2, 4), 2));
+            Assert.AreEqual("1111100", Convert.ToString(ToggleBits(x, 3, 5), 2));
         }
-
-
 
         // Q2: swap bit i and j of integer x
         // XOR trick: X ^ 0 = X
@@ -50,13 +48,14 @@ namespace BitAlgo
             // else, toggle bit i and j
             else return x ^ ((1 << i) | (1 << j));
         }
+
+        [Test]
         public static void SwapBitsTest()
         {
             int x = 100; // "1100100"
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(SwapBits(x, 1, 3), 2));
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(SwapBits(x, 2, 4), 2));
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(SwapBits(x, 3, 5), 2));
-            Console.WriteLine();
+            Assert.AreEqual("1100100", Convert.ToString(SwapBits(x, 1, 3), 2));
+            Assert.AreEqual("1110000", Convert.ToString(SwapBits(x, 2, 4), 2));
+            Assert.AreEqual("1001100", Convert.ToString(SwapBits(x, 3, 5), 2));
         }
 
         // Q3: turn off the right-most 1 bit
@@ -64,11 +63,12 @@ namespace BitAlgo
         {
             return x & (x - 1);
         }
+
+        [Test]
         public static void TurnOffRightestOneTest()
         {
             int x = 100; // "1100100"
-            Console.WriteLine(Convert.ToString(x, 2) + " -> " + Convert.ToString(TurnOffRightestOne(x), 2));
-            Console.WriteLine();
+            Assert.AreEqual("1100000", Convert.ToString(TurnOffRightestOne(x), 2));
         }
 
         // Q4: count the number of 1 bit in x
@@ -82,11 +82,12 @@ namespace BitAlgo
             }
             return count;
         }
+
+        [Test]
         public static void CountBitOneTest()
         {
-            int x = 100;
-            Console.WriteLine(Convert.ToString(x, 2) + " count: " + CountBitOne(x));
-            Console.WriteLine();
+            Assert.AreEqual(3, CountBitOne(100));
+            Assert.AreEqual(1, CountBitOne(1));
         }
 
         // Q5: swap every two bits, eg: 10100101 -> 01011010
@@ -99,22 +100,24 @@ namespace BitAlgo
             }
             return x;
         }
+
         public static Int64 SwapPairs_manually(Int64 x)
         {
             return ((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1);
         }
-        public static void SwapPairsTest()
+
+        [Test]
+        public static void SwapPairs_Test()
         {
             int x = 165;
-            Console.WriteLine(Convert.ToString(x, 2) + " swap every pair of bits: " +
-                Convert.ToString(SwapPairs_manually(x), 2));
-            Console.WriteLine();
+            Assert.AreEqual("1011010", Convert.ToString(SwapPairs(x), 2));
+            Assert.AreEqual("1011010", Convert.ToString(SwapPairs_manually(x), 2));
         }
 
         // http://www.leetcode.com/2011/08/reverse-bits.html 
         // Swap each pair by XOR tricks
         // Q6: reverse 32-bit integer, eg: 10101111 -> 11110101
-        public static int Reverse(int x)
+        public static int ReverseInteger(int x)
         {
             for (int i = 0; i < 16; i++)
             {
@@ -122,7 +125,15 @@ namespace BitAlgo
             }
             return x;
         }
-        public static byte Reverse_byte(byte b)
+
+        [Test]
+        public static void ReverseInteger_Test()
+        {
+            int x = (int)Math.Pow(2, 16) - 1;
+            Assert.AreEqual("11111111111111110000000000000000", Convert.ToString(ReverseInteger(x), 2));
+        }
+
+        public static byte ReverseByte(byte b)
         {
             int rev = (b >> 4) | ((b & 0xf) << 4);
             // (rev & 11001100) | (rev & 00110011) 
@@ -132,15 +143,11 @@ namespace BitAlgo
             return (byte)rev;
         }
 
-        public static void ReverseTest()
+        [Test]
+        public static void ReverseByte_Test()
         {
-            int x = (int)Math.Pow(2, 16) - 1;
-            Console.WriteLine(Convert.ToString(x, 2) + " reverse: " + Convert.ToString(Reverse(x), 2));
-            Console.WriteLine();
             byte y = 0xcc;
-            Console.WriteLine(Convert.ToString(y, 2) + " reverse: " + Convert.ToString(Reverse_byte(y), 2));
-            Console.WriteLine();
-
+            Assert.AreEqual("110011", Convert.ToString(ReverseByte(y), 2));
         }
 
         // Q8: add operation without operator +-*/, only bitwise operation
@@ -152,14 +159,17 @@ namespace BitAlgo
             int b = (x & y) << 1; // carry
             return Add(a, b);
         }
+
+        [Test]
         public static void AddTest()
         {
-            int x = 100, y = 23;
-            Console.WriteLine("{0} + {1} = {2}", x, y, Add(x, y));
-            Console.WriteLine();
-            x = 95; y = 23;
-            Console.WriteLine("{0} + {1} = {2}", x, y, Add(x, y));
-            Console.WriteLine();
+            Random rand = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                int x = rand.Next();
+                int y = rand.Next();
+                Assert.AreEqual(x + y, Add(x, y));
+            }
         }
 
         // Q9: compare two integer without comparator ">" or "<", return the larger number
@@ -169,54 +179,69 @@ namespace BitAlgo
             int diff = x - y;
             return (diff >> 31 & 1) == 0 ? x : y;
         }
+
+        [Test]
         public static void CompareTest()
         {
-            int x = 100, y = 23;
-            int result = Compare(x, y);
-            string op;
-            if (result > 0) op = ">";
-            else if (result == 0) op = "=";
-            else op = "<";
-            Console.WriteLine("{0} {1} {2}", x, op, y);
-            Console.WriteLine();
+            Random rand = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                int x = rand.Next();
+                int y = rand.Next();
+
+                if (x > y) Assert.Greater(x, y);
+                else if (x < y) Assert.Less(x, y);
+                else Assert.AreEqual(x, y);
+            }
         }
 
         // Q10: swap two integer without temperary variable
-        static int x = 100, y = 23;
-        public static void SwapNum_XOR()
-        { // XOR trick
+        public static int[] SwapNum_XOR(int x, int y)
+        { 
+            // XOR trick
             x = x ^ y;
             y = x ^ y;
             x = x ^ y;
+            return new int[] { x, y };
         }
-        public static void SwapNum_PlusMinus()
+
+        public static int[] SwapNum_Minus(int x, int y)
         {
             x = x - y;
             y = x + y;
             x = y - x;
+            return new int[] { x, y };
         }
-        public static void SwapNum_PlusMinus_2()
+
+        public static int[] SwapNum_Plus(int x, int y)
         {
             x = x + y;
             y = x - y;
             x = x - y;
-        }
-        public static void SwapNumTest()
-        {
-            Console.WriteLine("Before Swap: x = {0}, y = {1}", x, y);
-            SwapNum_XOR();
-            Console.WriteLine("SwapNum: x = {0}, y = {1}", x, y);
-            x = 100;
-            y = 23;
-            SwapNum_PlusMinus();
-            Console.WriteLine("SwapNum2: x = {0}, y = {1}", x, y);
-            x = 100;
-            y = 23;
-            SwapNum_PlusMinus_2();
-            Console.WriteLine("SwapNum3: x = {0}, y = {1}", x, y);
-            Console.WriteLine();
+            return new int[] { x, y };
         }
 
+        [Test]
+        public static void SwapNum_Test()
+        {
+            Random rand = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                int x = rand.Next();
+                int y = rand.Next();
+                int xCopy = x;
+                int yCopy = y;
+                int[] result = SwapNum_XOR(x, y);
+                Assert.AreEqual(yCopy, result[0]);
+                Assert.AreEqual(xCopy, result[1]);
+                result = SwapNum_Minus(x, y);
+                Assert.AreEqual(yCopy, result[0]);
+                Assert.AreEqual(xCopy, result[1]);
+                result = SwapNum_Plus(x, y);
+                Assert.AreEqual(yCopy, result[0]);
+                Assert.AreEqual(xCopy, result[1]);
+            }
+        }
 
     }
 
@@ -272,24 +297,6 @@ namespace BitAlgo
             a = new int[]{ 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8 };
             found = FindTwoUniqueNumbers(a, out num1, out num2);
             Assert.False(found);
-        }
-    }
-
-    /// <summary>
-    /// Careercup 5.2
-    /// Given a string representing a decimal number, print the binary represetation
-    /// </summary>
-    public class BinaryConversion
-    {
-        public static string ToBinary(string s)
-        {
-            return null;
-        }
-
-        public static void Test()
-        {
-            string s = "0.625";
-            Console.WriteLine(s + " -> " + ToBinary(s));
         }
     }
 
@@ -439,7 +446,23 @@ namespace BitAlgo
         {
             Assert.AreEqual(new int[] { 1, 2, 4, 3, 5 }, SortBySetBits(5));
         }
-
     }
 
+    ///// <summary>
+    ///// Careercup 5.2
+    ///// Given a string representing a decimal number, print the binary represetation
+    ///// </summary>
+    //public class BinaryConversion
+    //{
+    //    public static string ToBinary(string s)
+    //    {
+    //        return null;
+    //    }
+
+    //    public static void Test()
+    //    {
+    //        string s = "0.625";
+    //        Console.WriteLine(s + " -> " + ToBinary(s));
+    //    }
+    //}
 }
